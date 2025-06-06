@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345政务服务热线 - AI智能通话摘要系统 Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="page-header">
+        <h1>12345政务服务热线 - AI智能通话摘要系统</h1>
+        <p>实时语音转录 | 智能摘要生成 | 自动记录保存</p>
+        <div class="status-indicator">系统状态: <span id="system-status">在线</span> | AI处理状态: <span id="ai-status">空闲</span></div>
+    </header>
+
+    <main class="main-content">
+        <section class="call-simulation-area">
+            <h2>📞 通话模拟</h2>
+            <div class="call-control-panel">
+                <h3>通话控制</h3>
+                <p>○ 来电显示: <span id="caller-id">138****5678</span></p>
+                <p>○ 通话时长: <span id="call-duration">00:00:00</span></p>
+                <p>○ 通话状态: <span id="call-status">待机</span></p>
+                <div class="controls">
+                    <button id="play-btn">▶️ 播放</button>
+                    <button id="pause-btn" disabled>⏸️ 暂停</button>
+                    <button id="stop-btn" disabled>⏹️ 结束</button>
+                </div>
+                <div class="volume-control">
+                    🔊 音量控制: <input type="range" id="volume-slider" min="0" max="100" value="80">
+                </div>
+            </div>
+            <div class="scenario-selection">
+                <h3>📋 选择演示场景:</h3>
+                <ul>
+                    <li data-scenario="1">场景1: 户籍迁移咨询</li>
+                    <li data-scenario="2">场景2: 社保卡办理投诉</li>
+                </ul>
+            </div>
+            <div class="audio-waveform">
+                <h3>音频波形</h3>
+                <canvas id="waveform-canvas"></canvas>
+                <div class="speaker-indicator">说话人: <span id="current-speaker">--</span></div>
+            </div>
+        </section>
+
+        <section class="realtime-processing-area">
+            <div class="realtime-transcription">
+                <h2>🎤 实时语音转录</h2>
+                <div id="transcription-output">
+                    <!-- 转录文本将在此处显示 -->
+                </div>
+            </div>
+            <div class="realtime-analysis">
+                <h2>🧠 AI实时分析</h2>
+                <p>📊 情感分析: <span id="sentiment">--</span></p>
+                <p>🏷️ 主题标签: <span id="topics">--</span></p>
+                <p>⚡ 关键词: <span id="keywords">--</span></p>
+                <p>🎯 意图识别: <span id="intent">--</span></p>
+                <p>⏰ 预计处理时长: <span id="estimated-time">--</span></p>
+            </div>
+        </section>
+    </main>
+
+    <section class="summary-generation-area">
+        <h2>📝 AI生成通话摘要</h2>
+        <div id="summary-output">
+            <!-- 摘要内容将在此处显示 -->
+        </div>
+    </section>
+
+    <section class="crm-integration-area">
+        <h2>🔗 CRM/工单系统集成展示</h2>
+        <div class="work-order">
+            <h3>📋 自动生成工单</h3>
+            <p>工单编号: <span id="work-order-id">--</span></p>
+            <p>创建时间: <span id="work-order-time">--</span></p>
+            <p>问题分类: <span id="work-order-category">--</span></p>
+            <p>优先级: <span id="work-order-priority">--</span></p>
+            <p>状态: <span id="work-order-status">--</span></p>
+            <p>处理人: <span id="work-order-handler">--</span></p>
+            <p>跟进状态: <span id="work-order-followup">--</span></p>
+        </div>
+        <div class="data-statistics">
+            <h3>📊 数据统计面板</h3>
+            <p>今日通话: <span id="today-calls">--</span>通 | 平均时长: <span id="avg-duration">--</span></p>
+            <p>解决率: <span id="resolution-rate">--</span> | 满意度: <span id="satisfaction">--</span></p>
+            <p>热门问题: <span id="popular-issues">--</span></p>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html> 
