@@ -2,38 +2,85 @@
 const simulatedData = [
     {
         id: "1",
-        content: "等了40分钟才接通，工作人员态度还不错。",
+        content: "打了好几次电话都占线，等待时间太长了！希望增加人手。",
         source: "phone",
-        timestamp: new Date(),
+        timestamp: new Date(Date.now() - 5*60*1000), // 5 minutes ago
         region: "区域A",
         category: "服务效率",
-        sentiment: { score: 0.2, label: "中性", confidence: 0.85 },
-        keywords: ["等待时间长", "工作人员态度", "服务效率"],
+        sentiment: { score: -0.8, label: "负面", confidence: 0.92 },
+        keywords: ["占线", "等待时间长", "增加人手"],
         resolved: false
     },
     {
         id: "2",
-        content: "在线问卷反馈，界面操作流畅，问题很快解决了，很满意！",
+        content: "在网上提交了问题，回复速度很快，工作人员解答也很专业，非常满意！",
         source: "online",
-        timestamp: new Date(),
+        timestamp: new Date(Date.now() - 4*60*1000), // 4 minutes ago
         region: "区域B",
         category: "在线服务",
-        sentiment: { score: 0.9, label: "正面", confidence: 0.95 },
-        keywords: ["界面流畅", "问题解决", "满意"],
+        sentiment: { score: 0.95, label: "正面", confidence: 0.98 },
+        keywords: ["回复快", "专业", "满意"],
         resolved: true
     },
     {
         id: "3",
-        content: "社交媒体上看到有人抱怨，系统总是卡顿，希望能改进。",
-        source: "social",
-        timestamp: new Date(),
+        content: "咨询了一个关于社保的问题，接线员很有耐心，解释得很清楚。",
+        source: "phone",
+        timestamp: new Date(Date.now() - 3*60*1000), // 3 minutes ago
+        region: "区域A",
+        category: "工作人员态度",
+        sentiment: { score: 0.7, label: "正面", confidence: 0.9 },
+        keywords: ["有耐心", "解释清楚"],
+        resolved: true
+    },
+    {
+        id: "4",
+        content: "app里填报信息时总是闪退，试了好几次都不行，太麻烦了。",
+        source: "online",
+        timestamp: new Date(Date.now() - 2*60*1000), // 2 minutes ago
         region: "区域C",
         category: "系统技术问题",
-        sentiment: { score: -0.7, label: "负面", confidence: 0.9 },
-        keywords: ["系统卡顿", "改进"],
+        sentiment: { score: -0.6, label: "负面", confidence: 0.88 },
+        keywords: ["app闪退", "麻烦"],
         resolved: false
     },
-    // Add more simulated data...
+     {
+        id: "5",
+        content: "只是想查个政策，结果转了好几个部门都没搞清楚，流程太复杂了。",
+        source: "phone",
+        timestamp: new Date(Date.now() - 1*60*1000), // 1 minute ago
+        region: "区域D",
+        category: "办事流程",
+        sentiment: { score: -0.75, label: "负面", confidence: 0.91 },
+        keywords: ["流程复杂", "部门"],
+        resolved: false
+    },
+    {
+        id: "6",
+        content: "反馈了一个路面积水问题，很快就得到了处理，效率很高！",
+        source: "social",
+        timestamp: new Date(),
+        region: "区域B",
+        category: "市政设施",
+        sentiment: { score: 0.85, label: "正面", confidence: 0.94 },
+        keywords: ["路面积水", "处理快", "效率高"],
+        resolved: true
+    },
+    // Add more varied simulated data here if needed
+];
+
+// Define a pool of realistic feedback snippets for random generation
+const realisticFeedbackPool = [
+    { content: "电话很难打通，等了很久。", sentiment: { label: "负面", score: -0.7 }, keywords: ["电话难打", "等待"] },
+    { content: "工作人员服务态度很好，耐心解答了我的问题。", sentiment: { label: "正面", score: 0.8 }, keywords: ["服务态度", "耐心"] },
+    { content: "网站操作不太方便，希望能优化一下。", sentiment: { label: "负面", score: -0.5 }, keywords: ["网站", "优化"] },
+    { content: "咨询的问题得到了解决，非常感谢！", sentiment: { label: "正面", score: 0.9 }, keywords: ["问题解决", "感谢"] },
+    { content: "反馈后一直没有收到回复，希望能尽快处理。", sentiment: { label: "负面", score: -0.6 }, keywords: ["无回复", "处理"] },
+    { content: "只是询问一个信息，过程很顺利。", sentiment: { label: "中性", score: 0.3 }, keywords: ["顺利", "信息"] },
+    { content: "政策解读不够清晰，希望有更详细的说明。", sentiment: { label: "负面", score: -0.7 }, keywords: ["政策解读", "说明"] },
+    { content: "在微信公众号上反馈的问题，响应速度很快。", sentiment: { label: "正面", score: 0.85 }, keywords: ["微信公众号", "响应速度"] },
+    { content: "对处理结果不满意，希望能重新核实。", sentiment: { label: "负面", score: -0.9 }, keywords: ["不满意", "核实"] },
+    { content: "办事指南写得很详细，很有帮助。", sentiment: { label: "正面", score: 0.7 }, keywords: ["办事指南", "有帮助"] },
 ];
 
 let processedCount = 0;
@@ -169,20 +216,19 @@ function startSimulation() {
             } else {
                 // Simulate new data arrival occasionally even if initial data is processed
                 if (Math.random() < 0.5) { // Higher chance when initial data is done
+                    // Select a random feedback snippet from the pool
+                    const randomFeedback = realisticFeedbackPool[Math.floor(Math.random() * realisticFeedbackPool.length)];
+
                     const newFeedback = {
                         id: `new-${Date.now()}`,
-                        content: "这是一条模拟的新反馈内容，情感随机生成。",
+                        content: randomFeedback.content, // Use realistic content
                         source: ["phone", "online", "social"][Math.floor(Math.random() * 3)], // Random source
                         timestamp: new Date(),
-                        region: "模拟区域",
-                        category: "模拟类别",
-                        sentiment: {
-                            score: Math.random() * 2 - 1,
-                            label: Math.random() > 0.6 ? "正面" : (Math.random() > 0.3 ? "中性" : "负面"),
-                            confidence: Math.random() * 0.3 + 0.7
-                        },
-                        keywords: ["新反馈", "模拟"],
-                        resolved: false
+                        region: "模拟区域", // Keep generic region for new data
+                        category: "模拟类别", // Keep generic category for new data
+                        sentiment: randomFeedback.sentiment, // Use realistic sentiment
+                        keywords: randomFeedback.keywords, // Use realistic keywords
+                        resolved: Math.random() > 0.5 // Randomly set resolved status
                     };
                     simulatedData.push(newFeedback);
                     pendingCount++;
