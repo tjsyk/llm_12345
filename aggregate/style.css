@@ -2,19 +2,39 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    background-color: #f4f4f4; /* Add a light background color */
+}
+
+header {
+    background-color: #007bff; /* Blue background for header */
+    color: white; /* White text color */
+    padding: 15px 0; /* Add padding top and bottom */
+    text-align: center; /* Center the text */
+    margin-bottom: 10px; /* Add space below the header */
+}
+
+header h1 {
+    margin: 0; /* Remove default h1 margin */
+    font-size: 1.8em; /* Adjust font size */
 }
 
 .container {
     display: flex;
-    height: 100vh; /* Full viewport height */
+    height: calc(100vh - 80px); /* Adjust height considering the header */
+    /* Original height: 100vh; */
+    /* Add margin-top to push content below header */
+    /* margin-top: 60px; Assuming header height is around 60px */
+    background-color: #fff; /* White background for the main content area */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 .menu {
-    width: 200px; /* Fixed width for the menu */
-    border-right: 1px solid #ccc;
+    width: 220px; /* Slightly wider menu */
+    border-right: 1px solid #eee; /* Lighter border */
     padding: 20px;
-    box-sizing: border-box; /* Include padding in width */
-    overflow-y: auto; /* Add scroll if menu is too long */
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: #f8f9fa; /* Light background for menu */
 }
 
 .menu ul {
@@ -24,28 +44,31 @@ body {
 }
 
 .menu li {
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* Slightly less margin */
 }
 
 .menu a {
     text-decoration: none;
     color: #333;
-    display: block; /* Make the whole list item clickable */
-    padding: 5px 0;
+    display: block;
+    padding: 10px 15px; /* More padding for links */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
 }
 
 .menu a:hover {
-    color: #007bff;
+    background-color: #e9ecef; /* Highlight on hover */
+    color: #000; /* Darker text on hover */
 }
 
 .content {
-    flex-grow: 1; /* Take remaining space */
+    flex-grow: 1;
     padding: 20px;
-    overflow: hidden; /* Hide iframe scrollbars if needed */
+    overflow: hidden;
 }
 
 .content iframe {
     width: 100%;
     height: 100%;
-    border: none; /* Remove default iframe border */
+    border: none;
 } 
