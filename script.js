@@ -192,40 +192,38 @@ function animateWaveform(status) {
     const height = waveformCanvas.height;
     ctx.clearRect(0, 0, width, height);
 
-    if (callState === 'ended' || callState === 'idle') {
+    // Update speaking status text styles
+    userSpeakingStatusSpan.style.fontWeight = status === 'user' ? 'bold' : 'normal';
+    aiSpeakingStatusSpan.style.fontWeight = status === 'ai' ? 'bold' : 'normal';
+    waitingStatusSpan.style.fontWeight = status === 'idle' ? 'bold' : 'normal';
+
+    // Draw based on status
+    if (status === 'idle') {
          ctx.strokeStyle = 'gray';
          ctx.lineWidth = 1;
          ctx.beginPath();
          ctx.moveTo(0, height / 2);
          ctx.lineTo(width, height / 2);
          ctx.stroke();
-         userSpeakingStatusSpan.style.fontWeight = 'normal';
-         aiSpeakingStatusSpan.style.fontWeight = 'normal';
-         waitingStatusSpan.style.fontWeight = 'bold';
-         animationFrameId = null; // Clear animation ID when idle/ended
-         return;
+         animationFrameId = null; // No animation needed for idle state
+    } else { // status is 'user' or 'ai'
+        const color = status === 'user' ? 'red' : 'blue';
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.moveTo(0, height / 2);
+
+        for (let i = 0; i < width; i++) {
+            const amplitude = Math.random() * (height / 4);
+            const y = height / 2 + Math.sin(i * 0.05) * amplitude;
+            ctx.lineTo(i, y);
+        }
+        ctx.stroke();
+
+        // Store the new animation frame ID only if animating
+        animationFrameId = requestAnimationFrame(() => animateWaveform(status));
     }
-
-    const color = status === 'user' ? 'red' : 'blue';
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-    ctx.moveTo(0, height / 2);
-
-    for (let i = 0; i < width; i++) {
-        const amplitude = Math.random() * (height / 4);
-        const y = height / 2 + Math.sin(i * 0.05) * amplitude;
-        ctx.lineTo(i, y);
-    }
-    ctx.stroke();
-
-    userSpeakingStatusSpan.style.fontWeight = status === 'user' ? 'bold' : 'normal';
-    aiSpeakingStatusSpan.style.fontWeight = status === 'ai' ? 'bold' : 'normal';
-    waitingStatusSpan.style.fontWeight = 'normal';
-
-    // Store the new animation frame ID
-    animationFrameId = requestAnimationFrame(() => animateWaveform(status));
 }
 
 /**
@@ -307,7 +305,7 @@ function simulateCallStart() {
         updateCallStatus('已接通');
         callStartTime = Date.now();
         callDurationInterval = setInterval(updateCallDuration, 1000);
-        animateWaveform('idle');
+        animateWaveform('idle'); // Set to idle after connecting, before AI prompt
         addDialogueMessage('system', '通话已接通', 0);
         simulateAIPrompt();
     }, 3000); // Simulate 3 seconds to connect
@@ -320,19 +318,28 @@ function simulateAIPrompt() {
      // Only proceed if call is connected
      if (callState !== 'connected') return;
 
-     updateAIAssistantStatus('处理中');
-     animateWaveform('ai');
-     // Simulate AI thinking/processing
+     updateAIAssistantStatus('处理中'); // AI is preparing
+     // Waveform is already 'idle' from simulateCallStart, keep it that way during preparation
      updateAIProcessingStatus('🤖 AI助手: 正在准备开场白...');
+
      setTimeout(() => {
          // Only proceed if call is connected
          if (callState !== 'connected') return;
 
          updateAIProcessingStatus('🤖 AI助手: 开场白生成完成', { timing: { total: 800 } });
+
+         // Simulate AI speaking
+         animateWaveform('ai');
          addDialogueMessage('ai', '您好，这里是12345政务服务热线，我是AI智能助手小政，很高兴为您服务。请问有什么可以帮助您的吗？', Math.floor((Date.now() - callStartTime) / 1000));
-         animateWaveform('idle');
-         updateAIAssistantStatus('在线');
-     }, 1500); // Simulate AI response time
+
+         // After AI speaks, return to idle/waiting state
+         setTimeout(() => {
+             if (callState !== 'connected') return;
+             animateWaveform('idle');
+             updateAIAssistantStatus('在线'); // AI is now online and waiting for next input
+         }, 2000); // Simulate AI speaking duration
+
+     }, 1500); // Simulate AI preparation time before speaking
 }
 
 /**
@@ -345,8 +352,22 @@ function simulateUserInteraction(userInput) {
     const userTimestamp = Math.floor((Date.now() - callStartTime) / 1000);
     addDialogueMessage('user', userInput, userTimestamp, 95); // Simulate high confidence
 
-    // Simulate AI processing flow based on scenario/input
-    simulateAIResponse(userInput);
+    // Simulate user speaking animation for a brief period
+    animateWaveform('user');
+    updateAIAssistantStatus('处理中'); // Indicate system is now processing
+
+    // Simulate time user takes to speak
+    const speakingTime = Math.max(1000, userInput.length * 50); // Simulate based on length
+
+    setTimeout(() => {
+        // Only proceed if call is still connected
+        if (callState !== 'connected') return;
+
+        animateWaveform('idle'); // User finished speaking, now system is processing/waiting
+
+        // Simulate AI processing flow based on scenario/input
+        simulateAIResponse(userInput);
+    }, speakingTime);
 }
 
 /**
@@ -358,7 +379,7 @@ function simulateAIResponse(userInput) {
     if (callState !== 'connected') return;
 
     updateAIAssistantStatus('处理中');
-    animateWaveform('user'); // Simulate listening to user
+    animateWaveform('idle'); // Set waveform to idle/waiting during processing
 
     // Simulate processing steps over time
     const processingTimes = {
@@ -418,6 +439,8 @@ function simulateAIResponse(userInput) {
                                  // Only proceed if call is connected
                                  if (callState !== 'connected') return;
                                 updateAIProcessingStatus('✅ 处理完成', { timing: { total: totalProcessingTime } });
+
+                                // After processing, simulate AI output
                                 simulateAIOutput(userInput);
                             }, processingTimes.generating);
                        }, processingTimes.routing);
@@ -435,7 +458,8 @@ function simulateAIOutput(userInput) {
     // Only proceed if call is connected
     if (callState !== 'connected') return;
 
-     animateWaveform('ai');
+     animateWaveform('ai'); // Simulate AI speaking
+
      const aiTimestamp = Math.floor((Date.now() - callStartTime) / 1000);
      let aiResponse = '抱歉，我没有理解您的问题。'; // Default response
 
@@ -452,8 +476,13 @@ function simulateAIOutput(userInput) {
      // Add more conditions for other scenarios
 
      addDialogueMessage('ai', aiResponse, aiTimestamp);
-     animateWaveform('idle'); // AI finished speaking
-     updateAIAssistantStatus('在线');
+
+     // After AI speaks, return to idle/waiting state
+     setTimeout(() => {
+          if (callState !== 'connected') return;
+          animateWaveform('idle'); // AI finished speaking, return to idle
+          updateAIAssistantStatus('在线'); // AI is now online and waiting for next input
+     }, 2000); // Simulate AI speaking duration
 }
 
 // --- Event Listeners ---
