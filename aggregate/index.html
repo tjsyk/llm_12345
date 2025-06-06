@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聚合页面</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="menu">
+            <ul>
+                <li><a href="../CJ_A/" target="scene-iframe">1、AI接听电话场景</a></li>
+                <li><a href="../CJ_B/" target="scene-iframe">2、AI坐席辅助场景</a></li>
+                <li><a href="../CJ_C/" target="scene-iframe">3、AI工单生成场景</a></li>
+                <li><a href="../CJ_D/" target="scene-iframe">4、AI自动派单场景</a></li>
+                <li><a href="../CJ_E/" target="scene-iframe">5、AI情绪分析场景</a></li>
+                <li><a href="../CJ_F/" target="scene-iframe">6、AI知识库场景</a></li>
+            </ul>
+        </nav>
+        <div class="content">
+            <iframe name="scene-iframe" src="../CJ_A/" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.menu a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                // Prevent default link behavior
+                // event.preventDefault(); // We are using target attribute, no need to prevent default if it works.
+                
+                // This part is not needed if target="scene-iframe" works as expected.
+                // const iframe = document.querySelector('#scene-iframe');
+                // iframe.src = this.href;
+            });
+        });
+
+        // Optional: Highlight the active menu item
+        // This would require more sophisticated state management if the iframe content changes URL
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const iframe = document.querySelector('#scene-iframe');
+        //     const links = document.querySelectorAll('.menu a');
+
+        //     // Basic highlighting based on initial load
+        //     links.forEach(link => {
+        //         if (link.href === iframe.src) {
+        //             link.classList.add('active');
+        //         } else {
+        //             link.classList.remove('active');
+        //         }
+        //     });
+
+        //     // Note: This won't update highlighting if the iframe navigates internally.
+        // });
+
+    </script>
+</body>
+</html> 
