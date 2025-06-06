@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线市民反馈分析与情绪追踪 Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">12345热线</div>
+            <nav>
+                <ul>
+                    <li><a href="#">实时分析</a></li>
+                    <li><a href="#">历史数据</a></li>
+                    <li><a href="#">报告中心</a></li>
+                    <li><a href="#">系统设置</a></li>
+                </ul>
+            </nav>
+            <div class="user-info">管理员</div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="data-input" class="module-card">
+            <h2>📝 市民反馈数据处理 (模拟)</h2>
+            <div class="controls">
+                <button>批量上传 (模拟)</button>
+                <button>手动输入 (模拟)</button>
+                <button>实时接入 (模拟)</button>
+            </div>
+            <div class="data-source-select">
+                数据源选择：
+                <input type="checkbox" id="source-phone" checked><label for="source-phone">电话转录</label>
+                <input type="checkbox" id="source-online" checked><label for="source-online">在线问卷</label>
+                <input type="checkbox" id="source-social" checked><label for="source-social">社交媒体</label>
+            </div>
+            <div class="status">
+                📊 当前处理状态： 已处理：<span id="processed-count">0</span>条 | 待处理：<span id="pending-count">0</span>条
+            </div>
+        </section>
+
+        <section id="sentiment-analysis" class="module-card">
+            <h2>🎯 实时情感分析 (模拟)</h2>
+            <div id="feedback-display">
+                反馈内容示例：<span id="current-feedback">加载中...</span>
+            </div>
+            <div id="analysis-result">
+                情感分析结果：<span id="current-sentiment">加载中...</span>
+            </div>
+            <div id="keywords">
+                关键词提取：<span id="current-keywords">加载中...</span>
+            </div>
+        </section>
+
+        <section id="warning-system" class="module-card">
+            <h2>⚠️ 智能预警系统 (模拟)</h2>
+            <div id="alert-status">🟢 系统正常</div>
+        </section>
+
+        <section id="data-visualization" class="module-card full-width">
+            <h2>📊 数据可视化仪表盘</h2>
+            <div id="sentiment-chart" style="width: 100%; height: 400px;"></div>
+            <!-- 其他图表将在此添加 -->
+        </section>
+
+        <!-- 其他模块如主题识别、报告生成等暂不实现，仅框架 -->
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
