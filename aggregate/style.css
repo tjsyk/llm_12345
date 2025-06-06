@@ -1,40 +1,48 @@
-body {
+html, body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    background-color: #f4f4f4; /* Add a light background color */
+    background-color: #f4f4f4;
+    height: 100%; /* Ensure html and body take full viewport height */
+    overflow: hidden; /* Hide potential scrollbar on html/body */
+}
+
+body {
+    display: flex; /* Use flexbox for the main layout */
+    flex-direction: column; /* Stack header and container vertically */
 }
 
 header {
-    background-color: #007bff; /* Blue background for header */
-    color: white; /* White text color */
-    padding: 15px 0; /* Add padding top and bottom */
-    text-align: center; /* Center the text */
-    margin-bottom: 10px; /* Add space below the header */
+    background-color: #007bff;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    /* margin-bottom: 0; Removed as flexbox handles spacing */
+    flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 header h1 {
-    margin: 0; /* Remove default h1 margin */
-    font-size: 1.8em; /* Adjust font size */
+    margin: 0;
+    font-size: 1.8em;
 }
 
 .container {
     display: flex;
-    height: calc(100vh - 80px); /* Adjust height considering the header */
-    /* Original height: 100vh; */
-    /* Add margin-top to push content below header */
-    /* margin-top: 60px; Assuming header height is around 60px */
-    background-color: #fff; /* White background for the main content area */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    flex-grow: 1; /* Allow container to fill remaining space */
+    /* height: calc(100vh - 60px); Removed fixed height calculation */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Hide scrollbar for the container itself */
 }
 
 .menu {
-    width: 220px; /* Slightly wider menu */
-    border-right: 1px solid #eee; /* Lighter border */
+    width: 220px;
+    border-right: 1px solid #eee;
     padding: 20px;
     box-sizing: border-box;
-    overflow-y: auto;
-    background-color: #f8f9fa; /* Light background for menu */
+    overflow-y: auto; /* Keep scrollbar for the menu if it's long */
+    background-color: #f8f9fa;
+    flex-shrink: 0; /* Prevent menu from shrinking */
 }
 
 .menu ul {
@@ -44,31 +52,33 @@ header h1 {
 }
 
 .menu li {
-    margin-bottom: 8px; /* Slightly less margin */
+    margin-bottom: 8px;
 }
 
 .menu a {
     text-decoration: none;
     color: #333;
     display: block;
-    padding: 10px 15px; /* More padding for links */
-    border-radius: 4px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth transition on hover */
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 .menu a:hover {
-    background-color: #e9ecef; /* Highlight on hover */
-    color: #000; /* Darker text on hover */
+    background-color: #e9ecef;
+    color: #000;
 }
 
 .content {
-    flex-grow: 1;
+    flex-grow: 1; /* Allow content area to fill remaining horizontal space */
     padding: 20px;
-    overflow: hidden;
+    overflow: hidden; /* Hide scrollbar for the content area itself */
+    display: flex; /* Use flexbox inside content to manage iframe height */
+    flex-direction: column; /* Stack children vertically (though only iframe here) */
 }
 
 .content iframe {
     width: 100%;
-    height: 100%;
+    height: 100%; /* iframe takes full height of its flex parent (.content) */
     border: none;
 } 
