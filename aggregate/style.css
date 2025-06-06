@@ -69,6 +69,12 @@ header h1 {
     color: #000;
 }
 
+.menu a.active-menu-item {
+    background-color: #007bff; /* Highlight color for active item */
+    color: white; /* Text color for active item */
+    font-weight: bold; /* Make text bold */
+}
+
 .content {
     flex-grow: 1; /* Allow content area to fill remaining horizontal space */
     padding: 20px;
