@@ -380,89 +380,10 @@ body {
     clear: both;
 }
 
-/* --- 系统监控模块样式 --- */
-.system-monitor-container {
-     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    display: grid;
-    grid-template-columns: 1fr 2fr; /* Stats on left, chart on right */
-    gap: 20px;
-}
-
-.stats-panel,
-.chart-panel {
-     padding: 20px; /* Increased padding */
-    border: 1px solid var(--border); /* Use variable */
-    border-radius: var(--border-radius); /* Use variable */
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Use standard shadow */
-}
-
-.stats-panel h3,
-.chart-panel h3 {
-    color: var(--primary-color); /* Use variable */
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-top: 0;
-    margin-bottom: 20px; /* Increased margin */
-}
-
-.stats-panel p {
-    margin-bottom: 12px; /* Increased margin */
-    font-size: var(--font-size-base); /* Use variable */
-    line-height: 1.5;
-}
-
-.stats-panel p span {
-     font-weight: bold;
-    color: var(--success-color); /* Use variable */
-    margin-left: 5px;
-}
-
-#refresh-monitor-data {
-     padding: 10px 20px; /* Increased padding */
-    font-size: var(--font-size-base); /* Use variable */
-    cursor: pointer;
-    border: none;
-    border-radius: var(--border-radius); /* Use variable */
-    background-color: var(--primary-color); /* Use variable */
-    color: white;
-    transition: background-color 0.3s ease;
-    display: inline-block; /* Align button inline */
-    margin-top: 15px;
-    float: right; /* Align to the right */
-}
-
-#refresh-monitor-data:hover {
-    background-color: #40a9ff; /* Slightly lighter blue */
-}
-
-/* Add clear to prevent float issues */
-.stats-panel::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.chart-panel {
-    /* Specific chart panel styles if needed */
-}
-
-#calls-over-time-chart p {
-    margin: 0;
-    padding: 0;
-    line-height: 300px; /* Center text vertically */
-    text-align: center;
-    color: var(--text-secondary); /* Use variable */
-    font-size: var(--font-size-lg); /* Use variable */
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .phone-simulation-container,
-    .document-processing-container,
-    .system-monitor-container {
+    .document-processing-container {
         flex-direction: column; /* Stack columns on smaller screens */
         grid-template-columns: 1fr; /* Single column for grid layouts */
     }

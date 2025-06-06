@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
         '电话模拟': generatePhoneSimulationContent,
         '知识库管理': generateKnowledgeBaseContent,
         '文档处理': generateDocumentProcessingContent,
-        '系统监控': generateSystemMonitorContent
     };
 
-    // 默认加载内容
-    mainDemoArea.innerHTML = `<h2>请选择功能模块进行演示</h2><p>点击上方的导航按钮切换演示内容。</p>`;
+    // 默认加载电话模拟模块
+    mainDemoArea.innerHTML = moduleContent['电话模拟']();
+
+    // 调用默认模块的初始化函数
+    initPhoneSimulation();
 
     navButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -22,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (moduleName === '电话模拟') initPhoneSimulation();
                 if (moduleName === '文档处理') initDocumentProcessing();
                 if (moduleName === '知识库管理') initKnowledgeBase();
-                if (moduleName === '系统监控') initSystemMonitor();
             } else {
                 mainDemoArea.innerHTML = `<h2>${moduleName} 模块</h2><p>该模块内容待实现。</p>`;
             }
@@ -270,30 +271,52 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // --- 系统监控模块 (占位符) --- //
-    function generateSystemMonitorContent() {
-        return `
-            <h2>系统监控模块</h2>
-            <div class="system-monitor-container">
-                <div class="stats-panel">
-                    <h3>实时统计面板</h3>
-                    <p>今日呼叫总量: <span id="total-calls">加载中...</span></p>
-                    <p>平均通话时长: <span id="avg-duration">加载中...</span></p>
-                    <p>问题解决率: <span id="resolution-rate">加载中...</span></p>
-                    <p>知识库命中率: <span id="kb-hit-rate">加载中...</span></p>
-                    <p>文档处理成功率: <span id="doc-success-rate">加载中...</span></p>
-                    <button id="refresh-monitor-data">刷新数据</button>
-                </div>
+    // --- 知识库管理模块初始化函数 --- //
+    function initKnowledgeBase() {
+        const totalItemsSpan = document.getElementById('kb-total-items');
+        const todayUpdatesSpan = document.getElementById('kb-today-updates');
+        const pendingUpdatesSpan = document.getElementById('kb-pending-updates');
+        const accuracySpan = document.getElementById('kb-accuracy');
+        const refreshButton = document.getElementById('refresh-kb-status');
 
-                <div class="chart-panel">
-                    <h3>可视化图表 (示例)</h3>
-                    <div id="calls-over-time-chart" style="width: 100%; height: 300px;"></div>
-                    <!-- 更多图表可以添加在这里 -->
-                </div>
+        // 模拟数据
+        const mockStatus = {
+            total: 1247,
+            today: 23,
+            pending: 5,
+            accuracy: '98.5%'
+        };
 
-                <!-- TODO: 添加更多监控指标和图表 -->
-            </div>
-        `;
+        function updateStatusDisplay() {
+            totalItemsSpan.textContent = mockStatus.total;
+            todayUpdatesSpan.textContent = mockStatus.today;
+            pendingUpdatesSpan.textContent = mockStatus.pending;
+            accuracySpan.textContent = mockStatus.accuracy;
+        }
+
+        // 初始显示
+        updateStatusDisplay();
+
+        // 刷新按钮点击事件
+        refreshButton.addEventListener('click', () => {
+            // 模拟数据更新（可选，这里只做简单刷新）
+            // mockStatus.total += Math.floor(Math.random() * 5);
+            // mockStatus.today = Math.floor(Math.random() * 10);
+            // mockStatus.pending = Math.floor(Math.random() * 3);
+            // mockStatus.accuracy = (98 + Math.random() * 1.5).toFixed(1) + '%';
+
+            processingText.textContent = '正在刷新...'; // 暂时借用processingText显示状态
+
+            setTimeout(() => {
+                 updateStatusDisplay();
+                 processingText.textContent = '状态已更新'; // 刷新完成提示
+            }, 500); // 模拟刷新延迟
+
+        });
+         // 注意：这里的 processingText 需要在 initKnowledgeBase 中获取引用或使用更通用的状态区域
+         // 为了简单演示，暂时先这样，后续可以优化
+         const processingText = document.getElementById('processing-text'); // 获取引用
+
     }
 
     // --- 文档处理模块初始化函数 --- //
@@ -413,109 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 kbPreviewList.innerHTML = '<li>模拟数据未找到。</li>';
             }
         }
-    }
-
-    // --- 知识库管理模块初始化函数 --- //
-    function initKnowledgeBase() {
-        const totalItemsSpan = document.getElementById('kb-total-items');
-        const todayUpdatesSpan = document.getElementById('kb-today-updates');
-        const pendingUpdatesSpan = document.getElementById('kb-pending-updates');
-        const accuracySpan = document.getElementById('kb-accuracy');
-        const refreshButton = document.getElementById('refresh-kb-status');
-
-        // 模拟数据
-        const mockStatus = {
-            total: 1247,
-            today: 23,
-            pending: 5,
-            accuracy: '98.5%'
-        };
-
-        function updateStatusDisplay() {
-            totalItemsSpan.textContent = mockStatus.total;
-            todayUpdatesSpan.textContent = mockStatus.today;
-            pendingUpdatesSpan.textContent = mockStatus.pending;
-            accuracySpan.textContent = mockStatus.accuracy;
-        }
-
-        // 初始显示
-        updateStatusDisplay();
-
-        // 刷新按钮点击事件
-        refreshButton.addEventListener('click', () => {
-            // 模拟数据更新（可选，这里只做简单刷新）
-            // mockStatus.total += Math.floor(Math.random() * 5);
-            // mockStatus.today = Math.floor(Math.random() * 10);
-            // mockStatus.pending = Math.floor(Math.random() * 3);
-            // mockStatus.accuracy = (98 + Math.random() * 1.5).toFixed(1) + '%';
-
-            processingText.textContent = '正在刷新...'; // 暂时借用processingText显示状态
-
-            setTimeout(() => {
-                 updateStatusDisplay();
-                 processingText.textContent = '状态已更新'; // 刷新完成提示
-            }, 500); // 模拟刷新延迟
-
-        });
-         // 注意：这里的 processingText 需要在 initKnowledgeBase 中获取引用或使用更通用的状态区域
-         // 为了简单演示，暂时先这样，后续可以优化
-         const processingText = document.getElementById('processing-text'); // 获取引用
-
-    }
-
-    // --- 系统监控模块初始化函数 --- //
-    function initSystemMonitor() {
-        const totalCallsSpan = document.getElementById('total-calls');
-        const avgDurationSpan = document.getElementById('avg-duration');
-        const resolutionRateSpan = document.getElementById('resolution-rate');
-        const kbHitRateSpan = document.getElementById('kb-hit-rate');
-        const docSuccessRateSpan = document.getElementById('doc-success-rate');
-        const refreshButton = document.getElementById('refresh-monitor-data');
-
-        // 模拟数据
-        const mockMonitorData = {
-            totalCalls: 568,
-            avgDuration: '3:15',
-            resolutionRate: '92%',
-            kbHitRate: '88%',
-            docSuccessRate: '99%'
-        };
-
-        function updateMonitorDisplay() {
-            totalCallsSpan.textContent = mockMonitorData.totalCalls;
-            avgDurationSpan.textContent = mockMonitorData.avgDuration;
-            resolutionRateSpan.textContent = mockMonitorData.resolutionRate;
-            kbHitRateSpan.textContent = mockMonitorData.kbHitRate;
-            docSuccessRateSpan.textContent = mockMonitorData.docSuccessRate;
-        }
-
-        // 初始显示
-        updateMonitorDisplay();
-
-        // 刷新按钮点击事件
-        refreshButton.addEventListener('click', () => {
-             processingText.textContent = '正在刷新监控数据...'; // 暂时借用processingText显示状态
-
-            // 模拟数据更新（可选，这里只做简单刷新）
-             mockMonitorData.totalCalls += Math.floor(Math.random() * 10);
-             mockMonitorData.avgDuration = `3:${Math.floor(30 + Math.random() * 30).toString().padStart(2, '0')}`;
-             mockMonitorData.resolutionRate = `${(90 + Math.random() * 5).toFixed(0)}%`;
-             mockMonitorData.kbHitRate = `${(85 + Math.random() * 10).toFixed(0)}%`;
-             mockMonitorData.docSuccessRate = `${(98 + Math.random() * 2).toFixed(0)}%`;
-
-            setTimeout(() => {
-                 updateMonitorDisplay();
-                 processingText.textContent = '监控数据已更新'; // 刷新完成提示
-            }, 500); // 模拟刷新延迟
-        });
-         // 注意：这里的 processingText 需要在 initSystemMonitor 中获取引用或使用更通用的状态区域
-         const processingText = document.querySelector('.status-info-area p'); // 获取底部的状态信息区域
-
-         // TODO: 集成图表库 (如 ECharts) 来渲染图表
-         const chartDiv = document.getElementById('calls-over-time-chart');
-         if (chartDiv) {
-             chartDiv.innerHTML = '<p style="text-align: center; color: #8c8c8c;">图表区域 (需要集成图表库)</p>';
-         }
     }
 
 }); 
