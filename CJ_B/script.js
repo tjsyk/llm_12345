@@ -20,25 +20,41 @@ const mockCallData = {
         { speaker: "agent", content: "我理解您的心情，这种情况确实比较让人着急。根据规定，开发商确实有义务在一定时间内提供相关材料协助业主办理房产证。", timestamp: "14:26:35", confidence: 1 },
         { speaker: "ai", content: "💡 AI建议: \"我理解您的担心，根据规定，开发商在商品房交付后60日内应提交资料协助办理。请问您是否可以提供购房合同信息，我帮您进一步查询开发商的办理状态？\"", timestamp: "14:26:40", confidence: 0.92, isSuggestion: true },
         { speaker: "citizen", content: "好的，合同在我旁边，我看一下...", timestamp: "14:26:55", confidence: 0.98 },
-        { speaker: "agent", content: "好的，您慢慢找。", timestamp: "14:27:00", confidence: 1 }
+        { speaker: "agent", content: "好的，您慢慢找。", timestamp: "14:27:00", confidence: 1 },
+        { speaker: "citizen", content: "找到了，合同上写的是去年5月份签的，开发商是XXX公司。", timestamp: "14:27:30", confidence: 0.99, entities: [{ type: "time", value: "去年5月份" }, { type: "organization", value: "XXX公司" }] },
+        { speaker: "agent", content: "好的，李女士，根据您合同的签署时间和开发商信息，开发商理应在规定时间内协助您办理房产证。", timestamp: "14:27:45", confidence: 1 },
+        { speaker: "ai", content: "🧠 知识推荐: 开发商不履行协助办证义务的处理办法", timestamp: "14:27:50", confidence: 0.93, isKnowledge: true },
+        { speaker: "agent", content: "如果开发商持续推诿，您可以向房屋所在地的房地产行政主管部门投诉，或者通过法律途径维护自己的权益。", timestamp: "14:28:10", confidence: 1 },
+        { speaker: "ai", content: "💡 AI建议: \"您可以向房屋所在地的房地产行政主管部门进行投诉。需要我为您查找投诉渠道和联系方式吗？\"", timestamp: "14:28:15", confidence: 0.95, isSuggestion: true },
+        { speaker: "citizen", content: "好的，那麻烦您帮我查一下投诉渠道和联系方式吧。", timestamp: "14:28:30", confidence: 0.99 },
+        { speaker: "agent", content: "没问题，请稍等，我这就为您查询。", timestamp: "14:28:40", confidence: 1 },
+        { speaker: "ai", content: "🧠 知识推荐: 房地产行政主管部门投诉电话和流程", timestamp: "14:28:45", confidence: 0.94, isKnowledge: true },
+        { speaker: "agent", content: "您记一下，XXX市房地产行政主管部门的投诉电话是...", timestamp: "14:29:00", confidence: 1 },
+        { speaker: "citizen", content: "好的，谢谢您！", timestamp: "14:29:15", confidence: 1 },
+        { speaker: "agent", content: "不客气，李女士。如果您在办理过程中还有其他问题，随时可以再拨打12345热线。", timestamp: "14:29:30", confidence: 1 }
     ],
      contextAnalysis: [
-        { type: "intent", content: "识别意图: 房产证办理咨询 (96%)" },
-        { type: "emotion", content: "情绪分析: 略显焦虑 😟 (担心程度: 中)" },
-        { type: "entities", content: "关键实体: 时间: 去年购买, 问题: 房产证未到手, 客户: 李女士 (VIP), 组织: 开发商" },
-        { type: "progress", content: "对话进展: 问题描述: ✓ 已完成, 信息收集: 🔄 进行中, 解决方案: ⏳ 待提供, 结果确认: ⏳ 待完成" },
-        { type: "next-step", content: "建议下一步: 查询具体办理进度，了解购房合同信息" }
+        { type: "intent", content: "识别意图: 房产证办理咨询及投诉指导 (97%)" },
+        { type: "emotion", content: "情绪分析: 由焦虑转为有所缓解 (趋势: 下降)" },
+        { type: "entities", content: "关键实体: 时间: 去年购买, 问题: 房产证未到手, 客户: 李女士 (VIP), 组织: 开发商, 地点: XXX市" },
+        { type: "progress", content: "对话进展: 问题描述: ✓ 已完成, 信息收集: ✓ 已完成, 解决方案: ✓ 已提供, 结果确认: 🔄 进行中" },
+        { type: "next-step", content: "建议下一步: 引导客户记录投诉渠道信息，确认是否还有其他问题" }
      ],
      knowledge: [
          { type: "policy", content: "📋 相关政策文档: 《不动产登记暂行条例实施细则》" },
          { type: "policy", content: "📋 相关政策文档: 《房产证办理指南2024版》" },
          { type: "policy", content: "📋 相关政策文档: 《购房合同备案查询办法》" },
+         { type: "policy", content: "📋 相关政策文档: 《关于规范开发企业协助商品房买受人办理不动产登记的通知》" },
          { type: "procedure", content: "📝 办理流程: 准备材料 → 网上预约 → 提交申请 → 缴纳费用 → 等待审核" },
-         { type: "faq", content: "⚠️ 常见问题: 开发商未办理初始登记, 购房合同未备案, 房屋存在抵押情况" }
+         { type: "procedure", content: "📝 投诉流程: 收集证据 → 向主管部门投诉 → 等待处理/调解" },
+         { type: "faq", content: "⚠️ 常见问题: 开发商未办理初始登记, 购房合同未备案, 房屋存在抵押情况" },
+         { type: "faq", content: "⚠️ 常见问题: 开发商延迟办证如何投诉？" },
+         { type: "contact", content: "☎️ 联系方式: XXX市房地产行政主管部门投诉电话: 123XX" }
      ],
      similarCases: [
          { title: "开发商延迟办证", details: "时间: 2024-01-10, 问题: 购房2年未拿到房产证, 解决: 联系开发商，协助催办, 结果: 15天后成功拿证" },
-         { title: "房屋抵押影响办证", details: "时间: 2024-01-08, 问题: 开发商未解除抵押, 解决: 指导客户通过法律途径维权, 结果: 通过调解成功解决" }
+         { title: "房屋抵押影响办证", details: "时间: 2024-01-08, 问题: 开发商未解除抵押, 解决: 指导客户通过法律途径维权, 结果: 通过调解成功解决" },
+         { title: "开发商办证推诿投诉成功案例", details: "时间: 2023-11-15, 问题: 开发商多次推迟办证时间, 解决: 客户向主管部门投诉后问题得到解决, 结果: 开发商被通报并限期完成办证" }
      ]
 };
 
