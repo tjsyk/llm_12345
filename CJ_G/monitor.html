@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时监控 - 12345热线AI舆情分析Demo</title>
+    <!-- 引入 ECharts 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <!-- 引入高德地图 -->
+    <!-- 
+        请替换 YOUR_AMAP_KEY 为你的高德地图API密钥
+        获取方式：
+        1. 访问高德开放平台：https://lbs.amap.com/
+        2. 注册账号并登录
+        3. 进入"应用管理"创建新应用
+        4. 添加"Web端(JS API)"key
+        5. 复制生成的key替换下面的YOUR_AMAP_KEY
+    -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=17b881f8d6393bf88b67b06bc8718b54"></script>
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="monitor.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">12345热线AI舆情分析Demo</div>
+        <nav class="nav">
+            <a href="index.html">首页仪表板</a>
+            <a href="monitor.html" class="active">实时监控</a>
+            <a href="#">舆情分析</a>
+            <a href="#">预警中心</a>
+            <a href="#">报告中心</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="monitor-grid">
+            <!-- 实时来电流面板 -->
+            <section class="monitor-panel call-stream">
+                <h2>实时来电流</h2>
+                <div class="call-stream-container">
+                    <div class="call-stream-controls">
+                        <button id="pauseStream" class="control-btn">
+                            <span class="icon">⏸</span> 暂停
+                        </button>
+                        <div class="filter-controls">
+                            <select id="categoryFilter">
+                                <option value="">全部类型</option>
+                                <option value="投诉">投诉</option>
+                                <option value="咨询">咨询</option>
+                                <option value="建议">建议</option>
+                                <option value="求助">求助</option>
+                            </select>
+                            <select id="districtFilter">
+                                <option value="">全部地区</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="call-list" id="callList">
+                        <!-- 来电记录将通过JavaScript动态添加 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 热点话题监控面板 -->
+            <section class="monitor-panel hot-topics">
+                <h2>热点话题监控</h2>
+                <div class="hot-topics-container">
+                    <div class="hot-topics-list" id="hotTopicsList">
+                        <!-- 热门话题将通过JavaScript动态添加 -->
+                    </div>
+                    <div class="topic-trend-chart" id="topicTrendChart"></div>
+                </div>
+            </section>
+
+            <!-- 地理分布监控面板 -->
+            <section class="monitor-panel geo-distribution">
+                <h2>地理分布监控</h2>
+                <div class="map-container">
+                    <div id="mapContainer" style="height: 400px;"></div>
+                    <div class="map-controls">
+                        <div class="layer-switches">
+                            <label>
+                                <input type="checkbox" id="heatmapLayer" checked>
+                                热力图层
+                            </label>
+                            <label>
+                                <input type="checkbox" id="markerLayer" checked>
+                                标记图层
+                            </label>
+                        </div>
+                        <select id="problemTypeFilter">
+                            <option value="">全部问题类型</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 引入自定义脚本 -->
+    <script src="monitor.js"></script>
+</body>
+</html> 
