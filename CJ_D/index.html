@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线智能工单管理系统 Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>12345政务服务热线智能工单系统 Demo</h1>
+    </header>
+
+    <div class="container">
+        <section id="phone-simulator" class="module">
+            <h2>电话模拟区</h2>
+            <div class="scenario-selector">
+                <label for="scenario-select">选择演示场景:</label>
+                <select id="scenario-select">
+                    <option value="1">场景一：噪音投诉（高优先级）</option>
+                    <option value="2">场景二：道路维修（中优先级）</option>
+                    <option value="3">场景三：政策咨询（低优先级）</option>
+                </select>
+            </div>
+            <div class="call-info">
+                <p>来电号码: <span id="caller-phone"></span></p>
+                <p>来电时间: <span id="call-time"></span></p>
+                <p>来电地区: <span id="caller-location"></span></p>
+            </div>
+            <div class="call-control">
+                <button id="answer-button" class="btn primary">接听电话</button>
+                <button id="hangup-button" class="btn danger" disabled>挂断电话</button>
+                <p>通话时长: <span id="call-duration">00:00</span></p>
+            </div>
+            <div class="recording-status">
+                <span class="recording-indicator"></span> 录音中
+                 <!-- Audio waveform simulation would go here -->
+            </div>
+        </section>
+
+        <section id="realtime-processing" class="module">
+            <h2>实时处理展示区</h2>
+            <div class="transcription">
+                <h3>语音转文字 (实时转录)</h3>
+                <div id="transcript-text" class="transcript-box"></div>
+                 <!-- Confidence display and voice playback controls would go here -->
+            </div>
+            <div class="ai-analysis">
+                <h3>AI智能分析</h3>
+                <div id="analysis-results" class="analysis-box">
+                    <p>问题分类: <span id="analysis-category"></span></p>
+                    <p>紧急程度: <span id="analysis-priority"></span></p>
+                    <p>关键信息:</p>
+                    <ul id="analysis-keywords"></ul>
+                    <p>派发部门: <span id="analysis-department"></span></p>
+                     <!-- Confidence display and estimated time would go here -->
+                </div>
+            </div>
+        </section>
+
+        <section id="work-order" class="module">
+            <h2>工单生成区</h2>
+            <div id="order-details" class="order-box">
+                <p>工单编号: <span id="order-id"></span></p>
+                <p>创建时间: <span id="order-create-time"></span></p>
+                <p>来电号码: <span id="order-phone"></span></p>
+                <p>问题类型: <span id="order-category"></span></p>
+                <p>优先级别: <span id="order-priority"></span></p>
+                <p>处理部门: <span id="order-department"></span></p>
+                <p>问题描述: <span id="order-description"></span></p>
+                 <!-- More details like location, estimated completion, status would go here -->
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
