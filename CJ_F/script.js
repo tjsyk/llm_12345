@@ -226,6 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>准确率: <span id="kb-accuracy">加载中...</span></p>
                     <button id="refresh-kb-status">刷新状态</button>
                 </div>
+                <div class="kb-pending-review-panel">
+                    <h3>待审核内容 (LLM生成)</h3>
+                     <ul id="pending-review-list"><li>加载中...</li></ul>
+                </div>
                 <div class="kb-list-panel">
                     <h3>知识库列表</h3>
                     <div class="kb-search">
@@ -288,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const knowledgeItemsList = document.getElementById('knowledge-items-list');
         const searchInput = document.getElementById('kb-search-input');
         const searchButton = document.getElementById('kb-search-button');
+        const pendingReviewList = document.getElementById('pending-review-list');
 
         // 模拟数据
         const mockStatus = {
@@ -385,6 +390,69 @@ document.addEventListener('DOMContentLoaded', () => {
         // 为了避免处理状态信息和知识库状态信息冲突，知识库管理模块不使用processingText
         // 如果需要模块内的状态提示，可以考虑在kb-list-panel内添加专门的提示区域
         console.log('Knowledge Base module initialized.');
+
+        // 模拟待审核知识库数据
+        const mockPendingReviewItems = [
+            { id: 'pr_001', title: '关于调整xx政策的通知解读', source: 'LLM自动生成（来自政策文档）', content: '...' },
+            { id: 'pr_002', title: '市民高频咨询问题解答：如何在线办理社保转移', source: 'LLM分析（来自通话记录）', content: '...' },
+             { id: 'pr_003', title: '关于xx区域停水通知', source: 'LLM自动生成（来自外部公告）', content: '...' },
+        ];
+
+        // 渲染待审核列表
+        function renderPendingReviewList(items) {
+             if (items.length === 0) {
+                pendingReviewList.innerHTML = '<li>暂无待审核内容。</li>';
+                return;
+            }
+            pendingReviewList.innerHTML = items.map(item => `
+                <li class="pending-review-item">
+                    <h4>${item.title}</h4>
+                    <p>来源: ${item.source}</p>
+                    <p>${item.content.substring(0, 50)}...</p>
+                    <div class="review-actions">
+                        <button class="review-approve-btn" data-id="${item.id}">通过</button>
+                        <button class="review-reject-btn" data-id="${item.id}">拒绝</button>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        // 初始渲染待审核列表
+        renderPendingReviewList(mockPendingReviewItems);
+
+        // 模拟审核操作
+        pendingReviewList.addEventListener('click', (event) => {
+            const targetButton = event.target;
+            let itemId = null;
+            let action = null; // 'approve' or 'reject'
+
+            if (targetButton.classList.contains('review-approve-btn')) {
+                itemId = targetButton.getAttribute('data-id');
+                action = 'approve';
+            } else if (targetButton.classList.contains('review-reject-btn')) {
+                itemId = targetButton.getAttribute('data-id');
+                action = 'reject';
+            }
+
+            if (itemId && action) {
+                console.log(`Item ${itemId} ${action}ed.`);
+                // 模拟从列表中移除
+                const itemIndex = mockPendingReviewItems.findIndex(item => item.id === itemId);
+                if (itemIndex > -1) {
+                    const [reviewedItem] = mockPendingReviewItems.splice(itemIndex, 1);
+                    renderPendingReviewList(mockPendingReviewItems); // 重新渲染列表
+
+                    // 模拟审核结果反馈
+                    if (action === 'approve') {
+                         alert(`内容已通过审核并入库:\n标题: ${reviewedItem.title}`);
+                         // TODO: 模拟将内容添加到mockKnowledgeItems并更新列表
+                    } else if (action === 'reject') {
+                         alert(`内容已拒绝:\n标题: ${reviewedItem.title}`);
+                    }
+                    // TODO: 更新知识库状态监控中的"待更新"数量
+                }
+            }
+        });
     }
 
     // --- 文档处理模块初始化函数 --- //

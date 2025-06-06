@@ -474,6 +474,91 @@ body {
     opacity: 0.7;
 }
 
+/* --- 待审核内容样式 --- */
+.kb-pending-review-panel {
+    padding: 20px;
+    border: 1px solid var(--border); /* --border */
+    border-radius: var(--border-radius); /* Use variable */
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Use standard shadow */
+    margin-bottom: 20px;
+}
+
+.kb-pending-review-panel h3 {
+     color: var(--primary-color); /* Use variable */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 20px; /* Increased margin */
+}
+
+#pending-review-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pending-review-item {
+     border: 1px solid #ffe58f; /* Light warning yellow border */
+    border-radius: var(--border-radius); /* Use variable */
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fffbe6; /* Light warning yellow background */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pending-review-item h4 {
+     margin-top: 0;
+    margin-bottom: 8px;
+    color: var(--text-primary); /* Use variable */
+    font-size: var(--font-size-lg); /* Use variable */
+}
+
+.pending-review-item p {
+     margin-bottom: 8px;
+    color: var(--text-secondary); /* Use variable */
+    font-size: var(--font-size-base); /* Use variable */
+    line-height: 1.4;
+}
+
+/* Styles for review action buttons */
+.pending-review-item .review-actions {
+    margin-top: 10px;
+    text-align: right; /* Align buttons to the right */
+}
+
+.pending-review-item .review-actions button {
+     padding: 5px 10px;
+    font-size: var(--font-size-base); /* Use variable */
+    cursor: pointer;
+    border: none; /* No border for these buttons */
+    border-radius: var(--border-radius); /* Use variable */
+    margin-left: 10px; /* Space between buttons */
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.pending-review-item .review-approve-btn {
+    background-color: var(--success-color); /* Green for approve */
+    color: white;
+}
+
+.pending-review-item .review-approve-btn:hover {
+    background-color: #73d13d; /* Slightly darker green */
+}
+
+.pending-review-item .review-reject-btn {
+     background-color: var(--error-color); /* Red for reject */
+    color: white;
+}
+
+.pending-review-item .review-reject-btn:hover {
+    background-color: #ff4d4f; /* Slightly darker red */
+}
+
+.pending-review-item .review-actions button:active {
+     opacity: 0.7;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .phone-simulation-container,
