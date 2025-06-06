@@ -38,6 +38,7 @@ const simulatedData = [
 
 let processedCount = 0;
 let pendingCount = simulatedData.length;
+let simulationInterval = null; // Variable to hold the interval ID
 
 // Update status display
 function updateStatusDisplay() {
@@ -144,16 +145,118 @@ function updateSentimentChart() {
     sentimentChart.setOption(option);
 }
 
-// Initial status update
-updateStatusDisplay();
+// Function to start simulation
+function startSimulation() {
+    if (!simulationInterval) {
+        // Process initial pending data if any
+        while (pendingCount > 0 && processedCount < 3) { // Process first few items instantly
+             processedCount++;
+             pendingCount--;
+             updateStatusDisplay();
+             const nextFeedback = simulatedData[processedCount - 1];
+             updateSentimentDisplay(nextFeedback);
+             updateSentimentChart();
+        }
+        // Start interval for remaining data and new arrivals
+        simulationInterval = setInterval(() => {
+            if (pendingCount > 0) {
+                 processedCount++;
+                 pendingCount--;
+                 updateStatusDisplay();
+                 const nextFeedback = simulatedData[processedCount - 1];
+                 updateSentimentDisplay(nextFeedback);
+                 updateSentimentChart();
+            } else {
+                // Simulate new data arrival occasionally even if initial data is processed
+                if (Math.random() < 0.5) { // Higher chance when initial data is done
+                    const newFeedback = {
+                        id: `new-${Date.now()}`,
+                        content: "这是一条模拟的新反馈内容，情感随机生成。",
+                        source: ["phone", "online", "social"][Math.floor(Math.random() * 3)], // Random source
+                        timestamp: new Date(),
+                        region: "模拟区域",
+                        category: "模拟类别",
+                        sentiment: {
+                            score: Math.random() * 2 - 1,
+                            label: Math.random() > 0.6 ? "正面" : (Math.random() > 0.3 ? "中性" : "负面"),
+                            confidence: Math.random() * 0.3 + 0.7
+                        },
+                        keywords: ["新反馈", "模拟"],
+                        resolved: false
+                    };
+                    simulatedData.push(newFeedback);
+                    pendingCount++;
+                    updateStatusDisplay();
+                    // Instantly process new arrival for demo effect
+                    processedCount++;
+                    pendingCount--;
+                    updateStatusDisplay();
+                    updateSentimentDisplay(newFeedback);
+                    updateSentimentChart();
+                }
+            }
+            updateWarningSystem(); // Update warning system with simulation
+        }, 1500); // Process or add new data every 1.5 seconds
 
-// Initialize chart on page load
+        document.querySelector('#data-input .controls button').innerText = '暂停接入 (模拟)';
+    }
+}
+
+// Function to stop simulation
+function stopSimulation() {
+    clearInterval(simulationInterval);
+    simulationInterval = null;
+    document.querySelector('#data-input .controls button').innerText = '实时接入 (模拟)';
+}
+
+// Initialize chart on page load - keep this
 window.addEventListener('load', initializeSentimentChart);
 
-// Start simulating data processing at intervals
-setInterval(simulateDataProcessing, 2000); // Process one item every 2 seconds
+// Initial status update - keep this
+updateStatusDisplay();
 
-// Simple Warning System Simulation (Based on negative sentiment count)
+// Function to clear sentiment display
+function clearSentimentDisplay() {
+    document.getElementById('current-feedback').innerText = '等待数据...';
+    document.getElementById('current-sentiment').innerText = '等待分析...';
+    document.getElementById('current-keywords').innerText = '等待提取...';
+}
+
+// Add event listeners after DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Clear sentiment display on load
+    clearSentimentDisplay();
+
+    // Button event listeners
+    // Removed event listener for Batch Upload (模拟)
+    // Removed event listener for Manual Input (模拟)
+
+    const realTimeButton = document.querySelector('#data-input .controls button'); // Updated selector
+    realTimeButton.addEventListener('click', () => {
+        if (simulationInterval) {
+            stopSimulation();
+        } else {
+            startSimulation();
+        }
+    });
+
+    // Data source checkbox event listeners
+    document.querySelectorAll('.data-source-select input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const selectedSources = Array.from(document.querySelectorAll('.data-source-select input[type="checkbox"]:checked'))
+                                       .map(cb => cb.nextSibling.textContent);
+            console.log('当前选中的数据源:', selectedSources);
+            // For a more advanced demo, you would filter simulatedData based on selectedSources here
+            // and then call updateSentimentChart() and updateWarningSystem() if filtering affects them.
+            alert(`模拟：数据源过滤为 [${selectedSources.join(', ')}] (实际过滤功能待实现)`);
+        });
+    });
+
+    // Start simulation automatically on load
+    // startSimulation(); // Removed automatic start
+});
+
+// Simple Warning System Simulation - keep this, but it will be called by startSimulation interval
 function updateWarningSystem() {
     const processedData = simulatedData.slice(0, processedCount);
     const negativeCount = processedData.filter(item => item.sentiment.label === '负面').length;
@@ -173,7 +276,4 @@ function updateWarningSystem() {
         alertStatusElement.innerText = '🟢 系统正常';
         alertStatusElement.classList.add('green');
     }
-}
-
-// Update warning system at intervals
-setInterval(updateWarningSystem, 5000); // Check every 5 seconds 
+} 
