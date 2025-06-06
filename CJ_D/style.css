@@ -1,19 +1,21 @@
 /* General Styles */
 body {
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Use a common system font */
     line-height: 1.6;
     margin: 0;
     padding: 0;
     background-color: var(--background-color);
     color: var(--text-color);
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
 }
 
 header {
     background-color: var(--primary-color);
     color: white;
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-md) var(--spacing-lg);
     text-align: center;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg); /* Increased margin */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -21,15 +23,29 @@ header {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
-    gap: var(--spacing-md);
+    gap: var(--spacing-lg); /* Increased gap */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .module {
     background-color: white;
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg); /* Increased padding */
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    flex: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+    flex: 1; /* Allow modules to grow */
+    min-width: 300px; /* Minimum width for modules */
+    display: flex; /* Use flex to organize content inside module */
+    flex-direction: column;
+}
+
+.module h2 {
+    font-size: var(--font-size-large); /* Increased heading size */
+    font-weight: var(--font-weight-bold);
+    margin-top: 0;
+    border-bottom: 2px solid var(--primary-color); /* More prominent border */
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm); /* Reduced margin below module headings */
+    color: var(--primary-color); /* Heading color */
 }
 
 /* Typography */
@@ -38,21 +54,22 @@ h1 {
     font-weight: var(--font-weight-bold);
 }
 
-h2 {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-bold);
-    margin-top: 0;
-    border-bottom: 1px solid #eee;
-    padding-bottom: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-}
-
 p, ul {
     font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-sm); /* Add space between paragraphs/list items */
 }
 
-/* Spacing */
+ul {
+    padding-left: var(--spacing-md); /* Indent lists */
+}
+
+li {
+    margin-bottom: var(--spacing-xs); /* Space between list items */
+}
+
+/* Spacing and Colors (already defined, adding comments for clarity) */
 :root {
+    /* Spacing Unit */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
@@ -69,9 +86,9 @@ p, ul {
     --background-color: #F5F5F5;   /* 背景色 */
 
     /* Fonts */
-    --font-size-large: 18px;
-    --font-size-base: 14px;
-    --font-size-small: 12px;
+    --font-size-large: 20px; /* Slightly larger large font */
+    --font-size-base: 15px;  /* Slightly larger base font */
+    --font-size-small: 13px; /* Slightly larger small font */
     --font-weight-bold: 600;
     --font-weight-normal: 400;
 }
@@ -83,8 +100,14 @@ p, ul {
     border-radius: 4px;
     cursor: pointer;
     font-size: var(--font-size-base);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, opacity 0.3s ease; /* Added opacity transition */
     margin-right: var(--spacing-sm);
+    min-width: 80px; /* Minimum width for buttons */
+    text-align: center;
+}
+
+.btn:last-child {
+    margin-right: 0;
 }
 
 .btn.primary {
@@ -108,11 +131,41 @@ p, ul {
 .btn:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+    opacity: 0.6; /* Visual cue for disabled state */
+}
+
+/* Select Dropdown */
+.scenario-selector select {
+    padding: var(--spacing-sm);
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: var(--font-size-base);
+    margin-left: var(--spacing-sm);
+    margin-bottom: var(--spacing-md); /* Space below the selector */
 }
 
 /* Phone Simulator */
 .call-info p, .recording-status {
     margin-bottom: var(--spacing-sm);
+}
+
+.call-control {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    display: flex; /* Use flex for button layout */
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.call-control p {
+     margin-bottom: 0;
+}
+
+.recording-status {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: var(--font-size-small);
 }
 
 .recording-indicator {
@@ -121,6 +174,7 @@ p, ul {
     height: 10px;
     background-color: var(--error-color);
     border-radius: 50%;
+    margin-right: var(--spacing-xs); /* Space between indicator and text */
     animation: pulse 1s infinite;
 }
 
@@ -130,39 +184,120 @@ p, ul {
     100% { opacity: 1; }
 }
 
-/* Realtime Processing */
+/* Realtime Processing, AI Analysis, Work Order */
 .transcript-box, .analysis-box, .order-box {
     border: 1px solid #eee;
-    padding: var(--spacing-sm);
+    padding: var(--spacing-sm); /* Keep small horizontal padding */
+    padding-top: 0; /* Remove top padding */
+    padding-bottom: var(--spacing-sm); /* Keep small bottom padding */
     border-radius: 4px;
-    min-height: 100px; /* Example height */
+    min-height: 100px;
     margin-bottom: var(--spacing-md);
-    white-space: pre-wrap; /* Preserve line breaks */
+    white-space: pre-wrap;
     word-wrap: break-word;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+    font-size: var(--font-size-base);
+    line-height: 1.2;
 }
 
-/* AI Analysis */
+.analysis-box p {
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.1;
+    padding: 0;
+}
+
+.analysis-box p:first-child {
+    margin-top: 0; /* Ensure no top margin on the first paragraph */
+}
+
+.analysis-box p:last-child {
+    margin-bottom: 0; /* Remove bottom margin for the last paragraph */
+}
+
 .analysis-box span {
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
+}
+
+#analysis-priority {
+    /* Color is set by JS based on priority */
+}
+
+.analysis-box h3, .order-box h3 { /* Style for internal headings like '语音转文字' */
+    font-size: var(--font-size-base);
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-color);
     font-weight: var(--font-weight-bold);
 }
 
-#analysis-keywords li {
-    margin-left: var(--spacing-md);
+#analysis-keywords {
+     margin-bottom: var(--spacing-xs);
+     padding-left: var(--spacing-md);
 }
 
-/* Work Order */
-.order-box p {
-    margin-bottom: var(--spacing-sm);
+#analysis-keywords li {
+    margin-left: 0;
+    list-style-position: inside;
+    list-style-type: disc;
+    color: var(--text-color);
+    margin-bottom: 0; /* Remove margin between list items */
+    line-height: 1.1;
 }
+
+#analysis-keywords li:last-child {
+    margin-bottom: var(--spacing-xs); /* Add small margin after the last list item */
+}
+
+.order-box p {
+     margin-bottom: var(--spacing-xs);
+     line-height: 1.1;
+     padding: 0;
+}
+
+.order-box p:first-child {
+    margin-top: 0; /* Ensure no top margin on the first paragraph */
+}
+
+.order-box p:last-child {
+    margin-bottom: 0; /* Remove bottom margin for the last paragraph */
+}
+
+.order-box p span {
+     color: var(--text-color);
+     font-weight: var(--font-weight-normal);
+}
+
+.order-box p strong {
+     font-weight: var(--font-weight-bold);
+     color: var(--text-secondary);
+     margin-right: var(--spacing-xs);
+}
+
+.order-box p::before {
+    content: attr(data-label);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-secondary);
+    margin-right: var(--spacing-xs);
+}
+
+/* Add data-label attributes to HTML for order box */
+/* Example: <p data-label="工单编号:"><span id="order-id"></span></p> */
 
 /* Responsive Design */
 @media (max-width: 1199px) {
     .container {
         flex-direction: column;
+        gap: var(--spacing-md);
     }
 
     .module {
         width: 100%;
+    }
+
+    header {
+         padding: var(--spacing-md);
     }
 }
 
@@ -171,17 +306,50 @@ p, ul {
         font-size: var(--font-size-base);
     }
 
-    h2 {
+    .module h2 {
         font-size: var(--font-size-base);
+        margin-bottom: var(--spacing-xs); /* Further reduce margin below heading on mobile */
+    }
+    
+    .analysis-box h3, .order-box h3 {
+         font-size: var(--font-size-small);
     }
 
     .btn {
-        width: 100%;
+        width: auto;
+        flex-grow: 1;
         margin-right: 0;
-        margin-bottom: var(--spacing-sm);
+        margin-bottom: 0;
     }
 
+     .call-control {
+         flex-direction: column;
+         gap: var(--spacing-sm);
+     }
+     
      .call-control button {
-         display: block;
+         width: 100%;
+     }
+
+     .call-control p {
+          margin-top: var(--spacing-sm);
+     }
+
+     .scenario-selector {
+          display: flex;
+          flex-direction: column;
+          gap: var(--spacing-sm);
+     }
+
+     .scenario-selector select {
+          margin-left: 0;
+     }
+
+     .module {
+          padding: var(--spacing-md);
+     }
+
+     .transcript-box, .analysis-box, .order-box {
+          min-height: 80px;
      }
 } 
