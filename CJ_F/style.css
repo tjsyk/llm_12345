@@ -380,6 +380,100 @@ body {
     clear: both;
 }
 
+/* --- 知识库列表和搜索样式 --- */
+.kb-list-panel {
+     padding: 20px;
+    border: 1px solid var(--border); /* --border */
+    border-radius: var(--border-radius); /* Use variable */
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Use standard shadow */
+}
+
+.kb-list-panel h3 {
+     color: var(--primary-color); /* Use variable */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 20px; /* Increased margin */
+}
+
+.kb-search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#kb-search-input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border); /* Use variable */
+    border-radius: var(--border-radius); /* Use variable */
+    font-size: var(--font-size-base); /* Use variable */
+}
+
+#kb-search-button {
+    padding: 8px 15px;
+    font-size: var(--font-size-base); /* Use variable */
+    cursor: pointer;
+    border: none;
+    border-radius: var(--border-radius); /* Use variable */
+    background-color: var(--primary-color); /* Use variable */
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#kb-search-button:hover {
+    background-color: #40a9ff; /* Slightly lighter blue */
+}
+
+#knowledge-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.kb-item {
+    border: 1px solid #eee;
+    border-radius: var(--border-radius); /* Use variable */
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9; /* Light background for items */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.kb-item h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: var(--text-primary); /* Use variable */
+    font-size: var(--font-size-lg); /* Use variable */
+}
+
+.kb-item p {
+    margin-bottom: 8px;
+    color: var(--text-secondary); /* Use variable */
+    font-size: var(--font-size-base); /* Use variable */
+    line-height: 1.4;
+}
+
+.kb-item .view-kb-detail {
+    padding: 5px 10px;
+    font-size: var(--font-size-base); /* Use variable */
+    cursor: pointer;
+    border: 1px solid var(--border); /* Use variable */
+    border-radius: var(--border-radius); /* Use variable */
+    background-color: #fff;
+    color: var(--primary-color); /* Use primary color for button text */
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.kb-item .view-kb-detail:hover {
+    background-color: var(--background); /* Use background variable */
+}
+
+.kb-item .view-kb-detail:active {
+    opacity: 0.7;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .phone-simulation-container,

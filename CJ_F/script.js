@@ -226,7 +226,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>准确率: <span id="kb-accuracy">加载中...</span></p>
                     <button id="refresh-kb-status">刷新状态</button>
                 </div>
-                <!-- TODO: 添加知识库列表、搜索等更详细内容 -->
+                <div class="kb-list-panel">
+                    <h3>知识库列表</h3>
+                    <div class="kb-search">
+                        <input type="text" id="kb-search-input" placeholder="搜索知识库...">
+                        <button id="kb-search-button">搜索</button>
+                    </div>
+                    <ul id="knowledge-items-list"><li>加载中...</li></ul>
+                </div>
             </div>
         `;
     }
@@ -278,6 +285,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const pendingUpdatesSpan = document.getElementById('kb-pending-updates');
         const accuracySpan = document.getElementById('kb-accuracy');
         const refreshButton = document.getElementById('refresh-kb-status');
+        const knowledgeItemsList = document.getElementById('knowledge-items-list');
+        const searchInput = document.getElementById('kb-search-input');
+        const searchButton = document.getElementById('kb-search-button');
 
         // 模拟数据
         const mockStatus = {
@@ -317,6 +327,64 @@ document.addEventListener('DOMContentLoaded', () => {
          // 为了简单演示，暂时先这样，后续可以优化
          const processingText = document.getElementById('processing-text'); // 获取引用
 
+        // 模拟知识库数据
+        const mockKnowledgeItems = [
+            { id: 'kb_001', title: '住房公积金提取流程', category: '住房服务', tags: ['公积金', '提取'], content: '...' },
+            { id: 'kb_002', title: '小区噪音扰民投诉处理', category: '城市管理', tags: ['噪音', '投诉'], content: '...' },
+            { id: 'kb_003', title: '新生儿户口登记所需材料', category: '户政服务', tags: ['新生儿', '落户'], content: '...' },
+            { id: 'kb_004', title: '生活垃圾分类指南', category: '城市管理', tags: ['垃圾分类', '环保'], content: '...' },
+            { id: 'kb_005', title: '残疾人证申请办理流程', category: '社会保障', tags: ['残疾人', '办证'], content: '...' },
+            { id: 'kb_006', title: '人才落户政策详解', category: '人才服务', tags: ['人才', '落户', '政策'], content: '...' },
+            { id: 'kb_007', title: '企业注册登记流程', category: '企业服务', tags: ['企业', '注册'], content: '...' },
+            { id: 'kb_008', title: '个税专项附加扣除申报', category: '财税服务', tags: ['个税', '申报'], content: '...' },
+        ];
+
+        // 渲染知识库列表
+        function renderKnowledgeList(items) {
+            if (items.length === 0) {
+                knowledgeItemsList.innerHTML = '<li>未找到相关知识库条目。</li>';
+                return;
+            }
+            knowledgeItemsList.innerHTML = items.map(item => `
+                <li class="kb-item">
+                    <h4>${item.title}</h4>
+                    <p>分类: ${item.category} | 标签: ${item.tags.join(', ')}</p>
+                    <!-- 简化内容展示 -->
+                    <p>${item.content.substring(0, 50)}...</p>
+                    <button class="view-kb-detail" data-id="${item.id}">查看详情</button>
+                </li>
+            `).join('');
+        }
+
+        // 初始渲染全部知识库条目
+        renderKnowledgeList(mockKnowledgeItems);
+
+        // 搜索功能
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredItems = mockKnowledgeItems.filter(item =>
+                item.title.toLowerCase().includes(searchTerm) ||
+                item.category.toLowerCase().includes(searchTerm) ||
+                item.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                item.content.toLowerCase().includes(searchTerm)
+            );
+            renderKnowledgeList(filteredItems);
+        });
+
+        // 模拟查看详情 (点击按钮弹出提示)
+        knowledgeItemsList.addEventListener('click', (event) => {
+            if (event.target.classList.contains('view-kb-detail')) {
+                const itemId = event.target.getAttribute('data-id');
+                const item = mockKnowledgeItems.find(item => item.id === itemId);
+                if (item) {
+                    alert(`查看知识库详情:\n标题: ${item.title}\n分类: ${item.category}\n内容: ${item.content}`);
+                }
+            }
+        });
+
+        // 为了避免处理状态信息和知识库状态信息冲突，知识库管理模块不使用processingText
+        // 如果需要模块内的状态提示，可以考虑在kb-list-panel内添加专门的提示区域
+        console.log('Knowledge Base module initialized.');
     }
 
     // --- 文档处理模块初始化函数 --- //
