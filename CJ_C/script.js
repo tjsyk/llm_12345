@@ -30,10 +30,17 @@ const resolutionRateSpan = document.getElementById('resolution-rate');
 const satisfactionSpan = document.getElementById('satisfaction');
 const popularIssuesSpan = document.getElementById('popular-issues');
 const waveformCanvas = document.getElementById('waveform-canvas');
+const waveformCanvasCtx = waveformCanvas.getContext('2d');
 const currentSpeakerSpan = document.getElementById('current-speaker');
 const systemStatusSpan = document.getElementById('system-status');
 const aiStatusSpan = document.getElementById('ai-status');
 
+// Waveform variables
+let audioContext = null;
+let analyser = null;
+let waveformDataArray = null;
+let waveformInterval = null;
+let currentAudioLevel = 0; // Simulate audio level based on transcription
 
 // Mock Data (Simplified)
 const mockScenarios = {
@@ -246,8 +253,25 @@ function simulateTranscription() {
         } else {
             clearInterval(typeInterval);
             transcriptionIndex++;
-            // Simulate delay before next line
-            setTimeout(simulateTranscription, Math.random() * 1000 + 500);
+            
+            if (transcriptionIndex < currentScenario.transcription.length) {
+                 // Simulate delay before next line if there are more lines
+                 setTimeout(simulateTranscription, Math.random() * 1000 + 500);
+            } else {
+                 // Transcription finished, display final results
+                 clearInterval(callInterval); // Stop duration timer
+                 callStatusSpan.textContent = '已结束';
+                 aiStatusSpan.textContent = '空闲';
+                 playBtn.disabled = false;
+                 pauseBtn.disabled = true;
+                 stopBtn.disabled = true;
+                 clearInterval(waveformInterval); // Stop waveform drawing
+                 currentAudioLevel = 0; // Reset audio level
+                 drawWaveform(); // Draw final flat waveform
+                 
+                 displaySummaryAndCrm(); // Display summary and CRM
+                 updateAIAnalysis(); // Display final analysis
+            }
         }
     }, 50); // Typing speed
 
@@ -315,10 +339,37 @@ function initializeStatistics() {
  * Initializes the waveform canvas (placeholder).
  */
 function initializeWaveform() {
-    const ctx = waveformCanvas.getContext('2d');
-    // Simple placeholder waveform drawing
-    ctx.fillStyle = '#1890FF';
-    ctx.fillRect(0, waveformCanvas.height / 2 - 5, waveformCanvas.width, 10);
+    // No drawing on init, will be drawn during call simulation
+    waveformCanvasCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+}
+
+/**
+ * Draws a simple dynamic waveform.
+ */
+function drawWaveform() {
+    waveformCanvasCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+    waveformCanvasCtx.fillStyle = '#e6f7ff'; // Background fill
+    waveformCanvasCtx.fillRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+
+    const barWidth = 2;
+    const gap = 1;
+    const totalBarWidth = barWidth + gap;
+    const numBars = Math.floor(waveformCanvas.width / totalBarWidth);
+    const baseHeight = waveformCanvas.height / 2;
+
+    waveformCanvasCtx.fillStyle = '#1890FF'; // Waveform color
+
+    // Simple dynamic drawing based on currentAudioLevel
+    for (let i = 0; i < numBars; i++) {
+        // Introduce some variation based on index and current level
+        const height = baseHeight * (0.1 + currentAudioLevel * (0.5 + Math.sin(i * 0.1 + callTime * 0.5) * 0.2));
+        waveformCanvasCtx.fillRect(
+            i * totalBarWidth,
+            baseHeight - height / 2,
+            barWidth,
+            height
+        );
+    }
 }
 
 /**
@@ -336,6 +387,8 @@ function resetDemoState() {
     transcriptionOutputDiv.innerHTML = '';
     currentSpeakerSpan.textContent = '--';
     aiStatusSpan.textContent = '空闲';
+    currentAudioLevel = 0; // Reset audio level
+    waveformCanvasCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height); // Clear waveform canvas
 
     playBtn.disabled = false;
     pauseBtn.disabled = true;
@@ -378,13 +431,26 @@ function startCall() {
     resetDemoState(); // Renamed for clarity
 
     callStatusSpan.textContent = '进行中';
-    aiStatusSpan.textContent = '转录中';
+    aiStatusSpan.textContent = '分析中';
     playBtn.disabled = true;
     pauseBtn.disabled = false;
     stopBtn.disabled = false;
 
     // Simulate call duration and transcription
     callInterval = setInterval(updateCallDuration, 1000);
+    
+    // Start waveform drawing interval
+    waveformInterval = setInterval(() => {
+        // Update audio level based on speaker activity
+        // In a real app, this would come from audio analysis
+        if (currentSpeakerSpan.textContent !== '--' && callStatusSpan.textContent === '进行中') {
+            currentAudioLevel = Math.min(1, currentAudioLevel + 0.05); // Increase level when speaking
+        } else {
+            currentAudioLevel = Math.max(0, currentAudioLevel - 0.1); // Decrease level when not speaking or paused
+        }
+        drawWaveform();
+    }, 50); // Draw waveform every 50ms
+    
     simulateTranscription();
     updateAIAnalysis(); // Ensure analysis is updated at call start
     // summary and CRM are displayed/updated at the END of the transcription simulation
@@ -408,7 +474,10 @@ function pauseCall() {
 function stopCall() {
      console.log('stopCall called. currentScenario:', currentScenario ? currentScenario.name : 'null');
     // When stopping, reset the call state but keep the selected scenario.
+    clearInterval(waveformInterval); // Stop waveform drawing
     resetDemoState(); // Renamed for clarity
+    // Display final results after stopping the call
+    updateAIAnalysis();
     // After stopping, display the summary and CRM for the selected scenario
     // This is already handled by displaySummaryAndCrm being called within resetDemoState if currentScenario is not null,
     // but we can call it again explicitly here to be sure.
@@ -437,11 +506,25 @@ function handleScenarioSelect(event) {
 
         console.log('Selected Scenario:', currentScenario.name);
 
-        // When a new scenario is selected, immediately reset the *call state*
-        // but keep the newly selected scenario. Then update preview sections.
-        resetDemoState(); // Renamed for clarity - Resets call state but keeps currentScenario
-        updateAIAnalysis(); // Update analysis section with selected scenario data preview
-        displaySummaryAndCrm(); // Update summary/CRM section with selected scenario data preview
+        // When a new scenario is selected, reset the call state and clear display areas, keep scenario selected
+        resetDemoState(); // Resets call state and clears display, keeps currentScenario
+        
+        // Clear analysis and summary/CRM previews immediately on scenario select
+        sentimentSpan.textContent = '--';
+        topicsSpan.textContent = '--';
+        keywordsSpan.textContent = '--';
+        intentSpan.textContent = '--';
+        estimatedTimeSpan.textContent = '--';
+        summaryOutputDiv.innerHTML = '<p>请选择一个场景开始演示。</p>';
+        workOrderIdSpan.textContent = '--';
+        workOrderTimeSpan.textContent = '--';
+        workOrderCategorySpan.textContent = '--';
+        workOrderPrioritySpan.textContent = '--';
+        workOrderStatusSpan.textContent = '--';
+        workOrderHandlerSpan.textContent = '--';
+        workOrderFollowupSpan.textContent = '--';
+        aiStatusSpan.textContent = '空闲'; // AI is idle until play is pressed
+
     }
      console.log('handleScenarioSelect finished. currentScenario:', currentScenario ? currentScenario.name : 'null');
 }
