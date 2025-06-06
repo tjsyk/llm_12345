@@ -42,6 +42,10 @@ let waveformDataArray = null;
 let waveformInterval = null;
 let currentAudioLevel = 0; // Simulate audio level based on transcription
 
+// Analysis variables
+let analysisInterval = null;
+let analysisProgress = 0; // 0 to 1, simulating analysis completion
+
 // Mock Data (Simplified)
 const mockScenarios = {
     1: {
@@ -451,6 +455,14 @@ function startCall() {
         drawWaveform();
     }, 50); // Draw waveform every 50ms
     
+    // Start analysis progression interval
+    analysisInterval = setInterval(() => {
+        if (callStatusSpan.textContent === '进行中') {
+            analysisProgress = Math.min(1, analysisProgress + 0.01); // Simulate analysis progress
+            updateProgressiveAnalysis(); // Update analysis display
+        }
+    }, 100); // Update analysis progress every 100ms
+    
     simulateTranscription();
     updateAIAnalysis(); // Ensure analysis is updated at call start
     // summary and CRM are displayed/updated at the END of the transcription simulation
@@ -462,6 +474,7 @@ function startCall() {
 function pauseCall() {
     clearInterval(callInterval);
     callStatusSpan.textContent = '暂停';
+    clearInterval(analysisInterval); // Stop analysis interval
     aiStatusSpan.textContent = '暂停';
     playBtn.disabled = false;
     pauseBtn.disabled = true;
@@ -475,6 +488,8 @@ function stopCall() {
      console.log('stopCall called. currentScenario:', currentScenario ? currentScenario.name : 'null');
     // When stopping, reset the call state but keep the selected scenario.
     clearInterval(waveformInterval); // Stop waveform drawing
+    clearInterval(analysisInterval); // Stop analysis interval
+    analysisProgress = 1; // Set progress to 1 to show full analysis
     resetDemoState(); // Renamed for clarity
     // Display final results after stopping the call
     updateAIAnalysis();
@@ -554,4 +569,35 @@ scenarioList.forEach(item => item.addEventListener('click', handleScenarioSelect
 // Run initial setup
 initializeDemo(); // Call the new initialization function
 
-displaySummaryAndCrm(); // Display initial placeholder text in summary/CRM 
+displaySummaryAndCrm(); // Display initial placeholder text in summary/CRM
+
+// Function to update AI analysis display based on progress
+function updateProgressiveAnalysis() {
+    if (!currentScenario || !currentScenario.analysis) return;
+
+    const analysis = currentScenario.analysis;
+
+    // Simulate progressive reveal based on analysisProgress
+    // Clear previous state first
+    sentimentSpan.textContent = '--';
+    topicsSpan.textContent = '--';
+    keywordsSpan.textContent = '--';
+    intentSpan.textContent = '--';
+    estimatedTimeSpan.textContent = '--';
+
+    if (analysisProgress > 0.1) {
+        sentimentSpan.textContent = analysis.sentiment || '--';
+    }
+    if (analysisProgress > 0.3) {
+        topicsSpan.textContent = analysis.topics || '--';
+    }
+    if (analysisProgress > 0.5) {
+        keywordsSpan.textContent = analysis.keywords || '--';
+    }
+    if (analysisProgress > 0.7) {
+        intentSpan.textContent = analysis.intent || '--';
+    }
+    if (analysisProgress > 0.9) {
+        estimatedTimeSpan.textContent = analysis.estimatedTime || '--';
+    }
+} 
