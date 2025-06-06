@@ -1,0 +1,243 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5; /* 使用一个柔和的背景色 */
+    color: #333;
+    font-size: 14px; /* 基础字体大小 */
+    line-height: 1.6;
+}
+
+.workbench {
+    display: grid;
+    grid-template-columns: 300px 1fr 400px; /* 侧边栏 | 主内容 | AI助手 */
+    grid-template-rows: auto 1fr; /* 头部 | 内容区域 */
+    grid-template-areas:
+        "header header header"
+        "sidebar main assistant";
+    height: 100vh;
+    gap: 16px; /* 使用4px网格的倍数 */
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.workbench-header {
+    grid-area: header;
+    background-color: #fff;
+    padding: 12px 24px; /* 使用4px网格的倍数 */
+    border-radius: 8px; /* 使用4px网格的倍数 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* 防止信息过多时溢出 */
+    gap: 10px; /* 头部元素之间的间距 */
+}
+
+.workbench-title {
+    font-size: 20px; /* 大标题 */
+    font-weight: bold;
+    color: #1890FF; /* 政务蓝 */
+}
+
+.agent-info, .system-status {
+    font-size: 12px; /* 辅助文字 */
+    color: #595959; /* 中性色 */
+}
+
+.workbench-sidebar {
+    grid-area: sidebar;
+    background-color: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 允许滚动 */
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* 模块之间的间距 */
+}
+
+.workbench-main {
+    grid-area: main;
+    background-color: #fff;
+    padding: 24px; /* 使用4px网格的倍数 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 允许滚动 */
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* 主区域模块之间的间距 */
+}
+
+.workbench-assistant {
+    grid-area: assistant;
+    background-color: #F9F0FF; /* AI背景色 */
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 允许滚动 */
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* AI助手模块之间的间距 */
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #262626; /* 中性色 */
+    font-size: 16px; /* 基础文字 */
+    font-weight: 600; /* Semibold */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.call-control, .case-records, .transcript-area, .context-analysis, .knowledge-recommendation, .suggested-replies, .related-policies {
+    margin-bottom: 15px; /* 各模块下方间距 */
+}
+
+.call-control .call-buttons {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* 按钮之间的间距 */
+}
+
+button {
+    padding: 8px 16px; /* 使用4px网格的倍数 */
+    border: none;
+    border-radius: 4px; /* 使用4px网格的倍数 */
+    cursor: pointer;
+    font-size: 14px; /* 基础文字 */
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    background-color: #1890FF; /* 政务蓝 */
+    color: white;
+}
+
+button:hover:not(:disabled) {
+    background-color: #096DD9; /* 政务蓝变深 */
+}
+
+button:disabled {
+    background-color: #bfbfbf; /* 禁用颜色 */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.transcript-content {
+    height: 300px; /* 固定转录区域高度 */
+    overflow-y: auto; /* 允许滚动 */
+    border: 1px solid #d9d9d9; /* 中性色 */
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fafafa; /* 中性色 */
+}
+
+.transcript-message {
+    margin-bottom: 10px;
+}
+
+.speaker-citizen {
+    font-weight: bold;
+    color: #0050B3; /* 政务蓝 */
+}
+
+.speaker-agent {
+    font-weight: bold;
+    color: #096DD9; /* 政务蓝 */
+    text-align: right; /* 坐席消息右对齐 */
+}
+
+.message-content {
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+.speaker-agent .message-content {
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+.ai-tip {
+    font-style: italic;
+    color: #722ED1; /* AI主色 */
+    margin-top: 5px;
+}
+
+.knowledge-item, .suggestion-item, .policy-item {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #bae7ff; /* 政务蓝浅色 */
+    border-radius: 4px;
+    background-color: #e6f7ff; /* 政务蓝更浅色 */
+}
+
+.suggestion-item {
+     border-color: #d3adf7; /* AI辅助色浅色 */
+     background-color: #f9f0ff; /* AI背景色 */
+     cursor: pointer; /* 表示可点击使用 */
+     transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background-color: #edd8ff; /* AI背景色变深 */
+}
+
+.suggestion-item strong {
+    color: #722ED1; /* AI主色 */
+}
+
+
+.use-suggestion-btn {
+    margin-left: 10px;
+    padding: 4px 8px;
+    font-size: 12px;
+    background-color: #52C41A; /* 成功绿色 */
+}
+
+.use-suggestion-btn:hover:not(:disabled) {
+    background-color: #389E0D; /* 成功绿色变深 */
+}
+
+
+.quick-query {
+    display: flex;
+    gap: 5px;
+}
+
+.quick-query input {
+    flex-grow: 1;
+    padding: 6px 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.quick-query button {
+    padding: 6px 10px;
+}
+
+.query-result-item {
+    margin-bottom: 5px;
+    padding-left: 10px;
+    border-left: 3px solid #722ED1; /* AI主色 */
+}
+
+.case-item {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #bfbfbf; /* 中性色 */
+    border-radius: 4px;
+    background-color: #f5f5f5; /* 中性色浅色 */
+}
+
+.case-item strong {
+    color: #595959; /* 中性色 */
+}
+
+.context-analysis-item {
+    margin-bottom: 8px;
+}
+
+.context-analysis-item strong {
+     color: #13C2C2; /* 信息蓝色 */
+} 

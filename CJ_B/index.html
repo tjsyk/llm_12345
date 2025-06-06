@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线坐席AI辅助系统演示</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="workbench">
+        <header class="workbench-header">
+            <div class="workbench-title">12345热线坐席AI辅助系统</div>
+            <div class="agent-info">
+                👤 坐席: <span id="agent-name">张小明</span> (<span id="agent-id">工号: ZX001</span>)
+                📞 分机: <span id="agent-extension">8001</span> | 🏢 部门: <span id="agent-department">综合受理组</span>
+                ⏰ 上线时长: <span id="online-duration">00:00:00</span> | 📊 今日接听: <span id="calls-today">0</span>通
+                🎯 解决率: <span id="resolution-rate">0%</span> | ⭐ 服务评分: <span id="service-score">0/5.0</span>
+            </div>
+            <div class="system-status">
+                🟢 AI助手: 在线 | 🟢 知识库: 已连接 | 🟢 录音系统: 正常 | 🟢 CRM系统: 已同步
+            </div>
+        </header>
+
+        <aside class="workbench-sidebar">
+            <div class="call-control">
+                <h3>📞 来电显示</h3>
+                <div id="caller-info">
+                    号码: 待接入<br>
+                    归属地: -<br>
+                    来电时间: -<br>
+                    历史通话: -
+                </div>
+                <h3 style="margin-top: 15px;">📋 市民信息</h3>
+                <div id="customer-info">
+                    姓名: -<br>
+                    身份: 未验证<br>
+                    标签: -
+                </div>
+                <div class="call-buttons">
+                    <button id="btn-answer">接听</button>
+                    <button id="btn-hangup" disabled>挂断</button>
+                    <button id="btn-mute" disabled>静音</button>
+                    <button id="btn-hold" disabled>保持</button>
+                    <button id="btn-transfer" disabled>转接</button>
+                    <button id="btn-record" disabled>记录</button>
+                    <button id="btn-ticket" disabled>工单</button>
+                </div>
+            </div>
+            <div class="case-records">
+                <h3>📋 相似案例参考</h3>
+                <div id="similar-cases">
+                    <!-- 相似案例将通过JS加载 -->
+                    暂无相似案例
+                </div>
+            </div>
+        </aside>
+
+        <main class="workbench-main">
+            <div class="transcript-area">
+                <h3>🎙️ 实时对话转录 (<span id="transcript-confidence">置信度: -</span>)</h3>
+                <div id="transcript-content" class="transcript-content">
+                    <!-- 转录内容将通过JS加载 -->
+                    等待通话接入...
+                </div>
+            </div>
+            <div class="context-analysis">
+                <h3>🔍 对话上下文分析</h3>
+                <div id="context-analysis-content">
+                    <!-- 上下文分析结果将通过JS加载 -->
+                    等待对话开始...
+                </div>
+            </div>
+        </main>
+
+        <aside class="workbench-assistant">
+            <div class="knowledge-recommendation">
+                <h3>🧠 AI智能推荐 (基于对话内容)</h3>
+                <div id="knowledge-content">
+                    <!-- 知识推荐将通过JS加载 -->
+                    等待对话开始...
+                </div>
+                 <h3 style="margin-top: 15px;">🔍 快速查询</h3>
+                 <div class="quick-query">
+                     <input type="text" id="query-input" placeholder="输入关键词查询...">
+                     <button id="btn-query">查询</button>
+                 </div>
+                 <div id="query-results" style="margin-top: 10px;">
+                    <!-- 查询结果 -->
+                 </div>
+            </div>
+            <div class="suggested-replies">
+                <h3>💡 AI建议回复 (基于当前对话)</h3>
+                <div id="suggestions-content">
+                    <!-- 建议回复将通过JS加载 -->
+                     等待对话开始...
+                </div>
+            </div>
+             <div class="related-policies">
+                <h3>📚 相关政策法规</h3>
+                <div id="policy-content">
+                    <!-- 政策法规将通过JS加载 -->
+                    等待对话开始...
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
