@@ -2,7 +2,7 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.6;
     margin: 0;
-    padding: 20px;
+    padding: 30px;
     background-color: #F5F5F5;
     color: #262626;
 }
@@ -25,7 +25,7 @@ body {
 .main-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 30px;
     margin-bottom: 20px;
 }
 
@@ -35,7 +35,7 @@ body {
 .crm-integration-area {
     background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -45,8 +45,9 @@ body {
 .crm-integration-area h2 {
     color: #1890FF;
     border-bottom: 1px solid #f0f0f0;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    font-size: 1.2em;
 }
 
 .call-control-panel,
@@ -56,22 +57,49 @@ body {
 .realtime-analysis,
 .work-order,
 .data-statistics {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.controls {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .controls button {
     margin-right: 10px;
-    padding: 8px 15px;
+    padding: 10px 20px;
     cursor: pointer;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 1em;
     background-color: #1890FF;
     color: white;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    min-width: 80px;
+    text-align: center;
+}
+
+.controls button:hover:not(:disabled) {
+    background-color: #40a9ff;
 }
 
 .controls button:disabled {
     background-color: #91d5ff;
     cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.scenario-selection {
+    background-color: #e6f7ff;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #91d5ff;
+}
+
+.scenario-selection h3 {
+    margin-top: 0;
+    color: #1890FF;
 }
 
 .scenario-selection ul {
@@ -81,12 +109,29 @@ body {
 
 .scenario-selection li {
     cursor: pointer;
-    padding: 5px 0;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
     transition: color 0.3s ease;
+    background-color: #ffffff;
+    border: 1px solid #e8e8e8;
+    font-size: 0.95em;
 }
 
-.scenario-selection li:hover {
+.scenario-selection li:hover:not(.active):not(:disabled) {
     color: #1890FF;
+    border-color: #1890FF;
+}
+
+.scenario-selection li.active {
+    background-color: #1890FF;
+    color: white;
+    border-color: #1890FF;
+    font-weight: bold;
+}
+
+.scenario-selection li:disabled {
+    opacity: 0.6;
 }
 
 #transcription-output {
@@ -95,7 +140,7 @@ body {
     border: 1px solid #f0f0f0;
     padding: 10px;
     border-radius: 4px;
-    background-color: #fafafa;
+    background-color: #fff;
 }
 
 #summary-output,
@@ -103,22 +148,56 @@ body {
 .data-statistics {
     border: 1px solid #f0f0f0;
     padding: 15px;
-    border-radius: 4px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.summary-generation-area > div,
+.crm-integration-area .work-order,
+.crm-integration-area .data-statistics {
     background-color: #fafafa;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #f0f0f0;
+}
+
+.summary-generation-area > div h4, .crm-integration-area h3 {
+    color: #1890FF;
+    margin-top: 0;
+    border-bottom: 1px dashed #e8e8e8;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .summary-generation-area {
-    grid-column: span 2; /* Make summary area span two columns */
+    grid-column: span 2;
 }
 
 .crm-integration-area {
-    grid-column: span 2; /* Make CRM area span two columns */
+    grid-column: span 2;
 }
 
-canvas {
+.data-statistics p, .work-order p {
+    margin-bottom: 8px;
+}
+
+#waveform-canvas {
     border: 1px solid #f0f0f0;
-    background-color: #fafafa;
+    background-color: #fff;
     display: block;
     width: 100%;
-    height: 100px; /* Placeholder height */
+    height: 100px;
+}
+
+.speaker-indicator {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 } 

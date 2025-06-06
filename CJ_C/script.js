@@ -296,7 +296,7 @@ function displaySummaryAndCrm() {
         workOrderHandlerSpan.textContent = currentScenario.crm.handler || '--';
         workOrderFollowupSpan.textContent = currentScenario.crm.followup || '--';
     } else {
-        summaryOutputDiv.innerHTML = '<p>请选择一个场景开始演示。</p>';
+        summaryOutputDiv.innerHTML = '<p>--</p>';
         workOrderIdSpan.textContent = '--';
         workOrderTimeSpan.textContent = '--';
         workOrderCategorySpan.textContent = '--';
@@ -406,7 +406,7 @@ function resetDemoState() {
         keywordsSpan.textContent = '--';
         intentSpan.textContent = '--';
         estimatedTimeSpan.textContent = '--';
-        summaryOutputDiv.innerHTML = '<p>请选择一个场景开始演示。</p>';
+        summaryOutputDiv.innerHTML = '<p>--</p>';
         // Also clear CRM details if no scenario
         workOrderIdSpan.textContent = '--';
         workOrderTimeSpan.textContent = '--';
@@ -530,7 +530,7 @@ function handleScenarioSelect(event) {
         keywordsSpan.textContent = '--';
         intentSpan.textContent = '--';
         estimatedTimeSpan.textContent = '--';
-        summaryOutputDiv.innerHTML = '<p>请选择一个场景开始演示。</p>';
+        summaryOutputDiv.innerHTML = '<p>--</p>';
         workOrderIdSpan.textContent = '--';
         workOrderTimeSpan.textContent = '--';
         workOrderCategorySpan.textContent = '--';
