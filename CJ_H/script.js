@@ -12,7 +12,7 @@ const mockCallData = {
         id: "CS001",
         name: "张小明"
     },
-    duration: 512 // 秒
+    duration: 265 // 秒
 };
 
 const mockQualityScore = {
@@ -27,7 +27,7 @@ const mockIssues = [
     { id: "issue_001", type: "error", message: "未按规范开场白", timestamp: "00:15", suggestion: "坐席应在开场白中明确告知客户热线名称和工号。" },
     { id: "issue_002", type: "warning", message: "语速过快", timestamp: "02:30", suggestion: "建议放慢语速，确保客户能够清晰理解。" },
     { id: "issue_003", type: "success", message: "积极回应市民诉求", timestamp: "04:20", suggestion: "坐席积极倾听，并对市民的诉求给予了积极回应。" },
-    { id: "issue_004", type: "error", message: "未确认市民联系方式", timestamp: "06:05", suggestion: "在结束通话前，应再次确认市民的联系方式以便后续回访。" }
+    { id: "issue_004", type: "error", message: "未确认市民联系方式", timestamp: "03:50", suggestion: "在结束通话前，应再次确认市民的联系方式以便后续回访。" }
 ];
 
 const mockNormCheck = [
@@ -52,7 +52,22 @@ const mockDialogueScript = [
     { time: 95, speaker: "agent", text: "不客气，请问还有其他需要帮助的吗？" },
     { time: 100, speaker: "citizen", text: "没有了。" },
     { time: 105, speaker: "agent", text: "好的，再见。" },
-    { time: 108, speaker: "citizen", text: "再见。" }
+    { time: 108, speaker: "citizen", text: "再见。" },
+    // 增加模拟对话内容以延长通话时间
+    { time: 115, speaker: "agent", text: "您是希望我们立即派人处理，还是有其他期望呢？" },
+    { time: 125, speaker: "citizen", text: "希望尽快派人过来，垃圾堆放太久了，影响环境。" },
+    { time: 140, speaker: "agent", text: "好的，我们已经记录了您的情况，预计会在今天内安排工作人员到场清理。" },
+    { time: 150, speaker: "citizen", text: "那太好了，谢谢你们。" },
+    { time: 160, speaker: "agent", text: "这是我们应该做的。请问您的小区具体是哪一期，或有无更详细的标识，以便工作人员准确找到位置？" },
+    { time: 175, speaker: "citizen", text: "是XX期XX栋，旁边有个小花园。" },
+    { time: 190, speaker: "agent", text: "明白了。另外，关于您提到的异味问题，我们也会一并向物业反馈，争取从源头解决。" },
+    { time: 205, speaker: "citizen", text: "好的，那就麻烦你们了。" },
+    { time: 220, speaker: "agent", text: "不客气。我们会持续跟进此事的处理进度，您也可以在APP上查询工单状态。" },
+    { time: 230, speaker: "citizen", text: "好的，谢谢提醒。" },
+    { time: 240, speaker: "agent", text: "请问您还有其他问题需要咨询吗？" },
+    { time: 250, speaker: "citizen", text: "暂时没有了。" },
+    { time: 260, speaker: "agent", text: "好的，很高兴为您服务，再见。" },
+    { time: 265, speaker: "citizen", text: "再见。" }
 ];
 
 const mockReportOverview = {
@@ -65,6 +80,24 @@ const mockReportOverview = {
         resolved: 3,
         pending: 2
     }
+};
+
+const mockDetailedReport = {
+    excellentPerformance: [
+        "坐席耐心倾听市民诉求，并准确记录了问题关键信息。",
+        "在处理市民投诉时，坐席表现出良好的同理心和专业素养。",
+        "积极回应市民关切，并及时告知了处理流程和预期。"
+    ],
+    areasForImprovement: [
+        "开场白部分未能完全遵循标准规范，建议加强练习。",
+        "在解释处理时限时语速略快，可能影响市民理解。",
+        "未主动向市民确认是否还有其他疑问，建议在通话结束前进行礼貌询问。"
+    ],
+    trainingSuggestions: [
+        "建议参加标准服务流程和话术培训，提升开场白规范性。",
+        "进行语速和语气控制训练，确保沟通效果。",
+        "加强客户回访意识培训，提升服务闭环能力。"
+    ]
 };
 
 // 获取DOM元素
@@ -84,6 +117,7 @@ const normCheckList = document.getElementById('normCheckList');
 const emotionChartCanvas = document.getElementById('emotionChartCanvas');
 const reportOverviewDiv = document.getElementById('reportOverview');
 const exportPdfBtn = document.getElementById('exportPdfBtn');
+const detailedAnalysisReportDiv = document.getElementById('detailedAnalysisReport');
 
 let currentCallTime = 0; // 当前通话时间（秒）
 let callInterval = null; // 定时器句柄
@@ -163,6 +197,28 @@ function initializePage() {
         <p><strong>市民满意度：</strong>${mockReportOverview.satisfaction}</p>
         <p><strong>问题统计：</strong>总计 ${mockReportOverview.issueCount.total} 条，已解决 ${mockReportOverview.issueCount.resolved} 条，待处理 ${mockReportOverview.issueCount.pending} 条</p>
     `;
+
+    // 填充详细分析报告
+    detailedAnalysisReportDiv.innerHTML = `
+        <h3>详细分析报告（简化）</h3>
+        <h4>优秀表现</h4>
+        <ul>
+            ${mockDetailedReport.excellentPerformance.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+        <h4>需要改进</h4>
+        <ul>
+            ${mockDetailedReport.areasForImprovement.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+        <h4>培训建议</h4>
+        <ul>
+            ${mockDetailedReport.trainingSuggestions.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+        <button id="exportPdfBtn">导出PDF（功能简化）</button>
+    `;
+    // 重新获取exportPdfBtn元素，因为其父元素innerHTML被更新了
+    document.getElementById('exportPdfBtn').addEventListener('click', () => {
+        alert('生成PDF报告功能（简化）：此为演示功能，实际需后端支持或前端库实现。');
+    });
 
     // 绘制简化的波形图和情绪图
     drawSimplifiedWaveform();
@@ -326,7 +382,7 @@ function updateCallProgress() {
         progressBar.value = currentCallTime;
         drawSimplifiedWaveform(); // 更新波形图播放线
         drawSimplifiedEmotionChart(); // 更新情绪图播放线
-        updateDialogueContent(currentCallTime);
+        updateDialogueContent();
         updateRealtimeScore(); // 模拟实时评分变化
         updateRealtimeIssues(); // 模拟实时问题识别
         updateRealtimeNormCheck(); // 模拟实时规范检查
@@ -342,15 +398,17 @@ function updateCallProgress() {
  * 根据当前时间更新对话内容
  * @param {number} time - 当前通话时间（秒）
  */
-function updateDialogueContent(time) {
-    const newMessages = mockDialogueScript.filter(msg => msg.time === time);
-    newMessages.forEach(msg => {
-        const p = document.createElement('p');
-        p.className = `message-bubble message-${msg.speaker}`;
-        p.textContent = `[${formatTime(msg.time)}] ${msg.speaker === 'agent' ? '坐席' : '市民'}：${msg.text}`;
-        dialogueContent.appendChild(p);
-        dialogueContent.scrollTop = dialogueContent.scrollHeight; // 自动滚动到底部
+function updateDialogueContent() {
+    dialogueContent.innerHTML = ''; // 清空所有现有内容
+    mockDialogueScript.forEach(msg => {
+        if (msg.time <= currentCallTime) {
+            const p = document.createElement('p');
+            p.className = `message-bubble message-${msg.speaker}`;
+            p.textContent = `[${formatTime(msg.time)}] ${msg.speaker === 'agent' ? '坐席' : '市民'}：${msg.text}`;
+            dialogueContent.appendChild(p);
+        }
     });
+    dialogueContent.scrollTop = dialogueContent.scrollHeight; // 自动滚动到底部
 }
 
 /**
@@ -477,10 +535,6 @@ playbackSpeedSelect.addEventListener('change', (event) => {
         clearInterval(callInterval);
         callInterval = setInterval(updateCallProgress, 1000 / parseFloat(event.target.value));
     }
-});
-
-exportPdfBtn.addEventListener('click', () => {
-    alert('生成PDF报告功能（简化）：此为演示功能，实际需后端支持或前端库实现。');
 });
 
 // 页面加载完成后初始化
