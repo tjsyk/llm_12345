@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线AI预测分析Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            
+            <div class="d-flex">
+                <span id="current-time" class="navbar-text text-white me-3"></span>
+                <span class="navbar-text text-white">状态：<span id="system-status-text">正常运行</span> <i id="system-status-light" class="fas fa-circle status-normal"></i></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid dashboard-container">
+        <div class="row">
+            <!-- 实时监控面板 -->
+            <div class="col-lg-12">
+                <div class="dashboard-card">
+                    <h5 class="card-title"><i class="fas fa-chart-line"></i> 实时监控面板</h5>
+                    <div class="row text-center mt-4">
+                        <div class="col-md-3">
+                            <div class="monitor-item">
+                                <i class="fas fa-headset icon-lg"></i>
+                                <p>在线座席</p>
+                                <h3 id="online-agents">0</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="monitor-item">
+                                <i class="fas fa-phone-volume icon-lg"></i>
+                                <p>实时来电</p>
+                                <h3 id="realtime-calls">0</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="monitor-item">
+                                <i class="fas fa-clock icon-lg"></i>
+                                <p>平均等待时长</p>
+                                <h3 id="avg-wait-time">0s</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="monitor-item">
+                                <i class="fas fa-percentage icon-lg"></i>
+                                <p>接通率</p>
+                                <h3 id="connection-rate">0%</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 来电量预测区域 -->
+            <div class="col-lg-6">
+                <div class="dashboard-card">
+                    <h5 class="card-title"><i class="fas fa-chart-area"></i> 来电量预测分析</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>24小时预测曲线</h6>
+                            <canvas id="callVolume24hChart"></canvas>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>未来7天趋势预测</h6>
+                            <canvas id="callVolume7dChart"></canvas>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>座席配置建议</h6>
+                            <div class="alert alert-info" id="agent-suggestion"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 季节性需求分析 -->
+            <div class="col-lg-6">
+                <div class="dashboard-card">
+                    <h5 class="card-title"><i class="fas fa-calendar-alt"></i> 季节性需求分析</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>月度对比图</h6>
+                            <canvas id="seasonalMonthlyChart"></canvas>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>季节性热力图</h6>
+                            <div class="heatmap-container" id="seasonalHeatmap"></div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>年度趋势</h6>
+                            <canvas id="annualTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 热点问题趋势预测 -->
+            <div class="col-lg-6">
+                <div class="dashboard-card">
+                    <h5 class="card-title"><i class="fas fa-fire"></i> 热点问题趋势预测</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>问题词云</h6>
+                            <div class="wordcloud-container" id="issueWordCloud"></div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>问题类型分布图</h6>
+                            <canvas id="issueTypeChart"></canvas>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>趋势预警 & 解决方案</h6>
+                            <div class="alert alert-warning" id="issue-warning"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能决策建议 -->
+            <div class="col-lg-6">
+                <div class="dashboard-card">
+                    <h5 class="card-title"><i class="fas fa-lightbulb"></i> 智能决策建议</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>人力配置建议</h6>
+                            <ul class="list-group" id="hr-suggestions"></ul>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>应对方案推荐</h6>
+                            <ul class="list-group" id="solution-recommendations"></ul>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <h6>效率优化建议</h6>
+                            <ul class="list-group" id="efficiency-suggestions"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
