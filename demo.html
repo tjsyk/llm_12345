@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI坐席辅助系统演示 - 金牌坐席小助赋能新手坐席</title>
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <h1>🎯 AI坐席辅助系统演示</h1>
+        <div class="control-buttons">
+            <button id="startDemo" class="btn-primary">开始演示</button>
+            <button id="pauseDemo" class="btn-secondary">暂停</button>
+            <button id="nextStep" class="btn-secondary">下一步</button>
+            <button id="resetDemo" class="btn-secondary">重新开始</button>
+        </div>
+        <div class="demo-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="currentStep">准备开始演示...</span>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <!-- 左侧：市民电话界面 -->
+        <div class="left-panel">
+            <div class="phone-interface">
+                <div class="phone-header">
+                    <h3>📞 来电信息</h3>
+                    <div class="call-status" id="callStatus">待接听</div>
+                </div>
+                
+                <div class="caller-info" id="callerInfo">
+                    <div class="avatar">👩</div>
+                    <div class="info">
+                        <div class="name">王女士</div>
+                        <div class="phone">138****5678</div>
+                        <div class="call-time" id="callTime">00:00</div>
+                    </div>
+                </div>
+
+                <div class="call-controls">
+                    <button class="call-btn answer" id="answerBtn">
+                        <span class="icon">📞</span>
+                        接听
+                    </button>
+                    <button class="call-btn hangup" id="hangupBtn" style="display: none;">
+                        <span class="icon">📴</span>
+                        挂断
+                    </button>
+                </div>
+
+                <!-- AI摘要信息 -->
+                <div class="summary-panel">
+                    <div class="summary-header">🔄 人机交互摘要</div>
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <strong>来电意图：</strong> 投诉"青云小区"商铺油烟扰民问题
+                        </div>
+                        <div class="summary-item">
+                            <strong>已收集信息：</strong> 市民姓名（王女士）、小区名称
+                        </div>
+                        <div class="summary-item">
+                            <strong>转人工原因：</strong> 问题涉及多个部门，且情绪激动
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中间：坐席工作台 -->
+        <div class="center-panel">
+            <div class="agent-workspace">
+                <div class="workspace-header">
+                    <h3>💼 坐席工作台 - 小张</h3>
+                    <div class="agent-status">在线</div>
+                </div>
+
+                <!-- 实时对话转录区 -->
+                <div class="conversation-area">
+                    <div class="conversation-header">实时对话转录</div>
+                    <div class="conversation-content" id="conversationContent">
+                        <div class="message-list" id="messageList"></div>
+                    </div>
+                </div>
+
+                <!-- 坐席操作区 -->
+                <div class="agent-actions">
+                    <div class="quick-actions">
+                        <!-- 按钮将在适当时机自动触发，无需手动操作 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧：AI辅助面板 -->
+        <div class="right-panel">
+            <div class="ai-assistant">
+                <div class="assistant-header">
+                    <h3>🤖 AI智能助手</h3>
+                    <div class="ai-status">就绪</div>
+                </div>
+
+                <!-- AI辅助卡片容器 -->
+                <div class="ai-cards" id="aiCards">
+                    <!-- 卡片将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 工单预览模态框 -->
+    <div class="modal-overlay" id="orderModal" style="display: none;">
+        <div class="modal-content order-preview">
+            <div class="modal-header">
+                <h3>📋 工单预览</h3>
+                <button class="close-btn" id="closeOrderModal">×</button>
+            </div>
+            <div class="modal-body" id="orderContent">
+                <!-- 工单内容将通过JavaScript生成 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="confirmOrderBtn">确认提交并派单</button>
+                <button class="btn-secondary" id="cancelOrderBtn">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据流动画容器 -->
+    <div class="data-flow-container" id="dataFlowContainer"></div>
+
+    <script src="demo.js"></script>
+</body>
+</html>
