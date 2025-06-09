@@ -1,0 +1,384 @@
+/**
+ * 12345热线AI语音助手演示样式
+ * 现代化设计，参考 demo.css 的设计语言和配色方案
+ */
+
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow: hidden;
+}
+
+/* 演示控制面板 */
+.demo-controls {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.demo-title {
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #e9ecef;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+/* 主演示容器 */
+.demo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px 20px;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+}
+
+.container {
+    padding: 40px;
+    text-align: center;
+    max-width: 1000px;
+    width: 90%;
+    position: relative;
+}
+
+
+
+.phone-mockup {
+    width: 360px;
+    height: 700px;
+    background: linear-gradient(145deg, #2c3e50, #34495e);
+    border-radius: 40px;
+    margin: 20px auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.phone-screen {
+    background: white;
+    border-radius: 30px;
+    margin: 10px;
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.status-bar {
+    background: linear-gradient(45deg, #ff6b6b, #ffa726);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.carrier {
+    font-weight: 600;
+}
+
+.call-time {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8em;
+}
+
+.dialogue-area {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    background: #f8f9fa;
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+.dialogue-area::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.dialogue-area {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.message-bubble {
+    max-width: 75%;
+    padding: 12px 18px;
+    border-radius: 18px;
+    word-wrap: break-word;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(20px);
+    font-size: 14px;
+    animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-message {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+}
+
+.citizen-message {
+    background: #e3f2fd;
+    color: #1565c0;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 10px rgba(21, 101, 192, 0.1);
+}
+
+.ai-analysis-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: linear-gradient(145deg, #2c3e50, #34495e);
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    width: 85%;
+    max-width: 300px;
+    z-index: 10;
+    display: none;
+    opacity: 0;
+    transition: all 0.5s ease;
+    backdrop-filter: blur(10px);
+}
+
+.ai-analysis-card h3 {
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.analysis-item {
+    text-align: left;
+    margin-bottom: 12px;
+    color: #ecf0f1;
+    line-height: 1.6;
+}
+
+.analysis-item strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+.ai-analysis-card .analysis-content {
+    color: #bdc3c7;
+    text-align: left;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.ai-analysis-card .analysis-content strong {
+    color: #ecf0f1;
+    font-weight: 600;
+}
+
+.sms-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(45deg, #27ae60, #2ecc71);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 500;
+    transform: translateY(-100%);
+    transition: transform 0.5s ease-out;
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sms-popup.active {
+    transform: translateY(0%);
+}
+
+
+
+.phone-controls {
+    height: 60px;
+    background: linear-gradient(145deg, #34495e, #2c3e50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 30px 30px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .control-row {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .demo-title {
+        font-size: 16px;
+    }
+    
+    .control-buttons {
+        justify-content: center;
+    }
+    
+    .demo-container {
+        padding: 0 10px 10px;
+    }
+    
+    .container {
+        padding: 20px;
+        width: 95%;
+    }
+    
+    .phone-mockup {
+        width: 300px;
+        height: 580px;
+    }
+    
+
+}
+
+@media (max-width: 480px) {
+    .phone-mockup {
+        width: 280px;
+        height: 500px;
+    }
+    
+    .ai-analysis-card {
+        width: 90%;
+        padding: 20px;
+    }
+    
+
+}
+
+/* 添加一些现代化的微交互效果 */
+.phone-mockup:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+.ai-analysis-card {
+    animation: cardSlideIn 0.5s ease when-shown;
+}
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8) rotateY(10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+    }
+}
+
+/* 添加数据流动画效果 */
+@keyframes dataFlow {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+} 

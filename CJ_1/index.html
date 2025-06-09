@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线 - 智能语音机器人</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <span class="demo-title">📞 12345热线 - 智能语音机器人</span>
+            <div class="control-buttons">
+                <button id="start-btn" class="btn-primary">▶️ 开始演示</button>
+                <button id="reset-btn" class="btn-secondary">🔄 重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <div class="container">
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span class="carrier">12345政务服务热线</span>
+                    <span class="call-time">通话中 00:00:00</span>
+                </div>
+                <div class="dialogue-area">
+                    <!-- 对话气泡将在这里动态添加 -->
+                </div>
+                <div class="ai-analysis-card">
+                    <h3>AI分析</h3>
+                    <div class="analysis-content">
+                        <!-- AI分析内容将在这里动态添加 -->
+                    </div>
+                </div>
+                <div class="sms-popup">
+                    <p class="sms-content"></p>
+                </div>
+            </div>
+            <div class="phone-controls">
+                <!-- 模拟通话控制按钮，可为静态 -->
+            </div>
+        </div>
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
