@@ -170,6 +170,12 @@ const timelineDiv = document.getElementById('timeline');
 const mapDisplayDiv = document.getElementById('map-display');
 const resourceStatusListUl = document.getElementById('resource-status-list');
 
+// 高德地图相关变量
+let map = null;
+let incidentMarker = null;
+let resourceMarkers = {};
+let resourcePolylines = {};
+
 // 3. 初始化状态
 let demoInterval = null;
 let currentScenarioIndex = 0;
@@ -222,13 +228,16 @@ function resetUI() {
     `;
 
     mapDisplayDiv.innerHTML = '<span class="placeholder">加载地图中...</span>';
-    resourceStatusListUl.innerHTML = `
-        <li class="placeholder">🚒 消防车辆: 待调度</li>
-        <li class="placeholder">🚑 救护车: 待调度</li>
-        <li class="placeholder">👨‍🚒 消防人员: 待调度</li>
-        <li class="placeholder">👨‍⚕️ 医护人员: 待调度</li>
-        <li class="placeholder">🚧 交警: 待调度</li>
-    `;
+    mapDisplayDiv.style.backgroundColor = '#e6f7ff';
+
+    // 销毁旧地图实例（如果存在）
+    if (map) {
+        map.destroy();
+        map = null;
+    }
+    incidentMarker = null;
+    resourceMarkers = {};
+    resourcePolylines = {};
 
     startDemoBtn.disabled = false;
     resetDemoBtn.disabled = true;
@@ -325,13 +334,117 @@ function updateResponsePlan(scenario) {
 }
 
 /**
+ * @description 初始化高德地图。
+ * @param {number[]} center - 地图中心点坐标 [经度, 纬度]。
+ */
+function initMap(center) {
+    if (map) return; // 如果地图已存在，则不重复初始化
+
+    map = new AMap.Map('map-display', {
+        zoom: 13, // 缩放级别
+        center: center, // 中心点坐标
+        resizeEnable: true
+    });
+
+    // 移除占位符
+    mapDisplayDiv.querySelector('.placeholder')?.remove();
+
+    // 添加事件监听，确保地图加载完成后再进行操作
+    map.on('complete', function() {
+        console.log('地图加载完成！');
+        currentStatusSpan.textContent = '地图加载完成，等待事件信息...';
+    });
+}
+
+/**
+ * @description 在地图上添加事发地点标记。
+ * @param {number[]} position - 标记位置 [经度, 纬度]。
+ * @param {string} title - 标记标题。
+ */
+function addIncidentMarker(position, title) {
+    if (incidentMarker) {
+        incidentMarker.setMap(null);
+    }
+    incidentMarker = new AMap.Marker({
+        position: position,
+        map: map,
+        title: title,
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',
+        offset: new AMap.Pixel(-13, -30)
+    });
+    map.setCenter(position);
+    map.setZoom(15); // 放大到事发地点
+}
+
+/**
+ * @description 模拟资源移动动画和路径。
+ * @param {string} resourceId - 资源ID。
+ * @param {number[]} startPosition - 起始位置 [经度, 纬度]。
+ * @param {number[]} endPosition - 目标位置 [经度, 纬度]。
+ * @param {string} iconUrl - 资源图标URL。
+ */
+function animateResourceMove(resourceId, startPosition, endPosition, iconUrl) {
+    let marker = resourceMarkers[resourceId];
+    if (!marker) {
+        marker = new AMap.Marker({
+            position: startPosition,
+            map: map,
+            icon: iconUrl,
+            offset: new AMap.Pixel(-13, -30)
+        });
+        resourceMarkers[resourceId] = marker;
+    }
+
+    // 清除旧的路径
+    if (resourcePolylines[resourceId]) {
+        resourcePolylines[resourceId].setMap(null);
+    }
+
+    const path = [
+        startPosition,
+        endPosition
+    ];
+
+    const polyline = new AMap.Polyline({
+        path: path,
+        isOutline: true,
+        outlineColor: '#ffeeff',
+        borderWeight: 3,
+        strokeColor: "#3366FF",
+        strokeOpacity: 1,
+        strokeWeight: 6,
+        // strokeStyle: "solid",
+        lineJoin: 'round'
+    });
+    polyline.setMap(map);
+    resourcePolylines[resourceId] = polyline;
+
+    marker.markOnRoad = 0; // 记录行进到哪个点
+    marker.moveOn(
+        path,
+        5000 // 模拟5秒到达
+    );
+
+    // 监听移动结束事件
+    marker.on('movealong', () => {
+        console.log(`${resourceId} 已到达目的地。`);
+        // 可以更新资源状态为"已到达"
+    });
+}
+
+/**
  * @description 更新资源调度可视化区域。
  * @param {EmergencyResource[]} resources - 应急资源数据。
+ * @param {number[]} incidentCoordinates - 事发地点坐标。
  */
-function updateResourceDispatch(resources) {
-    // 模拟地图加载完成
-    mapDisplayDiv.innerHTML = '<span>地图加载完成，显示事发地点和资源</span>';
-    mapDisplayDiv.style.backgroundColor = '#f0f5ff';
+function updateResourceDispatch(resources, incidentCoordinates) {
+    // 确保地图已初始化
+    if (!map) {
+        initMap(incidentCoordinates); // 如果地图未初始化，则以事发地点为中心初始化
+    }
+
+    // 添加事发地点标记
+    addIncidentMarker(incidentCoordinates, "事发地点");
 
     // 资源状态面板
     resourceStatusListUl.innerHTML = '';
@@ -341,6 +454,20 @@ function updateResourceDispatch(resources) {
             const inTransit = resource.units.filter(unit => unit.status === '在途').length;
             const standby = resource.units.filter(unit => unit.status === '待命').length;
             statusText = `🚒 ${resource.type}: ${resource.total}辆 (${inTransit}辆在途, ${standby}辆待命)`;
+
+            // 模拟车辆移动
+            resource.units.forEach(unit => {
+                if (unit.status === '在途') {
+                    // 简化模拟：从资源当前位置移动到事发地点
+                    animateResourceMove(
+                        unit.id,
+                        unit.location,
+                        incidentCoordinates,
+                        '//a.amap.com/jsapi_demos/static/demo-center/icons/car.png' // 车辆图标
+                    );
+                }
+            });
+
         } else {
             statusText = `👨‍🚒 ${resource.type}: ${resource.total}人`;
         }
@@ -372,6 +499,9 @@ function startDemo() {
 
     const currentScenario = emergencyScenarios[currentScenarioIndex];
     const totalDemoDuration = currentScenario.audio.duration + 45; // 音频时长 + AI分析+方案生成+调度时间 (45s是估算值)
+
+    // 初始化地图，以事发地点为中心
+    initMap(currentScenario.location.coordinates);
 
     // 模拟来电显示
     callerNumberSpan.textContent = '来电号码: 138****1234';
@@ -415,7 +545,7 @@ function startDemo() {
             // 第四阶段: 资源调度 (方案生成后约15秒)
             if (currentDemoTime === currentScenario.audio.duration + 30) {
                 currentStatusSpan.textContent = '资源调度中，地图可视化更新...';
-                updateResourceDispatch(emergencyResources);
+                updateResourceDispatch(emergencyResources, currentScenario.location.coordinates);
             }
 
             if (currentDemoTime >= totalDemoDuration) {
