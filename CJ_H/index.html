@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线AI质检系统 Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <h1>12345热线AI质检系统 Demo</h1>
+    </header>
+    <div class="main-container">
+        <div class="call-simulation-area">
+            <h2>通话模拟区域</h2>
+            <div class="caller-info-card" id="callerInfoCard">
+                <!-- 来电信息卡片内容将通过JS填充 -->
+            </div>
+            <div class="audio-waveform-display">
+                <h3>音频波形显示（简化）</h3>
+                <canvas id="waveformCanvas" width="400" height="80"></canvas>
+            </div>
+            <div class="call-control-panel">
+                <h3>通话控制面板</h3>
+                <button id="playPauseBtn">播放/暂停</button>
+                <input type="range" id="progressBar" value="0" min="0" max="100">
+                <span id="currentTime">00:00</span> / <span id="totalTime">00:00</span>
+                <input type="range" id="volumeControl" value="100" min="0" max="100">
+                <select id="playbackSpeed">
+                    <option value="1">1x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2x</option>
+                </select>
+            </div>
+            <div class="dialogue-content-display" id="dialogueContent">
+                <h3>对话内容展示</h3>
+                <!-- 对话内容将通过JS填充 -->
+            </div>
+        </div>
+        <div class="ai-quality-analysis-area">
+            <h2>AI质检分析区域</h2>
+            <div class="realtime-score-module">
+                <h3>实时评分</h3>
+                <div class="main-score" id="mainScore">85</div>
+                <div class="sub-scores" id="subScores">
+                    <!-- 分项评分将通过JS填充 -->
+                </div>
+            </div>
+            <div class="issue-identification-module">
+                <h3>问题识别</h3>
+                <ul id="issueList">
+                    <!-- 问题列表将通过JS填充 -->
+                </ul>
+            </div>
+            <div class="norm-check-module">
+                <h3>规范检查</h3>
+                <ul id="normCheckList">
+                    <!-- 规范检查项目将通过JS填充 -->
+                </ul>
+            </div>
+            <div class="emotion-analysis-module">
+                <h3>情绪分析（简化）</h3>
+                <canvas id="emotionChartCanvas" width="400" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="quality-report-area">
+        <h2>质检报告区域</h2>
+        <div class="report-overview-card" id="reportOverview">
+            <!-- 报告概览将通过JS填充 -->
+        </div>
+        <div class="detailed-analysis-report">
+            <h3>详细分析报告（简化）</h3>
+            <p>这里将展示详细的质检分析结果，包括优秀表现、需要改进和培训建议。</p>
+            <button id="exportPdfBtn">导出PDF（功能简化）</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
