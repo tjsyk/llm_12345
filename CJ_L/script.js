@@ -202,7 +202,7 @@ function resetUI() {
     answerCallBtn.disabled = false;
     hangupCallBtn.disabled = true;
     callDurationSpan.textContent = '00:00';
-    voiceTranscriptDiv.innerHTML = '<p>[市民]: ...</p><p>[AI助手]: ...</p>';
+    voiceTranscriptDiv.innerHTML = '';
     voiceTranscriptDiv.scrollTop = 0;
 
     eventTypeRecognitionDiv.className = 'recognition-box';
@@ -351,7 +351,6 @@ function initMap(center) {
 
     // 添加事件监听，确保地图加载完成后再进行操作
     map.on('complete', function() {
-        console.log('地图加载完成！');
         currentStatusSpan.textContent = '地图加载完成，等待事件信息...';
     });
 }
@@ -419,15 +418,13 @@ function animateResourceMove(resourceId, startPosition, endPosition, iconUrl) {
     polyline.setMap(map);
     resourcePolylines[resourceId] = polyline;
 
-    marker.markOnRoad = 0; // 记录行进到哪个点
-    marker.moveOn(
+    marker.moveAlong(
         path,
         5000 // 模拟5秒到达
     );
 
     // 监听移动结束事件
     marker.on('movealong', () => {
-        console.log(`${resourceId} 已到达目的地。`);
         // 可以更新资源状态为"已到达"
     });
 }
@@ -438,6 +435,8 @@ function animateResourceMove(resourceId, startPosition, endPosition, iconUrl) {
  * @param {number[]} incidentCoordinates - 事发地点坐标。
  */
 function updateResourceDispatch(resources, incidentCoordinates) {
+    console.log("updateResourceDispatch called. Resources:", resources);
+
     // 确保地图已初始化
     if (!map) {
         initMap(incidentCoordinates); // 如果地图未初始化，则以事发地点为中心初始化
@@ -447,8 +446,11 @@ function updateResourceDispatch(resources, incidentCoordinates) {
     addIncidentMarker(incidentCoordinates, "事发地点");
 
     // 资源状态面板
-    resourceStatusListUl.innerHTML = '';
+    resourceStatusListUl.innerHTML = ''; // Clear previous content
+    console.log("resourceStatusListUl cleared.");
+
     resources.forEach(resource => {
+        console.log("Processing resource:", resource);
         let statusText = '';
         if (resource.type.includes('车')) {
             const inTransit = resource.units.filter(unit => unit.status === '在途').length;
@@ -458,7 +460,6 @@ function updateResourceDispatch(resources, incidentCoordinates) {
             // 模拟车辆移动
             resource.units.forEach(unit => {
                 if (unit.status === '在途') {
-                    // 简化模拟：从资源当前位置移动到事发地点
                     animateResourceMove(
                         unit.id,
                         unit.location,
@@ -476,7 +477,9 @@ function updateResourceDispatch(resources, incidentCoordinates) {
         li.textContent = statusText;
         li.classList.add('dispatched');
         resourceStatusListUl.appendChild(li);
+        console.log("Appended li:", li.outerHTML);
     });
+    console.log("Finished processing resources. Final resourceStatusListUl content:", resourceStatusListUl.innerHTML);
 }
 
 /**
