@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能管理后台 - 12345政务服务热线</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-phone-alt"></i>
+                <span>12345智能管理后台</span>
+            </div>
+            <div class="header-info">
+                <span id="current-time"></span>
+                <span class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    张经理
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 侧边菜单 -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <div class="nav-item active" data-tab="quality">
+                    <i class="fas fa-chart-line"></i>
+                    <span>质检监控</span>
+                </div>
+                <div class="nav-item" data-tab="agent">
+                    <i class="fas fa-user-cog"></i>
+                    <span>坐席画像</span>
+                </div>
+                <div class="nav-item" data-tab="insight">
+                    <i class="fas fa-search"></i>
+                    <span>根源洞察</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 质检监控大屏 -->
+            <div id="quality-tab" class="tab-content active">
+                <div class="page-header">
+                    <h2>质检监控大屏</h2>
+                    <p>实时监控通话质量，智能发现异常问题</p>
+                </div>
+
+                <!-- 数据概览卡片 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-target="2847">0</div>
+                            <div class="stat-label">今日通话总量</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-target="100">0<span>%</span></div>
+                            <div class="stat-label">全量质检完成率</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-target="87.3">0</div>
+                            <div class="stat-label">整体质检得分</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number trend-up" data-target="2.1">+0</div>
+                            <div class="stat-label">较上周变化</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 质检趋势图 -->
+                <div class="chart-container">
+                    <h3>质检得分趋势</h3>
+                    <canvas id="qualityChart"></canvas>
+                </div>
+
+                <!-- 实时质检流水 -->
+                <div class="quality-stream">
+                    <h3>实时质检流水</h3>
+                    <div class="stream-list" id="qualityStream">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 坐席能力画像 -->
+            <div id="agent-tab" class="tab-content">
+                <div class="page-header">
+                    <h2>坐席能力画像</h2>
+                    <p>基于数据分析，精准识别培训需求</p>
+                </div>
+
+                <div class="agent-section">
+                    <div class="agent-selector">
+                        <label>选择坐席：</label>
+                        <select id="agentSelect">
+                            <option value="A025">A025 - 李小华</option>
+                            <option value="A018">A018 - 王师傅</option>
+                            <option value="A032">A032 - 张小明</option>
+                        </select>
+                    </div>
+
+                    <div class="agent-content">
+                        <div class="radar-container">
+                            <h3>能力雷达图</h3>
+                            <canvas id="radarChart"></canvas>
+                        </div>
+
+                        <div class="training-recommendations">
+                            <h3>个性化培训推荐</h3>
+                            <div class="recommendation-list" id="recommendationList">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 服务根源洞察 -->
+            <div id="insight-tab" class="tab-content">
+                <div class="page-header">
+                    <h2>服务根源洞察</h2>
+                    <p>深度分析问题根源，优化服务流程</p>
+                </div>
+
+                <div class="insight-section">
+                    <div class="problem-selector">
+                        <label>问题类型：</label>
+                        <select id="problemSelect">
+                            <option value="noise">噪音投诉</option>
+                            <option value="traffic">交通违章</option>
+                            <option value="property">物业纠纷</option>
+                        </select>
+                    </div>
+
+                    <div class="analysis-container">
+                        <div class="analysis-overview">
+                            <h3>问题概览</h3>
+                            <div class="overview-stats" id="overviewStats">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+
+                        <div class="chain-analysis">
+                            <h3>全链条数据分析</h3>
+                            <div class="chain-stages">
+                                <div class="stage-card">
+                                    <h4><i class="fas fa-phone-alt"></i> 来电阶段</h4>
+                                    <div class="stage-data" id="callStageData">
+                                        <!-- 动态生成 -->
+                                    </div>
+                                </div>
+                                <div class="stage-card">
+                                    <h4><i class="fas fa-clipboard-list"></i> 派单阶段</h4>
+                                    <div class="stage-data" id="dispatchStageData">
+                                        <!-- 动态生成 -->
+                                    </div>
+                                </div>
+                                <div class="stage-card">
+                                    <h4><i class="fas fa-phone"></i> 回访阶段</h4>
+                                    <div class="stage-data" id="followupStageData">
+                                        <!-- 动态生成 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="root-cause">
+                            <h3>根源洞察结果</h3>
+                            <div class="cause-list" id="causeList">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+
+                        <div class="improvement-plan">
+                            <h3>改进措施建议</h3>
+                            <div class="plan-timeline" id="planTimeline">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 异常预警弹窗 -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> 异常预警</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert-info">
+                    <p><strong>坐席工号：</strong>A025（李小华）</p>
+                    <p><strong>问题类型：</strong>业务规范违规</p>
+                    <p><strong>具体问题：</strong>连续3通电话未按规范进行身份核实</p>
+                    <p><strong>建议措施：</strong>立即约谈并安排规范培训</p>
+                </div>
+                <div class="alert-actions">
+                    <button class="btn btn-primary">立即处理</button>
+                    <button class="btn btn-secondary">稍后处理</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
