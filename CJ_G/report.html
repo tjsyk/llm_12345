@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报告中心 - 12345热线AI舆情分析Demo</title>
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="report.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">12345热线AI舆情分析Demo</div>
+        <nav class="nav">
+            <a href="index.html">首页仪表板</a>
+            <a href="monitor.html">实时监控</a>
+            <a href="analysis.html">舆情分析</a>
+            <a href="alert.html">预警中心</a>
+            <a href="report.html" class="active">报告中心</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>报告中心</h1>
+
+        <!-- 定期报告模块 -->
+        <section class="report-panel regular-reports">
+            <h2>定期报告</h2>
+            <div class="report-grid" id="regularReportGrid">
+                <!-- 定期报告卡片将通过JavaScript动态添加 -->
+            </div>
+        </section>
+
+        <!-- 专题报告模块 -->
+        <section class="report-panel special-reports">
+            <h2>专题报告</h2>
+            <div class="report-grid" id="specialReportGrid">
+                <!-- 专题报告卡片将通过JavaScript动态添加 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 引入自定义脚本 -->
+    <script src="report.js"></script>
+</body>
+</html> 
