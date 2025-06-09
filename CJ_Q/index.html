@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>城市服务智能决策驾驶舱</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-left">
+            <h1><i class="fas fa-city"></i> 城市服务智能决策驾驶舱</h1>
+        </div>
+        <div class="header-right">
+            <span class="current-time" id="currentTime"></span>
+            <span class="user-info">
+                <i class="fas fa-user-circle"></i> 张市长
+            </span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- 左侧菜单 -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="overview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>城市体征概览</span>
+                </li>
+                <li class="nav-item" data-tab="analysis">
+                    <i class="fas fa-search-plus"></i>
+                    <span>下钻分析</span>
+                </li>
+                <li class="nav-item" data-tab="sentiment">
+                    <i class="fas fa-comments"></i>
+                    <span>民意分析</span>
+                </li>
+                <li class="nav-item" data-tab="prediction">
+                    <i class="fas fa-crystal-ball"></i>
+                    <span>智能预测</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="content">
+            <!-- 城市体征概览 -->
+            <div class="tab-content active" id="overview">
+                <div class="page-header">
+                    <h2>城市运行体征实时概览</h2>
+                    <div class="update-time">最后更新：<span id="lastUpdate"></span></div>
+                </div>
+
+                <!-- KPI卡片组 -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="totalCalls">1,247</div>
+                            <div class="kpi-label">今日电话总量</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> +15%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="answerRate">95.2%</div>
+                            <div class="kpi-label">接通率</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> +2.1%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="waitTime">2:15</div>
+                            <div class="kpi-label">平均等待时长</div>
+                            <div class="kpi-trend negative">
+                                <i class="fas fa-arrow-down"></i> +0:30
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="satisfaction">88.2%</div>
+                            <div class="kpi-label">市民满意度</div>
+                            <div class="kpi-trend negative">
+                                <i class="fas fa-arrow-down"></i> -2.1%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 热力地图和部门负载 -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>城市问题热力图</h3>
+                        <div class="heatmap-container">
+                            <svg id="cityMap" width="100%" height="300"></svg>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>部门负载监控</h3>
+                        <div class="department-load">
+                            <div class="load-item">
+                                <div class="load-info">
+                                    <span class="dept-name">住建局</span>
+                                    <span class="load-value warning">85%</span>
+                                </div>
+                                <div class="load-bar">
+                                    <div class="load-progress warning" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="load-item">
+                                <div class="load-info">
+                                    <span class="dept-name">交通局</span>
+                                    <span class="load-value normal">62%</span>
+                                </div>
+                                <div class="load-bar">
+                                    <div class="load-progress normal" style="width: 62%"></div>
+                                </div>
+                            </div>
+                            <div class="load-item">
+                                <div class="load-info">
+                                    <span class="dept-name">环保局</span>
+                                    <span class="load-value normal">45%</span>
+                                </div>
+                                <div class="load-bar">
+                                    <div class="load-progress normal" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div class="load-item">
+                                <div class="load-info">
+                                    <span class="dept-name">教育局</span>
+                                    <span class="load-value normal">38%</span>
+                                </div>
+                                <div class="load-bar">
+                                    <div class="load-progress normal" style="width: 38%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下钻分析 -->
+            <div class="tab-content" id="analysis">
+                <div class="page-header">
+                    <h2>多维度下钻分析</h2>
+                    <div class="breadcrumb" id="breadcrumb">
+                        <span class="breadcrumb-item active">全市概览</span>
+                    </div>
+                </div>
+
+                <div class="analysis-container">
+                    <div class="analysis-data">
+                        <div class="data-table" id="analysisTable">
+                            <!-- 动态生成表格内容 -->
+                        </div>
+                    </div>
+
+                    <div class="ai-summary">
+                        <h3><i class="fas fa-robot"></i> AI智能分析</h3>
+                        <div class="summary-content" id="aiSummary">
+                            <div class="typing-text">正在分析数据...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 民意分析 -->
+            <div class="tab-content" id="sentiment">
+                <div class="page-header">
+                    <h2>社会治理热点与民意风向标</h2>
+                </div>
+
+                <div class="sentiment-grid">
+                    <div class="sentiment-card">
+                        <h3>热词云图</h3>
+                        <div class="wordcloud-container" id="wordcloud"></div>
+                    </div>
+
+                    <div class="sentiment-card">
+                        <h3>话题排行榜</h3>
+                        <div class="topic-ranking">
+                            <div class="topic-item">
+                                <span class="topic-rank">1</span>
+                                <span class="topic-name">供暖问题</span>
+                                <span class="topic-count">312次</span>
+                            </div>
+                            <div class="topic-item">
+                                <span class="topic-rank">2</span>
+                                <span class="topic-name">停水问题</span>
+                                <span class="topic-count">89次</span>
+                            </div>
+                            <div class="topic-item">
+                                <span class="topic-rank">3</span>
+                                <span class="topic-name">噪音投诉</span>
+                                <span class="topic-count">67次</span>
+                            </div>
+                            <div class="topic-item">
+                                <span class="topic-rank">4</span>
+                                <span class="topic-name">道路维修</span>
+                                <span class="topic-count">45次</span>
+                            </div>
+                            <div class="topic-item">
+                                <span class="topic-rank">5</span>
+                                <span class="topic-name">垃圾清理</span>
+                                <span class="topic-count">32次</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sentiment-card">
+                        <h3>情感分析</h3>
+                        <div class="emotion-chart">
+                            <canvas id="emotionChart" width="300" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="sentiment-card full-width">
+                        <h3>今日民情摘要报告</h3>
+                        <div class="report-content">
+                            <p>市民对供暖问题反应强烈，情绪偏向焦虑。多位老人、儿童家长表达担忧。主要集中在老城区建设路、民主街片区，与昨夜气温骤降至-15°C及老旧管网承压能力不足相关。</p>
+                            <p><strong>建议措施：</strong>加强信息公开，及时回应市民关切，避免负面情绪发酵。启动应急预案，调配移动供热设备。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能预测 -->
+            <div class="tab-content" id="prediction">
+                <div class="page-header">
+                    <h2>智能预测与决策模拟</h2>
+                </div>
+
+                <div class="prediction-grid">
+                    <div class="prediction-card">
+                        <h3>未来趋势预测</h3>
+                        <div class="chart-container">
+                            <canvas id="predictionChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="prediction-card">
+                        <h3>What-If决策模拟</h3>
+                        <div class="simulation-input">
+                            <textarea id="questionInput" placeholder="请输入您的问题，例如：若调整公积金政策，对热线有何影响？"></textarea>
+                            <div class="preset-questions">
+                                <button class="preset-btn" data-question="启动应急预案，调用3台移动供热车">启动应急预案</button>
+                                <button class="preset-btn" data-question="增加客服人员20%">增加客服人员</button>
+                                <button class="preset-btn" data-question="发布官方通告说明情况">发布官方通告</button>
+                            </div>
+                            <button class="simulate-btn" id="simulateBtn">开始模拟</button>
+                        </div>
+                        <div class="simulation-result" id="simulationResult">
+                            <!-- 模拟结果将在这里显示 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 右侧信息面板 -->
+        <aside class="info-panel">
+            <div class="panel-card">
+                <h3>实时提醒</h3>
+                <div class="alert-list">
+                    <div class="alert-item urgent">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="alert-content">
+                            <div class="alert-title">老城区供暖故障</div>
+                            <div class="alert-time">5分钟前</div>
+                        </div>
+                    </div>
+                    <div class="alert-item warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div class="alert-content">
+                            <div class="alert-title">住建局负载过高</div>
+                            <div class="alert-time">10分钟前</div>
+                        </div>
+                    </div>
+                    <div class="alert-item info">
+                        <i class="fas fa-info-circle"></i>
+                        <div class="alert-content">
+                            <div class="alert-title">系统自动更新</div>
+                            <div class="alert-time">15分钟前</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-card">
+                <h3>快捷操作</h3>
+                <div class="quick-actions">
+                    <button class="action-btn emergency">
+                        <i class="fas fa-exclamation"></i>
+                        启动应急预案
+                    </button>
+                    <button class="action-btn normal">
+                        <i class="fas fa-bullhorn"></i>
+                        发布通告
+                    </button>
+                    <button class="action-btn normal">
+                        <i class="fas fa-users"></i>
+                        调配人员
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
