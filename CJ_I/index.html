@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线AI服务评价分析系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 页面标题区域 -->
+        <header class="header">
+            <h1>12345热线AI服务评价分析系统</h1>
+            <h2>智能分析 · 持续改进 · 提升满意度</h2>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">系统运行中...</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- 通话模拟区域（左侧） -->
+            <aside class="call-simulation-area">
+                <h3>通话模拟</h3>
+                <div class="call-selector">
+                    <label for="call-scene-select">选择通话场景:</label>
+                    <select id="call-scene-select"></select>
+                </div>
+                <div class="audio-player">
+                    <div class="audio-info">
+                        <p>通话时长: <span id="call-duration">00:00</span></p>
+                        <p>来电号码: <span id="call-number">*******</span></p>
+                        <p>受理时间: <span id="call-time"></span></p>
+                        <p>问题分类: <span id="issue-category"></span></p>
+                    </div>
+                    <div class="controls">
+                        <button id="play-pause-btn">播放</button>
+                        <input type="range" id="progress-bar" value="0" min="0" max="100">
+                        <span id="current-time">00:00</span> / <span id="total-time">00:00</span>
+                        <input type="range" id="volume-control" value="100" min="0" max="100">
+                        <select id="playback-speed">
+                            <option value="0.5">0.5x</option>
+                            <option value="1" selected>1x</option>
+                            <option value="1.5">1.5x</option>
+                            <option value="2">2x</option>
+                        </select>
+                    </div>
+                    <div class="waveform-display">
+                        <!-- 波形图模拟 -->
+                        <div class="waveform-bar-container"></div>
+                    </div>
+                </div>
+                <div class="realtime-transcript">
+                    <h4>🎤 实时语音转录</h4>
+                    <div id="transcript-content"></div>
+                </div>
+            </aside>
+
+            <!-- 分析结果区域（右侧） -->
+            <section class="analysis-results-area">
+                <div class="analysis-card emotion-analysis">
+                    <h4>📊 情感分析</h4>
+                    <div id="emotion-charts">
+                        <!-- 情感分析图表（模拟） -->
+                        <div class="emotion-bar-container"></div>
+                    </div>
+                </div>
+                <div class="analysis-card keyword-cloud">
+                    <h4>☁️ 关键词云图</h4>
+                    <div id="keyword-cloud-display">
+                        <!-- 关键词云图（模拟） -->
+                    </div>
+                </div>
+                <div class="analysis-card quality-scoring">
+                    <h4>⭐ 服务质量评分</h4>
+                    <div id="quality-scores">
+                        <!-- 服务质量评分（模拟） -->
+                    </div>
+                </div>
+                <div class="analysis-card suggestions">
+                    <h4>💡 AI改进建议</h4>
+                    <ul id="suggestions-list">
+                        <!-- 改进建议列表（模拟） -->
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- 报告生成区域（底部） -->
+        <footer class="report-generation-area">
+            <h3>📈 综合分析报告</h3>
+            <div id="report-content">
+                <!-- 综合分析报告内容（模拟） -->
+            </div>
+            <button id="export-report-btn">导出报告</button>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
