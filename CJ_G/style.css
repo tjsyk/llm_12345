@@ -48,7 +48,8 @@ body {
     transition: border-bottom 0.3s ease;
 }
 
-.header .nav a:hover {
+.header .nav a:hover,
+.header .nav a.active {
     color: var(--primary-color);
     border-bottom-color: var(--primary-color);
 }
