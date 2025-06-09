@@ -1,9 +1,15 @@
 /* 实时监控页面样式 */
 .monitor-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: var(--component-spacing);
     margin-bottom: var(--spacing-base);
+}
+
+.top-row-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--component-spacing);
 }
 
 .monitor-panel {
@@ -21,7 +27,7 @@
 
 /* 实时来电流面板样式 */
 .call-stream {
-    grid-column: 1 / -1;
+    /* grid-column: 1 / -1; */ /* 移除此行，因为现在由 top-row-panels 控制布局 */
 }
 
 .call-stream-controls {
@@ -188,6 +194,9 @@
 /* 响应式设计 */
 @media (max-width: 1024px) {
     .monitor-grid {
+        grid-template-columns: 1fr;
+    }
+    .top-row-panels {
         grid-template-columns: 1fr;
     }
 }
