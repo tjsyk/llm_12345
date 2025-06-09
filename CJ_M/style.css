@@ -65,7 +65,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    position: relative; /* 确保对话区域是定位上下文 */
+    position: relative;
 }
 
 .message-bubble {
@@ -96,18 +96,18 @@ h1 {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.95);
+    transform: translate(-50%, -50%) scale(0.8);
+    background-color: #333;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     padding: 20px;
     width: 80%;
     max-width: 280px;
     z-index: 10;
-    display: none; /* 默认隐藏 */
+    display: none;
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
     transition: all 0.3s ease-out;
+    border: none;
 }
 
 .ai-analysis-card h3 {
@@ -119,10 +119,21 @@ h1 {
 .analysis-item {
     text-align: left;
     margin-bottom: 10px;
+    color: #eee;
 }
 
 .analysis-item strong {
-    color: #333;
+    color: #fff;
+}
+
+.ai-analysis-card .analysis-content {
+    color: #eee; /* 设置分析内容主体文本颜色为浅灰色 */
+    text-align: left; /* 保持左对齐 */
+    line-height: 1.6; /* 调整行高 */
+}
+
+.ai-analysis-card .analysis-content strong {
+    color: #fff; /* 设置加粗文本颜色为白色 */
 }
 
 .sms-popup {

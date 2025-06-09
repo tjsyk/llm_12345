@@ -22,23 +22,23 @@ const conversationScript = [
 const analysisPoints = {
     step1: {
         title: '个性化识别',
-        content: '通过来电号码识别出老用户王先生<br/>系统判断为老用户'
+        content: '通过来电号码识别出老用户王先生<br/><strong>系统判断为老用户</strong>'
     },
     step2: {
         title: '历史关联与预测',
-        content: '基于"准生证"咨询，预测本次意图为"新生儿落户"'
+        content: '基于"准生证"咨询，预测本次意图为"<strong>新生儿落户</strong>"'
     },
     step3: {
         title: '精准问答 / 澄清式提问',
-        content: 'AI直接从知识库提取信息，并主动提问关键变量（户籍情况）以提供更精准答案'
+        content: 'AI直接从知识库提取信息，并主动提问关键变量（<strong>户籍情况</strong>）以提供更精准答案'
     },
     step4: {
         title: '话题切换识别 / 意图与实体识别 / 智能路由决策',
-        content: 'AI精准捕捉用户问题已从"新生儿落户"转移到"补办结婚证"。\n<br/>新意图：补办结婚证流程\n<br/>新实体：民政局\n<br/>智能IVR判断并建议直接转接'
+        content: 'AI精准捕捉用户问题已从"新生儿落户"转移到"补办结婚证"。\n<br/>新意图：<strong>补办结婚证流程</strong>\n<br/>新实体：<strong>民政局</strong>\n<br/><strong>智能IVR判断并建议直接转接</strong>'
     },
     step5: {
         title: '多模态协同 / 任务闭环',
-        content: 'AI处理语音同时调用短信接口，实现"语音+文本"协同服务。\n<br/>问题以文本形式固化，服务周到。'
+        content: 'AI处理语音同时调用短信接口，实现"<strong>语音+文本</strong>"协同服务。\n<br/>问题以文本形式固化，服务周到。'
     }
 };
 
