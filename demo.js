@@ -16,11 +16,7 @@ class DemoController {
         // DOM元素引用
         this.elements = {
             startDemo: document.getElementById('startDemo'),
-            pauseDemo: document.getElementById('pauseDemo'),
-            nextStep: document.getElementById('nextStep'),
             resetDemo: document.getElementById('resetDemo'),
-            progressFill: document.getElementById('progressFill'),
-            currentStep: document.getElementById('currentStep'),
             callStatus: document.getElementById('callStatus'),
             callTime: document.getElementById('callTime'),
             answerBtn: document.getElementById('answerBtn'),
@@ -298,7 +294,6 @@ class DemoController {
      */
     init() {
         this.bindEvents();
-        this.updateStepDisplay();
         console.log('🚀 AI坐席辅助系统演示已准备就绪');
     }
     
@@ -307,8 +302,6 @@ class DemoController {
      */
     bindEvents() {
         this.elements.startDemo.addEventListener('click', () => this.startDemo());
-        this.elements.pauseDemo.addEventListener('click', () => this.pauseDemo());
-        this.elements.nextStep.addEventListener('click', () => this.nextStepManual());
         this.elements.resetDemo.addEventListener('click', () => this.resetDemo());
         this.elements.answerBtn.addEventListener('click', () => this.answerCall());
         this.elements.confirmOrderBtn.addEventListener('click', () => this.confirmOrder());
@@ -333,42 +326,11 @@ class DemoController {
         this.isPaused = false;
         this.elements.startDemo.textContent = '演示中...';
         this.elements.startDemo.disabled = true;
-        this.elements.pauseDemo.disabled = false;
-        this.elements.nextStep.disabled = false;
         
         this.playStep();
     }
     
-    /**
-     * 暂停演示
-     */
-    pauseDemo() {
-        this.isPaused = !this.isPaused;
-        
-        if (this.isPaused) {
-            clearTimeout(this.stepInterval);
-            this.elements.pauseDemo.textContent = '继续';
-            this.elements.startDemo.textContent = '已暂停';
-        } else {
-            this.elements.pauseDemo.textContent = '暂停';
-            this.elements.startDemo.textContent = '演示中...';
-            this.playStep();
-        }
-    }
-    
-    /**
-     * 手动下一步
-     */
-    nextStepManual() {
-        if (!this.isPlaying) {
-            this.startDemo();
-            return;
-        }
-        
-        clearTimeout(this.stepInterval);
-        this.currentStep++;
-        this.playStep();
-    }
+
     
     /**
      * 重置演示
@@ -384,9 +346,6 @@ class DemoController {
         // 重置UI状态
         this.elements.startDemo.textContent = '开始演示';
         this.elements.startDemo.disabled = false;
-        this.elements.pauseDemo.textContent = '暂停';
-        this.elements.pauseDemo.disabled = true;
-        this.elements.nextStep.disabled = true;
         
         // 清空内容
         this.elements.messageList.innerHTML = '';
@@ -405,7 +364,6 @@ class DemoController {
         }
         
         this.hideOrderModal();
-        this.updateStepDisplay();
         
         console.log('🔄 演示已重置');
     }
@@ -420,7 +378,6 @@ class DemoController {
         }
         
         const step = this.demoSteps[this.currentStep];
-        this.updateStepDisplay();
         this.executeStepAction(step.action);
         
         if (!this.isPaused && this.isPlaying) {
@@ -684,8 +641,6 @@ class DemoController {
         this.isPlaying = false;
         this.elements.startDemo.textContent = '重新开始';
         this.elements.startDemo.disabled = false;
-        this.elements.pauseDemo.disabled = true;
-        this.elements.nextStep.disabled = true;
         
         console.log('✅ 演示完成！');
     }
@@ -841,17 +796,7 @@ class DemoController {
         // 这里可以添加派单流程的可视化动画
     }
     
-    /**
-     * 更新步骤显示
-     */
-    updateStepDisplay() {
-        const progress = (this.currentStep / (this.demoSteps.length - 1)) * 100;
-        this.elements.progressFill.style.width = `${Math.min(progress, 100)}%`;
-        
-        if (this.currentStep < this.demoSteps.length) {
-            this.elements.currentStep.textContent = this.demoSteps[this.currentStep].name;
-        }
-    }
+
 }
 
 // 等待DOM加载完成后初始化
