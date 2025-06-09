@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预警中心 - 12345热线AI舆情分析Demo</title>
+    <!-- 引入 ECharts 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="alert.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">12345热线AI舆情分析Demo</div>
+        <nav class="nav">
+            <a href="index.html">首页仪表板</a>
+            <a href="monitor.html">实时监控</a>
+            <a href="analysis.html">舆情分析</a>
+            <a href="alert.html" class="active">预警中心</a>
+            <a href="#">报告中心</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>预警中心</h1>
+
+        <!-- 风险等级展示 -->
+        <section class="alert-panel risk-levels">
+            <h2>风险等级展示</h2>
+            <div class="risk-level-cards">
+                <div class="risk-card high-risk">
+                    <h3>高风险预警</h3>
+                    <div class="value" id="highRiskCount">-</div>
+                    <p>可能引发群体性事件</p>
+                </div>
+                <div class="risk-card medium-risk">
+                    <h3>中风险预警</h3>
+                    <div class="value" id="mediumRiskCount">-</div>
+                    <p>需要重点关注</p>
+                </div>
+                <div class="risk-card low-risk">
+                    <h3>低风险预警</h3>
+                    <div class="value" id="lowRiskCount">-</div>
+                    <p>需要持续监控</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 预警事件列表 -->
+        <section class="alert-panel alert-list-section">
+            <h2>预警事件列表</h2>
+            <div class="alert-table-container">
+                <table class="alert-table">
+                    <thead>
+                        <tr>
+                            <th>事件标题</th>
+                            <th>风险等级</th>
+                            <th>涉及区域</th>
+                            <th>相关来电</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>建议措施</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alertTableBody">
+                        <!-- 预警事件将通过JavaScript动态添加 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 预警趋势分析 -->
+        <section class="alert-panel alert-trend-section">
+            <h2>预警趋势分析</h2>
+            <div class="chart-container" id="alertTrendChart"></div>
+        </section>
+    </main>
+
+    <!-- 引入自定义脚本 -->
+    <script src="alert.js"></script>
+</body>
+</html> 

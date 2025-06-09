@@ -1,0 +1,125 @@
+/* 预警中心页面样式 */
+.alert-panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: var(--card-padding);
+    margin-bottom: calc(var(--spacing-base) * 3);
+}
+
+.alert-panel h2 {
+    margin: 0 0 var(--spacing-base);
+    font-size: 18px;
+    color: var(--primary-color);
+}
+
+/* 风险等级卡片 */
+.risk-level-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--component-spacing);
+}
+
+.risk-card {
+    padding: var(--card-padding);
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.risk-card h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: white;
+}
+
+.risk-card .value {
+    font-size: 36px;
+    font-weight: bold;
+    margin: var(--spacing-base) 0;
+}
+
+.risk-card p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.risk-card.high-risk {
+    background-color: var(--danger-color);
+}
+
+.risk-card.medium-risk {
+    background-color: var(--warning-color);
+}
+
+.risk-card.low-risk {
+    background-color: var(--success-color);
+}
+
+/* 预警事件列表 */
+.alert-table-container {
+    overflow-x: auto;
+}
+
+.alert-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-base);
+}
+
+.alert-table th,
+.alert-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.alert-table th {
+    background-color: #f8f8f8;
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+}
+
+.alert-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.alert-table td {
+    font-size: 14px;
+    color: #333;
+}
+
+.risk-level-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.risk-level-tag.high {
+    background-color: var(--danger-color);
+}
+
+.risk-level-tag.medium {
+    background-color: var(--warning-color);
+}
+
+.risk-level-tag.low {
+    background-color: var(--success-color);
+}
+
+/* 预警趋势分析图表 */
+.alert-trend-section .chart-container {
+    min-height: 400px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .risk-level-cards {
+        grid-template-columns: 1fr;
+    }
+} 
