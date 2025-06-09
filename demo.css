@@ -13,9 +13,9 @@
 body {
     font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
+    height: 100vh;
     color: #333;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* 演示控制面板 */
@@ -91,7 +91,8 @@ body {
     display: flex;
     gap: 20px;
     padding: 0 20px 20px;
-    min-height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
+    overflow: hidden;
 }
 
 /* 左侧面板 */
@@ -104,9 +105,10 @@ body {
     background: white;
     border-radius: 15px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
     height: 100%;
-    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .phone-header {
@@ -166,7 +168,7 @@ body {
 
 .summary-panel {
     padding: 20px;
-    height: 450px;
+    flex: 1;
     overflow-y: auto;
     display: none; /* 默认隐藏 */
 }
@@ -244,9 +246,9 @@ body {
     border-radius: 15px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     height: 100%;
-    min-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .workspace-header {
@@ -296,6 +298,7 @@ body {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .conversation-content {
@@ -304,7 +307,11 @@ body {
     border-radius: 10px;
     padding: 15px;
     overflow-y: auto;
-    min-height: 500px;
+    min-height: 0; /* 允许flex shrink但保持内容可见 */
+}
+
+.message-list {
+    overflow-y: auto;
 }
 
 .message {
@@ -352,9 +359,9 @@ body {
     border-radius: 15px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     height: 100%;
-    min-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .assistant-header {
