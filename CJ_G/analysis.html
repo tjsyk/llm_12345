@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舆情分析 - 12345热线AI舆情分析Demo</title>
+    <!-- 引入 ECharts 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <!-- 引入词云图扩展 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="analysis.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">12345热线AI舆情分析Demo</div>
+        <nav class="nav">
+            <a href="index.html">首页仪表板</a>
+            <a href="monitor.html">实时监控</a>
+            <a href="analysis.html" class="active">舆情分析</a>
+            <a href="#">预警中心</a>
+            <a href="#">报告中心</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>舆情分析</h1>
+
+        <!-- 问题分类分析模块 -->
+        <section class="analysis-panel category-analysis">
+            <h2>问题分类分析</h2>
+            <div class="chart-grid">
+                <div class="chart-container" id="categoryDistributionChart"></div>
+                <div class="chart-container" id="categoryComparisonChart"></div>
+                <div class="chart-container full-width" id="categoryTrendChart"></div>
+            </div>
+        </section>
+
+        <!-- 情感分析模块 -->
+        <section class="analysis-panel sentiment-analysis">
+            <h2>情感分析</h2>
+            <div class="chart-grid">
+                <div class="chart-container" id="sentimentDistributionChart"></div>
+                <div class="chart-container" id="sentimentTrendChart"></div>
+            </div>
+        </section>
+
+        <!-- 关键词分析模块 -->
+        <section class="analysis-panel keyword-analysis">
+            <h2>关键词分析</h2>
+            <div class="chart-grid">
+                <div class="chart-container" id="keywordWordcloudChart"></div>
+                <div class="chart-container" id="keywordTrendChart"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 引入自定义脚本 -->
+    <script src="analysis.js"></script>
+</body>
+</html> 
