@@ -320,7 +320,13 @@ class DemoController {
      * 开始演示
      */
     startDemo() {
+        // 如果演示已经在进行中且没有暂停，直接返回
         if (this.isPlaying && !this.isPaused) return;
+        
+        // 如果演示已完成或未开始，重置状态
+        if (!this.isPlaying) {
+            this.resetDemo();
+        }
         
         this.isPlaying = true;
         this.isPaused = false;
@@ -343,9 +349,11 @@ class DemoController {
         clearTimeout(this.stepInterval);
         clearInterval(this.callTimer);
         
-        // 重置UI状态
-        this.elements.startDemo.textContent = '开始演示';
-        this.elements.startDemo.disabled = false;
+        // 重置UI状态（仅在不是从startDemo调用时设置按钮状态）
+        if (this.elements.startDemo.textContent !== '演示中...') {
+            this.elements.startDemo.textContent = '开始演示';
+            this.elements.startDemo.disabled = false;
+        }
         
         // 清空内容
         this.elements.messageList.innerHTML = '';
