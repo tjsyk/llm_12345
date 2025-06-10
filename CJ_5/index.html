@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线 - 智能实时舆情分析</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <span class="demo-title">🎯 12345热线 - 智能实时舆情分析</span>
+            <div class="control-buttons">
+                <button id="startDemoBtn" class="btn-primary">🚀 开始演示</button>
+                <button id="resetBtn" class="btn-secondary">🔄 重置</button>
+                <button id="skipToAlert" class="btn-secondary" style="display: none;">⏩ 跳到预警</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <div class="container">
+            <!-- 城市运行监测驾驶舱 -->
+            <div class="dashboard-main" id="dashboardMain">
+
+                
+                <div class="dashboard-grid">
+                    <!-- 热线实时监控 -->
+                    <div class="dashboard-card hotline-monitor">
+                        <div class="card-header">
+                            <h3>📞 12345热线实时监控</h3>
+                            <div class="status-indicator normal" id="hotlineStatus">正常</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="wordcloud-container" id="wordcloudContainer">
+                                <div class="word-item" style="font-size: 14px;">道路维修</div>
+                                <div class="word-item" style="font-size: 16px;">垃圾清理</div>
+                                <div class="word-item" style="font-size: 12px;">噪音投诉</div>
+                                <div class="word-item" style="font-size: 18px;">停水</div>
+                                <div class="word-item" style="font-size: 15px;">交通拥堵</div>
+                                <div class="word-item" style="font-size: 13px;">社区服务</div>
+                                <div class="word-item" style="font-size: 17px;">没水</div>
+                                <div class="word-item" style="font-size: 14px;">物业管理</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 热点话题排行榜 -->
+                    <div class="dashboard-card topic-ranking">
+                        <div class="card-header">
+                            <h3>🔥 热点话题排行榜</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="ranking-list" id="rankingList">
+                                <div class="ranking-item" data-topic="traffic">
+                                    <span class="rank">1</span>
+                                    <span class="topic">交通拥堵</span>
+                                    <span class="count">156</span>
+                                </div>
+                                <div class="ranking-item" data-topic="noise">
+                                    <span class="rank">2</span>
+                                    <span class="topic">噪音投诉</span>
+                                    <span class="count">89</span>
+                                </div>
+                                <div class="ranking-item" data-topic="road">
+                                    <span class="rank">3</span>
+                                    <span class="topic">道路维修</span>
+                                    <span class="count">67</span>
+                                </div>
+                                <div class="ranking-item" data-topic="water" style="display: none;">
+                                    <span class="rank">1</span>
+                                    <span class="topic">停水</span>
+                                    <span class="count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 区域状态概览 -->
+                    <div class="dashboard-card area-overview">
+                        <div class="card-header">
+                            <h3>🗺️ 区域状态概览</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="area-grid">
+                                <div class="area-item normal">城东</div>
+                                <div class="area-item normal">城南</div>
+                                <div class="area-item normal" id="cityWest">城西</div>
+                                <div class="area-item normal">城北</div>
+                                <div class="area-item normal">城中</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 预警通知区域 -->
+                <div class="alert-container" id="alertContainer" style="display: none;">
+                    <div class="alert-message critical">
+                        <div class="alert-icon">🚨</div>
+                        <div class="alert-content">
+                            <h4>一级舆情预警</h4>
+                            <p>关键词"停水"呼入量在过去15分钟内激增750%，已自动聚合为#城西大面积停水#热点事件。</p>
+                        </div>
+                        <button class="alert-action" id="viewDetailBtn">查看详情</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实时舆情分析界面 -->
+            <div class="analysis-interface" id="analysisInterface" style="display: none;">
+                <div class="analysis-header">
+                    <h2>🔍 实时舆情分析 - #城西大面积停水#</h2>
+                    <div class="analysis-time" id="analysisTime">2024-06-12 14:20</div>
+                </div>
+
+                <div class="analysis-grid">
+                    <!-- GIS地图 -->
+                    <div class="analysis-card map-card">
+                        <div class="card-header">
+                            <h3>📍 影响范围地理分析</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="map-container" id="mapContainer">
+                                <div class="map-background">
+                                    <div class="area-marker normal">城东</div>
+                                    <div class="area-marker normal">城南</div>
+                                    <div class="area-marker affected" id="westArea">城西
+                                        <div class="heat-circle"></div>
+                                        <div class="call-point"></div>
+                                        <div class="call-point"></div>
+                                        <div class="call-point"></div>
+                                    </div>
+                                    <div class="area-marker normal">城北</div>
+                                    <div class="area-marker normal">城中</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 事件信息卡片 -->
+                    <div class="analysis-card event-info">
+                        <div class="card-header">
+                            <h3>📋 事件详情分析</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="label">事件名称：</span>
+                                    <span class="value">#城西大面积停水#</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">影响范围：</span>
+                                    <span class="value" id="affectedArea">A、B、C三个街道，约15万居民</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">扩散趋势：</span>
+                                    <span class="value" id="spreadTrend">投诉源头正从A街道向B、C街道蔓延</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">关联热词：</span>
+                                    <span class="value">
+                                        <span class="keyword-tag">#水压低#</span>
+                                        <span class="keyword-tag">#水务局电话#</span>
+                                        <span class="keyword-tag">#什么时候来水#</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 群体情绪分析 -->
+                    <div class="analysis-card emotion-analysis">
+                        <div class="card-header">
+                            <h3>😤 群体情绪实时追踪</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="emotion-chart" id="emotionChart">
+                                <div class="emotion-line" data-emotion="anxiety">
+                                    <span class="emotion-label">焦虑</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-progress" style="width: 75%; background: #ffa726;"></div>
+                                    </div>
+                                    <span class="emotion-value">75%</span>
+                                </div>
+                                <div class="emotion-line" data-emotion="complaint">
+                                    <span class="emotion-label">抱怨</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-progress" style="width: 60%; background: #ff7043;"></div>
+                                    </div>
+                                    <span class="emotion-value">60%</span>
+                                </div>
+                                <div class="emotion-line" data-emotion="inquiry">
+                                    <span class="emotion-label">询问</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-progress" style="width: 40%; background: #42a5f5;"></div>
+                                    </div>
+                                    <span class="emotion-value">40%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="emotion-warning" id="emotionWarning" style="display: none;">
+                                <div class="warning-icon">⚠️</div>
+                                <div class="warning-text">
+                                    市民情绪正从"询问"向"抱怨"快速转变。若2小时内供水仍未恢复，预计将出现大量"愤怒"情绪及对政府响应不力的指责。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 跨渠道监测 -->
+                    <div class="analysis-card cross-channel">
+                        <div class="card-header">
+                            <h3>🌐 跨渠道舆情监测</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="channel-list" id="channelList">
+                                <div class="channel-item normal">
+                                    <span class="channel-icon">📞</span>
+                                    <span class="channel-name">12345热线</span>
+                                    <span class="channel-status">正常监控</span>
+                                </div>
+                                <div class="channel-item normal">
+                                    <span class="channel-icon">📱</span>
+                                    <span class="channel-name">微博</span>
+                                    <span class="channel-status">正常监控</span>
+                                </div>
+                                <div class="channel-item normal">
+                                    <span class="channel-icon">💬</span>
+                                    <span class="channel-name">本地论坛</span>
+                                    <span class="channel-status">正常监控</span>
+                                </div>
+                            </div>
+                            
+                            <div class="cross-channel-alerts" id="crossChannelAlerts" style="display: none;">
+                                <div class="cross-alert-item">
+                                    <span class="alert-platform">[微博]</span>
+                                    <span class="alert-text">话题#城西停水#登上本地热搜榜第8位，阅读量30万+</span>
+                                </div>
+                                <div class="cross-alert-item">
+                                    <span class="alert-platform">[本地论坛]</span>
+                                    <span class="alert-text">出现标题为《"水城"又看海，水务局为何无预警停水？》的热帖，评论数200+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 应对建议生成按钮 -->
+                <div class="action-section" id="actionSection" style="display: none;">
+                    <button class="generate-report-btn" id="generateReportBtn">📊 生成应对简报</button>
+                </div>
+            </div>
+
+            <!-- 应对简报展示 -->
+            <div class="report-interface" id="reportInterface" style="display: none;">
+                <div class="report-header">
+                    <h2>📋 '城西停水'事件应对简报</h2>
+                    <div class="report-time">生成时间：2024-06-12 14:40</div>
+                </div>
+
+                <div class="report-content">
+                    <div class="report-section">
+                        <h3>📝 事件摘要</h3>
+                        <p>14:00起，因XX路主水管爆裂，导致城西A、B、C三街道大面积停水，影响约15万居民。AI系统在事件发生15分钟内自动识别并预警，已聚合相关投诉1200余件。</p>
+                    </div>
+
+                    <div class="report-section">
+                        <h3>📊 影响评估</h3>
+                        <ul>
+                            <li>影响人群：约15万居民</li>
+                            <li>情绪状态：市民情绪以焦虑（75%）、抱怨（60%）为主</li>
+                            <li>舆情扩散：线上舆情已开始发酵，微博话题上热搜，论坛出现负面帖子</li>
+                            <li>风险预判：若2小时内未恢复供水，预计情绪将升级为愤怒</li>
+                        </ul>
+                    </div>
+
+                    <div class="report-section">
+                        <h3>🎯 AI应对建议</h3>
+                        <div class="suggestion-grid">
+                            <div class="suggestion-item">
+                                <div class="suggestion-icon">📢</div>
+                                <div class="suggestion-content">
+                                    <h4>信息发布</h4>
+                                    <p>建议水务集团立刻通过官方微博、短信等渠道发布情况说明和预计抢修时长，回应市民关切。</p>
+                                </div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="suggestion-icon">🚛</div>
+                                <div class="suggestion-content">
+                                    <h4>资源调度</h4>
+                                    <p>建议应急管理局协调应急供水车前往受影响的医院、养老院等重点区域。</p>
+                                </div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="suggestion-icon">📞</div>
+                                <div class="suggestion-content">
+                                    <h4>热线口径</h4>
+                                    <p>立即为12345坐席下发统一回复口径，告知市民抢修进度和临时取水点信息。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-section">
+                        <h3>💡 价值体现</h3>
+                        <div class="value-grid">
+                            <div class="value-item">
+                                <span class="value-icon">⚡</span>
+                                <span class="value-text">秒级发现：AI在事件萌芽阶段就自动识别异常信号</span>
+                            </div>
+                            <div class="value-item">
+                                <span class="value-icon">🎯</span>
+                                <span class="value-text">精准定位：将抽象投诉转化为地理空间分析</span>
+                            </div>
+                            <div class="value-item">
+                                <span class="value-icon">🔮</span>
+                                <span class="value-text">风险预测：提前预判民意走向，争取应对时间</span>
+                            </div>
+                            <div class="value-item">
+                                <span class="value-icon">🚀</span>
+                                <span class="value-text">决策提速：数小时研判工作压缩到几十秒</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-actions">
+                    <button class="btn-primary" id="downloadReportBtn">📥 下载简报</button>
+                    <button class="btn-secondary" id="shareReportBtn">🔗 分享链接</button>
+                    <button class="btn-secondary" id="restartDemoBtn">🔄 重新演示</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
