@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 CJ_7 第二阶段修复验证</h1>
+        
+        <div class="status">
+            <h3>✅ 修复内容</h3>
+            <ul>
+                <li>监控中心默认隐藏（添加 style="display: none;"）</li>
+                <li>重置阶段二状态时正确初始化到步骤一</li>
+                <li>确保只有移动端界面在初始时显示</li>
+                <li>添加调试日志便于问题排查</li>
+            </ul>
+        </div>
+        
+        <div class="status">
+            <h3>🎯 预期行为</h3>
+            <ul>
+                <li>进入第二阶段时，只看到移动端手机界面</li>
+                <li>监控中心应该完全隐藏</li>
+                <li>步骤一按钮为激活状态（蓝色）</li>
+                <li>点击步骤三按钮才会显示监控中心</li>
+            </ul>
+        </div>
+        
+        <div class="status">
+            <h3>🔧 测试步骤</h3>
+            <ol>
+                <li>打开主演示页面</li>
+                <li>点击"阶段二：智能办理"按钮</li>
+                <li>确认只看到手机界面，没有监控中心</li>
+                <li>测试三个步骤按钮的切换功能</li>
+                <li>使用重置按钮测试状态重置</li>
+            </ol>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="CJ_7/index.html" class="test-btn">🚀 打开主演示页面</a>
+            <a href="CJ_7/阶段二演示说明.md" class="test-btn">📚 查看演示说明</a>
+        </div>
+        
+        <div class="status">
+            <h3>🐛 如果仍有问题</h3>
+            <ul>
+                <li>打开浏览器开发者工具查看控制台日志</li>
+                <li>检查 monitoringCenter 元素的 display 属性</li>
+                <li>确认 showStep(1) 被正确调用</li>
+                <li>验证事件监听器是否正常绑定</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 

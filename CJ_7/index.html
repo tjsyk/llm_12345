@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线 - 智能工单协同处理</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <span class="demo-title">🏢 12345热线 - 智能工单协同处理</span>
+            <div class="control-buttons">
+                <button id="stage1Btn" class="btn-primary">📝 阶段一：智能生成</button>
+                <button id="stage2Btn" class="btn-secondary">🔄 阶段二：智能办理</button>
+                <button id="stage3Btn" class="btn-secondary">✅ 阶段三：智能闭环</button>
+                <button id="resetBtn" class="btn-secondary">🔄 重置</button>
+                <button id="pointsBtn" class="btn-secondary">💡 演示要点</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <div class="container">
+            <!-- 阶段一：工单智能生成与派发 -->
+            <div class="stage-panel" id="stage1Panel">
+                <div class="stage-header">
+                    <h2>📝 第一阶段：工单的智能生成与派发</h2>
+                    <p class="stage-desc">市民张先生关于"小区内流浪犬扰民"的通话刚刚结束...</p>
+                </div>
+
+                <!-- 通话记录卡片 -->
+                <div class="call-record-card">
+                    <div class="card-header">
+                        <h3>📞 通话记录</h3>
+                        <span class="call-status">已结束</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="caller-info">
+                            <div class="info-item">
+                                <span class="label">来电人：</span>
+                                <span class="value">张先生</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">通话时长：</span>
+                                <span class="value">3分42秒</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">问题描述：</span>
+                                <span class="value">"XX花园小区内有多条流浪犬，夜间吠叫扰民，且有追逐儿童的安全隐患"</span>
+                            </div>
+                        </div>
+                        <button id="generateOrderBtn" class="btn-primary generate-btn">⚡ AI秒级生成工单</button>
+                    </div>
+                </div>
+
+                <!-- AI生成的工单草稿 -->
+                <div class="work-order-draft" id="orderDraft" style="display: none;">
+                    <div class="card-header">
+                        <h3>🤖 AI自动生成工单草稿</h3>
+                        <div class="generation-time">生成耗时：0.8秒</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="order-details">
+                            <div class="detail-row">
+                                <span class="label">问题摘要：</span>
+                                <span class="value">市民反映XX花园小区内存在多条流浪犬，引发夜间噪音及潜在的公共安全问题</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">关键词：</span>
+                                <div class="keywords">
+                                    <span class="keyword">流浪犬</span>
+                                    <span class="keyword">噪音扰民</span>
+                                    <span class="keyword">安全隐患</span>
+                                    <span class="keyword">儿童</span>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">问题分类：</span>
+                                <span class="value">公共安全 > 流浪动物管理</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">紧急程度：</span>
+                                <span class="priority-badge medium">中 (因涉及儿童安全，级别高于一般噪音投诉)</span>
+                            </div>
+                        </div>
+                        
+                        <!-- AI派单建议 -->
+                        <div class="ai-assignment">
+                            <div class="ai-analysis">
+                                <h4>🧠 AI分析</h4>
+                                <p>该问题涉及动物管理、治安维护和社区管理三个层面，建议协同处理。</p>
+                            </div>
+                            
+                            <div class="assignment-plan">
+                                <h4>📋 派单方案</h4>
+                                <div class="department-list">
+                                    <div class="department-item primary">
+                                        <span class="dept-icon">🚔</span>
+                                        <div class="dept-info">
+                                            <div class="dept-name">市公安局 - 治安管理支队</div>
+                                            <div class="dept-role">主责 - 捕捉与收容</div>
+                                        </div>
+                                    </div>
+                                    <div class="department-item">
+                                        <span class="dept-icon">🏘️</span>
+                                        <div class="dept-info">
+                                            <div class="dept-name">XX街道办事处</div>
+                                            <div class="dept-role">协同 - 社区管理</div>
+                                        </div>
+                                    </div>
+                                    <div class="department-item">
+                                        <span class="dept-icon">🐕</span>
+                                        <div class="dept-info">
+                                            <div class="dept-name">市农业农村局 - 动物保护中心</div>
+                                            <div class="dept-role">协同 - 后续安置</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button id="assignOrderBtn" class="btn-primary assign-btn">🚀 一键派单</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 派单流程图 -->
+                <div class="assignment-flow" id="assignmentFlow" style="display: none;">
+                    <div class="flow-header">
+                        <h3>📊 智能派单流程</h3>
+                    </div>
+                    <div class="flow-chart">
+                        <div class="flow-item main-task">
+                            <div class="task-icon">📋</div>
+                            <div class="task-info">
+                                <div class="task-title">主工单 #FL2024001</div>
+                                <div class="task-desc">小区流浪犬扰民问题</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-branches">
+                            <div class="branch-line"></div>
+                            <div class="sub-tasks">
+                                <div class="sub-task">
+                                    <div class="task-icon">🚔</div>
+                                    <div class="task-info">
+                                        <div class="task-title">子任务 #FL2024001-1</div>
+                                        <div class="task-desc">流浪犬捕捉</div>
+                                        <div class="task-status sent">已派发</div>
+                                    </div>
+                                </div>
+                                <div class="sub-task">
+                                    <div class="task-icon">🏘️</div>
+                                    <div class="task-info">
+                                        <div class="task-title">子任务 #FL2024001-2</div>
+                                        <div class="task-desc">社区巡查与安抚</div>
+                                        <div class="task-status sent">已派发</div>
+                                    </div>
+                                </div>
+                                <div class="sub-task">
+                                    <div class="task-icon">🐕</div>
+                                    <div class="task-info">
+                                        <div class="task-title">子任务 #FL2024001-3</div>
+                                        <div class="task-desc">收容与安置</div>
+                                        <div class="task-status sent">已派发</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-completion">
+                        <div class="completion-badge">
+                            <span class="completion-icon">⚡</span>
+                            <span class="completion-text">从挂机到派单完成，整个过程仅用时 28 秒</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段二：工单智能办理与流转 -->
+            <div class="stage-panel" id="stage2Panel" style="display: none;">
+                <div class="stage-header">
+                    <h2>🔄 第二阶段：工单的智能办理与流转</h2>
+                    <p class="stage-desc">派发出去的工单在承办部门得到AI辅助，实现过程智能监控...</p>
+                </div>
+
+                <!-- 演示步骤控制 -->
+                <div class="stage2-controls">
+                    <button id="step1Btn" class="step-btn btn-primary">📱 步骤一：移动端接收</button>
+                    <button id="step2Btn" class="step-btn btn-secondary">⏰ 步骤二：时间流转</button>
+                    <button id="step3Btn" class="step-btn btn-secondary">📊 步骤三：监控预警</button>
+                </div>
+
+                <!-- 移动端任务界面 -->
+                <div class="mobile-interface" id="mobileStep">
+                    <div class="phone-mockup">
+                        <div class="phone-header">
+                            <div class="status-bar">
+                                <span class="time" id="currentTime">14:32</span>
+                                <span class="battery">🔋 85%</span>
+                            </div>
+                            <div class="app-header">
+                                <span class="back-btn">←</span>
+                                <span class="app-title">公安执法助手</span>
+                                <span class="menu-btn">⋮</span>
+                            </div>
+                        </div>
+                        
+                        <div class="phone-content">
+                            <div class="task-notification" id="taskNotification">
+                                <div class="notification-icon pulse">🔔</div>
+                                <div class="notification-text">
+                                    <strong>新任务提醒</strong><br>
+                                    【流浪犬处理】来自12345的协同任务，XX花园小区，优先级：中
+                                </div>
+                                <button class="accept-task-btn" id="acceptTaskBtn">✅ 接受任务</button>
+                            </div>
+                            
+                            <div class="task-details" id="taskDetails" style="display: none;">
+                                <div class="detail-header">
+                                    <h4>📋 任务详情</h4>
+                                    <div class="task-status-badge">进行中</div>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="detail-item">
+                                        <span class="label">任务摘要：</span>
+                                        <span class="value">前往XX花园小区，处理流浪犬扰民及安全隐患问题</span>
+                                    </div>
+                                    
+                                    <div class="ai-assistant">
+                                        <h5>💡 AI办理锦囊</h5>
+                                        <div class="assistant-item" data-step="1">
+                                            <span class="item-icon">📝</span>
+                                            <div class="item-content">
+                                                <strong>推荐流程：</strong><br>
+                                                1. 到达现场，联系社区网格员<br>
+                                                2. 使用专业工具进行安全捕捉<br>
+                                                3. 确认犬只健康状况<br>
+                                                4. 送至指定的动物保护中心
+                                            </div>
+                                        </div>
+                                        <div class="assistant-item" data-step="2">
+                                            <span class="item-icon">⚖️</span>
+                                            <div class="item-content">
+                                                <strong>法规依据：</strong><br>
+                                                《XX市养犬管理条例》第XX条
+                                            </div>
+                                        </div>
+                                        <div class="assistant-item" data-step="3">
+                                            <span class="item-icon">📚</span>
+                                            <div class="item-content">
+                                                <strong>相似案例：</strong><br>
+                                                案例#3341: 上月在阳光社区成功处理类似案例，注意安抚现场围观群众情绪
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="task-progress">
+                                        <h5>📍 执行进度</h5>
+                                        <div class="progress-steps">
+                                            <div class="progress-step active" data-step="1">
+                                                <span class="step-icon">📍</span>
+                                                <span class="step-text">已到达现场</span>
+                                                <span class="step-time">14:45</span>
+                                            </div>
+                                            <div class="progress-step" data-step="2">
+                                                <span class="step-icon">🤝</span>
+                                                <span class="step-text">联系网格员</span>
+                                                <span class="step-time">--:--</span>
+                                            </div>
+                                            <div class="progress-step" data-step="3">
+                                                <span class="step-icon">🐕</span>
+                                                <span class="step-text">安全捕捉</span>
+                                                <span class="step-time">--:--</span>
+                                            </div>
+                                            <div class="progress-step" data-step="4">
+                                                <span class="step-icon">🏥</span>
+                                                <span class="step-text">送至保护中心</span>
+                                                <span class="step-time">--:--</span>
+                                            </div>
+                                        </div>
+                                        <button class="next-step-btn" id="nextStepBtn">▶️ 下一步操作</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 时间流转动画 -->
+                <div class="time-flow" id="timeFlow" style="display: none;">
+                    <div class="time-flow-container">
+                        <div class="time-indicator">
+                            <div class="clock-icon">🕐</div>
+                            <div class="time-text">时间快进...</div>
+                            <div class="time-display">第二天 15:30</div>
+                        </div>
+                        <div class="flow-animation">
+                            <div class="flow-line"></div>
+                            <div class="flow-dots">
+                                <div class="flow-dot"></div>
+                                <div class="flow-dot"></div>
+                                <div class="flow-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 监控中心大屏 -->
+                <div class="monitoring-center" id="monitoringCenter" style="display: none;">
+                    <div class="center-header">
+                        <h3>📊 12345工单监控中心</h3>
+                        <div class="time-display">第二天 15:30</div>
+                    </div>
+                    
+                    <div class="monitoring-board">
+                        <div class="board-item">
+                            <div class="item-title">进行中工单</div>
+                            <div class="item-value">147</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="item-title">预警工单</div>
+                            <div class="item-value warning">3</div>
+                        </div>
+                        <div class="board-item">
+                            <div class="item-title">今日完成</div>
+                            <div class="item-value">89</div>
+                        </div>
+                    </div>
+                    
+                    <div class="workflow-diagram">
+                        <div class="workflow-node completed">
+                            <div class="node-icon">🚔</div>
+                            <div class="node-text">公安局<br>已完成</div>
+                        </div>
+                        <div class="workflow-arrow">→</div>
+                        <div class="workflow-node completed">
+                            <div class="node-icon">🏘️</div>
+                            <div class="node-text">街道办<br>已完成</div>
+                        </div>
+                        <div class="workflow-arrow">→</div>
+                        <div class="workflow-node warning" id="warningNode">
+                            <div class="node-icon">🐕</div>
+                            <div class="node-text">动物保护中心<br>超时24小时</div>
+                        </div>
+                    </div>
+                    
+                    <button id="showWarningBtn" class="btn-warning">⚠️ 查看预警详情</button>
+                </div>
+
+                <!-- AI监控预警 -->
+                <div class="ai-warning" id="aiWarning" style="display: none;">
+                    <div class="warning-header">
+                        <span class="warning-icon">🟡</span>
+                        <h4>协同瓶颈预警</h4>
+                    </div>
+                    <div class="warning-content">
+                        <p><strong>工单 #FL2024001</strong> 中，公安局和街道办均已完成处理并反馈，但"农业局-动物保护中心"的"接收安置"子任务已超过24小时未响应，可能导致流程延误。</p>
+                        <div class="warning-actions">
+                            <div class="action-item">
+                                <span class="action-icon">📨</span>
+                                <span class="action-text">已自动向该部门发送催办提醒</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">📞</span>
+                                <span class="action-text">建议电话跟进确认情况</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段三：工单智能审核与闭环 -->
+            <div class="stage-panel" id="stage3Panel" style="display: none;">
+                <div class="stage-header">
+                    <h2>✅ 第三阶段：工单的智能审核与闭环</h2>
+                    <p class="stage-desc">工单办理完毕后，通过AI智能审核和回访，确保问题真正解决...</p>
+                </div>
+
+                <!-- 办结报告审核 -->
+                <div class="report-review">
+                    <div class="review-header">
+                        <h3>📝 办结报告审核</h3>
+                        <div class="review-status">工单状态：待审核</div>
+                    </div>
+                    
+                    <div class="reports-container">
+                        <div class="report-item">
+                            <div class="report-header">
+                                <span class="dept-name">🚔 公安局治安支队</span>
+                                <span class="submit-time">提交时间：今日 16:30</span>
+                            </div>
+                            <div class="report-content">
+                                "已派员前往现场，将流浪犬捕获并送走。"
+                            </div>
+                            <div class="ai-review-result passed">
+                                <span class="result-icon">✅</span>
+                                <span class="result-text">AI审核通过</span>
+                                <button class="review-detail-btn" data-type="passed">查看详情</button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-item">
+                            <div class="report-header">
+                                <span class="dept-name">🏘️ XX街道办事处</span>
+                                <span class="submit-time">提交时间：今日 17:15</span>
+                            </div>
+                            <div class="report-content">
+                                "问题已处理完毕。"
+                            </div>
+                            <div class="ai-review-result rejected">
+                                <span class="result-icon">❌</span>
+                                <span class="result-text">AI审核驳回</span>
+                                <button class="review-detail-btn" data-type="rejected">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI审核意见 -->
+                <div class="review-opinion" id="reviewOpinion" style="display: none;">
+                    <div class="opinion-header">
+                        <h4>🤖 AI审核意见</h4>
+                    </div>
+                    <div class="opinion-content">
+                        <div class="opinion-item">
+                            <strong>驳回原因：</strong><br>
+                            报告内容过于笼统。未说明是否已对社区居民进行相关情况的安抚和解释，也未提及后续如何加强巡查，未能完整回应"安全隐患"这一核心关切。请补充具体措施。
+                        </div>
+                        <div class="opinion-suggestions">
+                            <strong>建议补充：</strong>
+                            <ul>
+                                <li>具体的居民安抚措施</li>
+                                <li>后续巡查计划</li>
+                                <li>预防措施的落实情况</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 智能回访 -->
+                <div class="smart-callback" id="smartCallback">
+                    <div class="callback-header">
+                        <h3>📞 智能回访</h3>
+                        <div class="callback-status">状态：待回访</div>
+                    </div>
+                    
+                    <div class="callback-script">
+                        <h4>🤖 AI生成回访脚本</h4>
+                        <div class="script-content">
+                            "张先生您好，我是12345的回访机器人。关于您反映的XX花园小区流浪犬问题，记录显示公安部门已进行了捕捉，社区也加强了巡查。请问您最近在小区里，是否还看到有流浪犬？夜间吠叫的情况还有吗？"
+                        </div>
+                        
+                        <button id="startCallbackBtn" class="btn-primary">📞 开始回访</button>
+                    </div>
+                </div>
+
+                <!-- 回访结果 -->
+                <div class="callback-result" id="callbackResult" style="display: none;">
+                    <div class="result-header">
+                        <span class="result-icon">😊</span>
+                        <h3>回访完成</h3>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-item">
+                            <span class="label">市民反馈：</span>
+                            <span class="value">"问题确实解决了，谢谢你们的努力！"</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">满意度评价：</span>
+                            <span class="satisfaction satisfied">满意 ⭐⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">工单状态：</span>
+                            <span class="final-status">已关闭-市民满意</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 知识沉淀 -->
+                <div class="knowledge-deposit" id="knowledgeDeposit" style="display: none;">
+                    <div class="deposit-animation">
+                        <div class="knowledge-card flying">
+                            <div class="card-icon">📚</div>
+                            <div class="card-title">流浪动物管理案例</div>
+                            <div class="card-tags">
+                                <span class="tag">#多部门协同#</span>
+                                <span class="tag">#公共安全#</span>
+                                <span class="tag">#XX花园#</span>
+                            </div>
+                        </div>
+                        <div class="deposit-target">
+                            <div class="target-icon">🗃️</div>
+                            <div class="target-text">知识库</div>
+                        </div>
+                    </div>
+                    
+                    <div class="deposit-summary">
+                        <h4>📊 知识沉淀完成</h4>
+                        <p>本次工单处理经验已自动整理并存入知识库，为后续类似问题提供参考依据。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- 演示要点弹窗 -->
+    <div class="points-popup-overlay" id="pointsPopupOverlay">
+        <div class="points-popup" id="pointsPopup">
+            <div class="points-popup-header">
+                <span class="close-btn" id="pointsCloseBtn">&times;</span>
+                <h3>💡 演示要点</h3>
+            </div>
+            <div class="points-popup-body">
+                <div class="points-grid">
+                    <div class="point-card">
+                        <div class="point-icon">⚡</div>
+                        <div class="point-content">
+                            <h4>AI秒级理解复合问题本质</h4>
+                            <p>从单一投诉中识别出涉及动物管理、治安维护、社区管理的复合性问题</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎯</div>
+                        <div class="point-content">
+                            <h4>超越人类经验的精准派单</h4>
+                            <p>智能分析职责边界，自动生成最优的多部门协同方案</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🚀</div>
+                        <div class="point-content">
+                            <h4>一线执行的智能赋能</h4>
+                            <p>为基层工作人员提供AI办理锦囊，让执行更规范高效</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">👁️</div>
+                        <div class="point-content">
+                            <h4>全流程主动监控预警</h4>
+                            <p>AI像项目经理一样主动发现瓶颈，防范流程延误风险</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🛡️</div>
+                        <div class="point-content">
+                            <h4>质量守门人的智能审核</h4>
+                            <p>过滤不合格报告，确保工作质量和服务标准</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">💎</div>
+                        <div class="point-content">
+                            <h4>经验即知识的智能沉淀</h4>
+                            <p>每次成功处理都自动转化为可复用的知识资产</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
