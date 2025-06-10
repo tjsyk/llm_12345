@@ -29,10 +29,22 @@ class QualityCoachDemo {
      */
     bindEvents() {
         // 控制按钮事件
-        document.getElementById('startDemo').addEventListener('click', () => this.startDemo());
-        document.getElementById('pauseDemo').addEventListener('click', () => this.pauseDemo());
-        document.getElementById('resetDemo').addEventListener('click', () => this.resetDemo());
-        document.getElementById('generateReport').addEventListener('click', () => this.generateQualityReport());
+        document.getElementById('startDemo').addEventListener('click', () => {
+            console.log('开始演示按钮被点击');
+            this.startDemo();
+        });
+        document.getElementById('pauseDemo').addEventListener('click', () => {
+            console.log('暂停演示按钮被点击');
+            this.pauseDemo();
+        });
+        document.getElementById('resetDemo').addEventListener('click', () => {
+            console.log('重置按钮被点击');
+            this.resetDemo();
+        });
+        document.getElementById('generateReport').addEventListener('click', () => {
+            console.log('生成报告按钮被点击');
+            this.generateQualityReport();
+        });
         
         // 通话控制事件
         document.getElementById('answerBtn').addEventListener('click', () => this.answerCall());
@@ -64,25 +76,38 @@ class QualityCoachDemo {
     /**
      * 开始演示
      */
-    async startDemo() {
-        if (this.isRunning) return;
+     async startDemo() {
+        if (this.isRunning) {
+            console.log('演示已在运行中，忽略重复启动');
+            return;
+        }
         
+        console.log('开始演示流程');
         this.isRunning = true;
         this.currentStep = 0;
         
         // 更新控制按钮状态
         document.getElementById('startDemo').style.display = 'none';
         document.getElementById('pauseDemo').style.display = 'inline-block';
-        document.getElementById('resetDemo').disabled = true;
+        const resetBtn = document.getElementById('resetDemo');
+        if (resetBtn) {
+            resetBtn.disabled = true;
+        }
         
         // 开始演示流程
         await this.runDemoSequence();
+        
+        // 演示完成后重新启用重置按钮
+        if (resetBtn) {
+            resetBtn.disabled = false;
+        }
     }
 
     /**
      * 暂停演示
      */
     pauseDemo() {
+        console.log('暂停演示');
         this.isRunning = false;
         document.getElementById('startDemo').style.display = 'inline-block';
         document.getElementById('pauseDemo').style.display = 'none';
@@ -93,6 +118,8 @@ class QualityCoachDemo {
      * 重置演示
      */
     resetDemo() {
+        console.log('重置演示开始...'); // 调试信息
+        
         this.isRunning = false;
         this.currentStep = 0;
         
@@ -115,6 +142,7 @@ class QualityCoachDemo {
         this.resetMetrics();
         this.resetComplianceChecklist();
         this.updateHints('准备接听市民来电...');
+        this.resetSupervisorPanel();
         
         // 重置数据
         this.qualityAlerts = [];
@@ -126,6 +154,26 @@ class QualityCoachDemo {
         document.getElementById('answerBtn').style.display = 'inline-block';
         document.getElementById('hangupBtn').style.display = 'none';
         document.getElementById('recordingIndicator').style.display = 'none';
+        
+        // 重置班长面板的坐席状态
+        const activeAgent = document.querySelector('.agent-card.active');
+        if (activeAgent) {
+            const statusElement = activeAgent.querySelector('.agent-call-status');
+            const badgeElement = activeAgent.querySelector('.quality-badge');
+            if (statusElement) statusElement.textContent = '待机';
+            if (badgeElement) {
+                badgeElement.textContent = '--';
+                badgeElement.className = 'quality-badge';
+            }
+        }
+        
+        // 重置实时质检窗口
+        const qualityWindow = document.getElementById('realtimeQuality');
+        if (qualityWindow) {
+            qualityWindow.className = 'realtime-quality-window';
+        }
+        
+        console.log('重置演示完成'); // 调试信息
     }
 
     /**
@@ -181,6 +229,10 @@ class QualityCoachDemo {
         // 开始录音指示
         document.getElementById('recordingIndicator').style.display = 'flex';
         
+        // 更新班长面板的坐席状态
+        this.updateSupervisorAgentStatus('通话中');
+        this.updateSupervisorStats();
+        
         await this.delay(1000);
     }
 
@@ -197,6 +249,9 @@ class QualityCoachDemo {
         this.showQualityAlert('warning', '💡 提醒：缺少标准开场白（问候+报号）。');
         this.setQualityIndicator('warning', '⚠️', '需要纠正');
         this.updateViolation('开场白不合规', '00:05');
+        
+        // 在班长面板显示违规事件
+        this.showSupervisorAlert('小王(008)', 'warning', '开场白不规范提醒');
         
         await this.delay(1500);
         
@@ -229,6 +284,10 @@ class QualityCoachDemo {
         this.showQualityAlert('warning', '⚠️ 不当用语："你必须…"。建议替换为："我们建议您…"或"您需要…"。');
         this.updateViolation('不当用语："你必须"', '01:15');
         this.updateComplianceItem('服务用语规范', 'failed');
+        this.updateSupervisorStats(); // 更新班长面板统计
+        
+        // 在班长面板显示违规事件
+        this.showSupervisorAlert('小王(008)', 'warning', '不当用语："你必须"');
         
         await this.delay(1000);
         this.updateHints('检测到不当用语，建议使用更温和的表达...');
@@ -261,6 +320,10 @@ class QualityCoachDemo {
         // AI提醒语速问题
         this.showQualityAlert('warning', '💨 语速稍快，建议放慢，并耐心解释。');
         this.updateViolation('语速过快', '01:45');
+        this.updateSupervisorStats(); // 更新班长面板统计
+        
+        // 在班长面板显示违规事件
+        this.showSupervisorAlert('小王(008)', 'warning', '语速过快提醒');
         
         await this.delay(1000);
         this.updateHints('语速分析：当前180字/分钟，建议控制在120-150字/分钟...');
@@ -293,6 +356,7 @@ class QualityCoachDemo {
         
         // 在班长端显示优秀标记
         this.showSupervisorAlert('小王(008)', 'positive', '获得优秀服务标记');
+        this.updateSupervisorStats(); // 更新班长面板统计
         
         await this.delay(1500);
         this.updateHints('检测到优秀服务行为，已标记为培训案例...');
@@ -320,6 +384,9 @@ class QualityCoachDemo {
         
         // 自动挂断
         this.hangupCall();
+        
+        // 更新班长面板显示通话结束状态
+        this.updateSupervisorAgentStatus('空闲');
         
         // 显示质检报告按钮
         document.getElementById('generateReport').style.display = 'inline-block';
@@ -588,6 +655,9 @@ class QualityCoachDemo {
             time,
             type: 'warning'
         });
+        
+        // 更新班长面板中的质检分数
+        this.updateQualityScore();
     }
 
     /**
@@ -599,6 +669,24 @@ class QualityCoachDemo {
             time,
             type: 'success'
         });
+        
+        // 更新班长面板中的质检分数
+        this.updateQualityScore();
+    }
+    
+    /**
+     * 更新质检分数显示
+     */
+    updateQualityScore() {
+        const score = this.calculateQualityScore();
+        const activeAgent = document.querySelector('.agent-card.active');
+        if (activeAgent) {
+            const badgeElement = activeAgent.querySelector('.quality-badge');
+            if (badgeElement) {
+                badgeElement.textContent = score + '分';
+                badgeElement.className = `quality-badge ${score >= 90 ? 'excellent' : score >= 80 ? 'good' : ''}`;
+            }
+        }
     }
 
     /**
@@ -815,6 +903,83 @@ class QualityCoachDemo {
     }
 
     /**
+     * 更新班长面板的坐席状态
+     */
+    updateSupervisorAgentStatus(status) {
+        const activeAgent = document.querySelector('.agent-card.active');
+        if (activeAgent) {
+            const statusElement = activeAgent.querySelector('.agent-call-status');
+            if (statusElement) {
+                statusElement.textContent = status;
+            }
+        }
+    }
+
+    /**
+     * 更新班长面板统计数据
+     */
+    updateSupervisorStats() {
+        // 更新当前通话数
+        const currentCallsElement = document.querySelector('.stat-item .stat-value');
+        if (currentCallsElement && currentCallsElement.textContent === '15') {
+            // 演示过程中动态更新
+            if (this.isRunning) {
+                currentCallsElement.textContent = '16';
+            }
+        }
+        
+        // 更新违规提醒数
+        const violationStats = document.querySelectorAll('.stat-item .stat-value');
+        if (violationStats.length >= 3) {
+            const violationCount = violationStats[2];
+            if (violationCount) {
+                violationCount.textContent = this.violations.length.toString();
+            }
+        }
+        
+        // 更新优秀标记数
+        if (violationStats.length >= 4) {
+            const positiveCount = violationStats[3];
+            if (positiveCount) {
+                positiveCount.textContent = (12 + this.positiveMarks.length).toString();
+            }
+        }
+    }
+
+    /**
+     * 重置班长面板
+     */
+    resetSupervisorPanel() {
+        // 重置事件列表为初始状态
+        const eventsList = document.getElementById('eventsList');
+        eventsList.innerHTML = `
+            <div class="event-item">
+                <div class="event-time">14:23</div>
+                <div class="event-content">
+                    <span class="agent-tag">小张(010)</span>
+                    <span class="event-text positive">获得优秀服务标记</span>
+                </div>
+            </div>
+            <div class="event-item">
+                <div class="event-time">14:20</div>
+                <div class="event-content">
+                    <span class="agent-tag">小李(009)</span>
+                    <span class="event-text warning">语速过快提醒</span>
+                </div>
+            </div>
+        `;
+        
+        // 重置统计数据
+        const statValues = document.querySelectorAll('.stat-value');
+        const defaultValues = ['15', '89%', '3', '12'];
+        statValues.forEach((element, index) => {
+            if (defaultValues[index]) {
+                element.textContent = defaultValues[index];
+            }
+        });
+    }
+
+    /**
      * 延迟函数
      */
     delay(ms) {
@@ -824,5 +989,7 @@ class QualityCoachDemo {
 
 // 页面加载完成后初始化演示系统
 document.addEventListener('DOMContentLoaded', () => {
-    new QualityCoachDemo();
+    console.log('页面加载完成，初始化演示系统...');
+    window.qualityCoachDemo = new QualityCoachDemo();
+    console.log('演示系统初始化完成');
 });
