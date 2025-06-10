@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线 - AI实时质检教练</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <span class="demo-title">🎯 12345热线 - AI实时质检教练</span>
+            <div class="control-buttons">
+                <button id="startDemo" class="btn-primary">▶️ 开始演示</button>
+                <button id="pauseDemo" class="btn-secondary" style="display: none;">⏸️ 暂停</button>
+                <button id="resetDemo" class="btn-secondary">🔄 重置</button>
+                <button id="generateReport" class="btn-primary" style="display: none;">📊 生成质检报告</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <!-- 左侧：坐席工作台 -->
+        <div class="left-panel">
+            <div class="agent-workspace">
+                <div class="workspace-header">
+                    <h3>💼 坐席工作台 - 小王（工号008）</h3>
+                    <div class="agent-status" id="agentStatus">待机中</div>
+                </div>
+
+                <!-- 通话控制区 -->
+                <div class="call-control-area">
+                    <div class="call-info" id="callInfo">
+                        <div class="caller-avatar">👩</div>
+                        <div class="caller-details">
+                            <div class="caller-name">市民来电</div>
+                            <div class="call-time" id="callTime">00:00</div>
+                        </div>
+                        <button class="call-btn answer" id="answerBtn">
+                            <span class="icon">📞</span>
+                            接听
+                        </button>
+                        <button class="call-btn hangup" id="hangupBtn" style="display: none;">
+                            <span class="icon">📴</span>
+                            挂断
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 实时对话转录区 -->
+                <div class="conversation-area">
+                    <div class="conversation-header">
+                        <span>实时对话转录</span>
+                        <div class="recording-indicator" id="recordingIndicator" style="display: none;">
+                            <span class="recording-dot"></span>
+                            录音中
+                        </div>
+                    </div>
+                    <div class="conversation-content" id="conversationContent">
+                        <div class="message-list" id="messageList">
+                            <div class="conversation-placeholder">
+                                点击"开始演示"开始通话...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 坐席操作提示区 -->
+                <div class="agent-hints" id="agentHints">
+                    <div class="hints-header">💡 操作提示</div>
+                    <div class="hints-content">
+                        <div class="hint-item">准备接听市民来电...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中间：AI实时质检面板 -->
+        <div class="center-panel">
+            <div class="quality-monitor">
+                <div class="monitor-header">
+                    <h3>🤖 AI实时质检</h3>
+                    <div class="quality-status" id="qualityStatus">待机</div>
+                </div>
+
+                <!-- 实时质检悬浮窗 -->
+                <div class="realtime-quality-window" id="realtimeQuality">
+                    <div class="quality-indicator normal" id="qualityIndicator">
+                        <div class="indicator-icon">✅</div>
+                        <div class="indicator-text">服务正常</div>
+                    </div>
+                    
+                    <div class="quality-alerts" id="qualityAlerts">
+                        <!-- 实时提醒将在这里显示 -->
+                    </div>
+                </div>
+
+                <!-- 实时分析数据 -->
+                <div class="analysis-panels">
+                    <!-- 语音分析 -->
+                    <div class="analysis-panel">
+                        <div class="panel-title">🎙️ 语音分析</div>
+                        <div class="analysis-content">
+                            <div class="metric-item">
+                                <span class="metric-label">语速</span>
+                                <span class="metric-value" id="speechRate">-- 字/分钟</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">音量</span>
+                                <span class="metric-value" id="volume">-- dB</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">语调</span>
+                                <span class="metric-value" id="tone">正常</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 情绪分析 -->
+                    <div class="analysis-panel">
+                        <div class="panel-title">😊 情绪分析</div>
+                        <div class="analysis-content">
+                            <div class="emotion-display">
+                                <div class="emotion-item">
+                                    <span class="emotion-label">坐席情绪</span>
+                                    <span class="emotion-value" id="agentEmotion">😐 中性</span>
+                                </div>
+                                <div class="emotion-item">
+                                    <span class="emotion-label">市民情绪</span>
+                                    <span class="emotion-value" id="citizenEmotion">😐 中性</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 规范性检查 -->
+                    <div class="analysis-panel">
+                        <div class="panel-title">📋 规范性检查</div>
+                        <div class="analysis-content">
+                            <div class="compliance-checklist" id="complianceList">
+                                <div class="compliance-item pending">
+                                    <span class="checkbox">⏳</span>
+                                    <span class="item-text">标准开场白</span>
+                                </div>
+                                <div class="compliance-item pending">
+                                    <span class="checkbox">⏳</span>
+                                    <span class="item-text">服务用语规范</span>
+                                </div>
+                                <div class="compliance-item pending">
+                                    <span class="checkbox">⏳</span>
+                                    <span class="item-text">问题解答完整</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧：班长监控面板 -->
+        <div class="right-panel">
+            <div class="supervisor-panel">
+                <div class="supervisor-header">
+                    <h3>👨‍💼 班长监控面板</h3>
+                    <div class="supervisor-status">在线监控</div>
+                </div>
+
+                <!-- 坐席状态概览 -->
+                <div class="agents-overview">
+                    <div class="overview-title">坐席状态监控</div>
+                    <div class="agents-grid" id="agentsGrid">
+                        <div class="agent-card active" data-agent="008">
+                            <div class="agent-avatar">👨</div>
+                            <div class="agent-info">
+                                <div class="agent-name">小王(008)</div>
+                                <div class="agent-call-status">通话中</div>
+                            </div>
+                            <div class="quality-badge good">88分</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-avatar">👩</div>
+                            <div class="agent-info">
+                                <div class="agent-name">小李(009)</div>
+                                <div class="agent-call-status">空闲</div>
+                            </div>
+                            <div class="quality-badge">--</div>
+                        </div>
+                        <div class="agent-card">
+                            <div class="agent-avatar">👨</div>
+                            <div class="agent-info">
+                                <div class="agent-name">小张(010)</div>
+                                <div class="agent-call-status">通话中</div>
+                            </div>
+                            <div class="quality-badge excellent">92分</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 实时统计 -->
+                <div class="realtime-stats">
+                    <div class="stats-title">实时统计</div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">当前通话</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">89%</div>
+                            <div class="stat-label">平均质检分</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">违规提醒</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">优秀标记</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 质检事件流 -->
+                <div class="quality-events">
+                    <div class="events-title">质检事件流</div>
+                    <div class="events-list" id="eventsList">
+                        <div class="event-item">
+                            <div class="event-time">14:23</div>
+                            <div class="event-content">
+                                <span class="agent-tag">小张(010)</span>
+                                <span class="event-text positive">获得优秀服务标记</span>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-time">14:20</div>
+                            <div class="event-content">
+                                <span class="agent-tag">小李(009)</span>
+                                <span class="event-text warning">语速过快提醒</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 质检报告模态框 -->
+    <div class="modal-overlay" id="reportModal" style="display: none;">
+        <div class="modal-content quality-report">
+            <div class="modal-header">
+                <h3>📊 通话质检报告</h3>
+                <button class="close-btn" id="closeReportModal">×</button>
+            </div>
+            <div class="modal-body" id="reportContent">
+                <!-- 报告内容将通过JavaScript生成 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="exportReportBtn">📤 导出报告</button>
+                <button class="btn-secondary" id="closeReportBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据流动画容器 -->
+    <div class="data-flow-container" id="dataFlowContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
