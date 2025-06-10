@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线 - 智能知识库管理平台</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <span class="demo-title">🧠 12345热线 - 智能知识库</span>
+            <div class="control-buttons">
+                <button id="startDemo1" class="btn-primary">📄 新知识注入</button>
+                <button id="startDemo2" class="btn-primary">🔄 知识更新</button>
+                <button id="startDemo3" class="btn-primary">🔍 空白探测</button>
+                <button id="resetBtn" class="btn-secondary">🔄 重置</button>
+                <button id="pointsBtn" class="btn-secondary">💡 演示要点</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <div class="container">
+            <!-- 平台概览 -->
+            <div class="platform-overview" id="platformOverview">
+                <div class="platform-header">
+                    <h2>📚 智能知识库管理平台</h2>
+                </div>
+                
+                <div class="function-modules">
+                    <div class="module-card" data-module="inject">
+                        <div class="module-icon">📄</div>
+                        <div class="module-content">
+                            <h3>新知识注入</h3>
+                            <p>智能解析政策文件，自动生成知识条目</p>
+                            <div class="module-status">准备就绪</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card" data-module="update">
+                        <div class="module-icon">🔄</div>
+                        <div class="module-content">
+                            <h3>知识迭代更新</h3>
+                            <p>主动发现知识冲突，智能维护知识库</p>
+                            <div class="module-status">准备就绪</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card" data-module="detect">
+                        <div class="module-icon">🔍</div>
+                        <div class="module-content">
+                            <h3>知识空白探测</h3>
+                            <p>精准发现知识短板，智能生成补充内容</p>
+                            <div class="module-status">准备就绪</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 场景1：新知识注入 -->
+            <div class="demo-section" id="demo1" style="display: none;">
+                <div class="section-header">
+                    <h3>📄 第一幕：新知识的智能注入 (从0到1)</h3>
+                </div>
+                
+                <div class="inject-workspace">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📁</div>
+                        <h4>拖拽文件到此处</h4>
+                        <p>支持PDF、Word、图片等格式</p>
+                        <button class="upload-btn" id="uploadBtn">选择文件</button>
+                    </div>
+                    
+                    <div class="processing-flow" id="processingFlow" style="display: none;">
+                        <div class="flow-header">
+                            <h4>🤖 AI处理流程</h4>
+                        </div>
+                        <div class="process-steps">
+                            <div class="step" id="step1">
+                                <div class="step-icon">📄</div>
+                                <div class="step-content">
+                                    <h5>文档解析</h5>
+                                    <p>正在解析PDF文档，识别段落、标题、表格...</p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step" id="step2">
+                                <div class="step-icon">🧠</div>
+                                <div class="step-content">
+                                    <h5>信息提取</h5>
+                                    <p>正在提取核心政策点...</p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step" id="step3">
+                                <div class="step-icon">✍️</div>
+                                <div class="step-content">
+                                    <h5>知识生成</h5>
+                                    <p>正在生成"一问一答"式知识条目...</p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step" id="step4">
+                                <div class="step-icon">🔗</div>
+                                <div class="step-content">
+                                    <h5>入库与关联</h5>
+                                    <p>正在存入知识库，并与相关知识建立关联...</p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="extraction-preview" id="extractionPreview" style="display: none;">
+                        <div class="preview-header">
+                            <h4>📊 提取到的核心信息</h4>
+                        </div>
+                        <div class="info-cards">
+                            <div class="info-card">
+                                <span class="info-label">政策名称</span>
+                                <span class="info-value">优化生育登记服务</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">实施日期</span>
+                                <span class="info-value">2024年7月1日</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">核心变化</span>
+                                <span class="info-value">取消生育登记前置条件；支持"全程网办"</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-generation" id="knowledgeGeneration" style="display: none;">
+                        <div class="generation-header">
+                            <h4>✨ 生成的知识条目</h4>
+                        </div>
+                        <div class="qa-list">
+                            <div class="qa-item">
+                                <div class="question">
+                                    <span class="q-icon">Q</span>
+                                    <span class="q-text">现在生孩子还需要先办准生证吗？</span>
+                                </div>
+                                <div class="answer">
+                                    <span class="a-icon">A</span>
+                                    <span class="a-text">不需要。自2024年7月1日起，我市已取消生育登记的前置条件和各种附加证明。</span>
+                                </div>
+                            </div>
+                            
+                            <div class="qa-item">
+                                <div class="question">
+                                    <span class="q-icon">Q</span>
+                                    <span class="q-text">如何在线上办理生育登记？</span>
+                                </div>
+                                <div class="answer">
+                                    <span class="a-icon">A</span>
+                                    <span class="a-text">您可以通过"XX市一体化政务服务平台"网站或APP，进入"生育登记"模块，在线填写信息并上传材料即可完成。</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="completion-result" id="completionResult" style="display: none;">
+                        <div class="result-icon">✅</div>
+                        <h4>新知识注入完成！</h4>
+                        <p>共生成 <span class="highlight">15</span> 条相关知识条目</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 场景2：知识迭代更新 -->
+            <div class="demo-section" id="demo2" style="display: none;">
+                <div class="section-header">
+                    <h3>🔄 第二幕：知识的动态迭代更新 (从旧到新)</h3>
+                </div>
+                
+                <div class="update-workspace">
+                    <div class="conflict-alert" id="conflictAlert">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-content">
+                            <h4>知识冲突预警</h4>
+                            <p>检测到新录入的《优化生育登记服务通知》与知识库中3条关于"准生证办理流程"的旧知识存在内容冲突。</p>
+                            <button class="view-details-btn" id="viewDetailsBtn">查看详情</button>
+                        </div>
+                    </div>
+                    
+                    <div class="conflict-comparison" id="conflictComparison" style="display: none;">
+                        <div class="comparison-header">
+                            <h4>📊 新旧知识对比</h4>
+                        </div>
+                        
+                        <div class="comparison-grid">
+                            <div class="old-knowledge">
+                                <h5>📜 旧知识</h5>
+                                <div class="knowledge-item outdated">
+                                    <p>办理准生证需要夫妻双方户口本、身份证、结婚证等材料...</p>
+                                    <span class="status-tag">过时</span>
+                                </div>
+                            </div>
+                            
+                            <div class="new-knowledge">
+                                <h5>✨ 新知识</h5>
+                                <div class="knowledge-item current">
+                                    <p>自2024年7月1日起，已无需办理准生证，改为生育登记制...</p>
+                                    <span class="status-tag">最新</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-suggestions" id="aiSuggestions">
+                            <div class="suggestions-header">
+                                <h4>🤖 AI更新建议</h4>
+                            </div>
+                            <div class="suggestion-list">
+                                <div class="suggestion-item">
+                                    <span class="suggestion-icon">🚫</span>
+                                    <span class="suggestion-text">停用旧知识条目#1024、#1025</span>
+                                </div>
+                                <div class="suggestion-item">
+                                    <span class="suggestion-icon">✏️</span>
+                                    <span class="suggestion-text">修改知识条目#1028，将"需提供准生证"改为"需提供生育登记凭证"</span>
+                                </div>
+                                <div class="suggestion-item">
+                                    <span class="suggestion-icon">📢</span>
+                                    <span class="suggestion-text">推送通知：向所有坐席推送关于"生育登记政策调整"的消息</span>
+                                </div>
+                            </div>
+                            
+                            <button class="execute-btn" id="executeBtn">🚀 一键执行更新</button>
+                        </div>
+                        
+                        <div class="update-progress" id="updateProgress" style="display: none;">
+                            <div class="progress-header">
+                                <h4>⚡ 执行更新中...</h4>
+                            </div>
+                            <div class="update-steps">
+                                <div class="update-step completed">
+                                    <span class="step-icon">✅</span>
+                                    <span class="step-text">停用过时知识条目</span>
+                                </div>
+                                <div class="update-step completed">
+                                    <span class="step-icon">✅</span>
+                                    <span class="step-text">更新相关知识条目</span>
+                                </div>
+                                <div class="update-step completed">
+                                    <span class="step-icon">✅</span>
+                                    <span class="step-text">推送通知给坐席</span>
+                                </div>
+                            </div>
+                            <div class="update-result">
+                                <span class="result-icon">🎉</span>
+                                <span class="result-text">知识库更新完成！影响范围：3个条目，通知200位坐席</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 场景3：知识空白探测 -->
+            <div class="demo-section" id="demo3" style="display: none;">
+                <div class="section-header">
+                    <h3>🔍 第三幕：知识空白的精准探测 (从无到有)</h3>
+                </div>
+                
+                <div class="detection-workspace">
+                    <div class="gap-analysis" id="gapAnalysis">
+                        <div class="analysis-header">
+                            <h4>📈 市民高频咨询但知识库命中率低的问题TOP10</h4>
+                        </div>
+                        
+                        <div class="gap-ranking">
+                            <div class="gap-item" data-rank="1">
+                                <div class="rank-number">1</div>
+                                <div class="gap-content">
+                                    <h5>如何申请新能源汽车充电桩？</h5>
+                                    <div class="gap-stats">
+                                        <span class="hit-rate">知识库命中率: 15%</span>
+                                        <span class="trend">📈 +200%</span>
+                                    </div>
+                                </div>
+                                <button class="detail-btn" data-item="charging">查看详情</button>
+                            </div>
+                            
+                            <div class="gap-item" data-rank="2">
+                                <div class="rank-number">2</div>
+                                <div class="gap-content">
+                                    <h5>个人如何申报个税专项附加扣除？</h5>
+                                    <div class="gap-stats">
+                                        <span class="hit-rate">知识库命中率: 22%</span>
+                                        <span class="trend">📈 +150%</span>
+                                    </div>
+                                </div>
+                                <button class="detail-btn" data-item="tax">查看详情</button>
+                            </div>
+                            
+                            <div class="gap-item" data-rank="3">
+                                <div class="rank-number">3</div>
+                                <div class="gap-content">
+                                    <h5>老年人医保卡如何激活？</h5>
+                                    <div class="gap-stats">
+                                        <span class="hit-rate">知识库命中率: 28%</span>
+                                        <span class="trend">📈 +120%</span>
+                                    </div>
+                                </div>
+                                <button class="detail-btn" data-item="medical">查看详情</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-insight" id="aiInsight" style="display: none;">
+                        <div class="insight-header">
+                            <h4>🧠 AI洞察报告</h4>
+                        </div>
+                        <div class="insight-content">
+                            <div class="insight-card">
+                                <div class="insight-icon">📊</div>
+                                <div class="insight-text">
+                                    <p>在过去一个月中，"充电桩申请"相关问题的咨询量上升了<span class="highlight">200%</span>，但知识库中缺乏系统性的办理指南。</p>
+                                </div>
+                            </div>
+                            <div class="insight-card">
+                                <div class="insight-icon">⏱️</div>
+                                <div class="insight-text">
+                                    <p>导致坐席平均解答时长超出标准<span class="highlight">2分钟</span>，且转接率高达<span class="highlight">60%</span>。</p>
+                                </div>
+                            </div>
+                            <div class="insight-card">
+                                <div class="insight-icon">💡</div>
+                                <div class="insight-text">
+                                    <p>建议优先补充充电桩申请相关知识，预计可提升服务效率<span class="highlight">40%</span>。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-creation" id="knowledgeCreation" style="display: none;">
+                        <div class="creation-header">
+                            <h4>🤖 新知识众创与生成</h4>
+                        </div>
+                        
+                        <div class="creation-process">
+                            <div class="process-status">
+                                <div class="status-icon">⚡</div>
+                                <div class="status-text">正在根据历史通话录音中，坐席与市民关于"充电桩"的问答内容，自动生成知识条目草稿...</div>
+                            </div>
+                            
+                            <div class="draft-preview" id="draftPreview" style="display: none;">
+                                <div class="preview-header">
+                                    <h5>📝 生成的知识草稿</h5>
+                                </div>
+                                <div class="draft-content">
+                                    <div class="draft-section">
+                                        <h6>申请条件</h6>
+                                        <ul>
+                                            <li>具有本市户籍或持有效居住证</li>
+                                            <li>拥有固定停车位使用权</li>
+                                            <li>符合充电设施安装条件</li>
+                                        </ul>
+                                    </div>
+                                    <div class="draft-section">
+                                        <h6>申请流程</h6>
+                                        <ol>
+                                            <li>在线提交申请材料</li>
+                                            <li>供电部门现场勘查</li>
+                                            <li>审核通过后安排安装</li>
+                                        </ol>
+                                    </div>
+                                    <div class="draft-section">
+                                        <h6>所需材料</h6>
+                                        <ul>
+                                            <li>身份证明</li>
+                                            <li>停车位证明</li>
+                                            <li>物业同意书</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="draft-actions">
+                                    <div class="action-info">
+                                        <span class="action-icon">📤</span>
+                                        <span class="action-text">该草稿已自动推送给"发改委"接口人<strong>张工</strong>进行专业审核</span>
+                                    </div>
+                                    <div class="approval-status">
+                                        <span class="status-badge pending">等待审核</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- 演示要点弹窗 -->
+    <div class="points-popup-overlay" id="pointsPopupOverlay">
+        <div class="points-popup" id="pointsPopup">
+            <div class="points-popup-header">
+                <span class="close-btn" id="pointsCloseBtn">&times;</span>
+                <h3>💡 演示要点</h3>
+            </div>
+            <div class="points-popup-body">
+                <div class="points-grid">
+                    <div class="point-card">
+                        <div class="point-icon">📄</div>
+                        <div class="point-content">
+                            <h4>非结构化到结构化</h4>
+                            <p>AI自动"阅读"并"理解"复杂的官方文件，转化为机器和人都易于理解的Q&A格式</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">⚡</div>
+                        <div class="point-content">
+                            <h4>效率革命</h4>
+                            <p>将过去需要人工阅读、拆解、录入数小时的工作，在几十秒内自动化完成</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🔍</div>
+                        <div class="point-content">
+                            <h4>主动发现冲突</h4>
+                            <p>AI不仅录入新知识，更能主动发现新知识与存量知识之间的矛盾，确保准确性和一致性</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🤖</div>
+                        <div class="point-content">
+                            <h4>智能化维护</h4>
+                            <p>AI提供具体、可执行的更新方案，将复杂的知识维护工作简化为"一键确认"</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">📊</div>
+                        <div class="point-content">
+                            <h4>需求驱动</h4>
+                            <p>从一线炮火（市民的真实提问）中，精准发现知识库的"短板"和"盲区"</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🚀</div>
+                        <div class="point-content">
+                            <h4>众包与自动化结合</h4>
+                            <p>利用历史对话数据自动生成知识草稿，再交由专业部门审核，提高效率和准确性</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
