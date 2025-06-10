@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧城市驾驶舱 - 领导决策助手</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <span class="demo-title">🌟 智慧城市驾驶舱 - 领导决策助手</span>
+            <div class="control-buttons">
+                <button id="startDemoBtn" class="btn-primary">🚀 开始演示</button>
+                <button id="voiceControlBtn" class="btn-secondary">🎙️ 语音交互</button>
+                <button id="resetBtn" class="btn-secondary">🔄 重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <!-- 步骤1: 晨会概览 -->
+        <div class="step-container" id="step1" style="display: block;">
+            <div class="dashboard-main">
+                <div class="dashboard-header">
+                    <h1>🏙️ 智慧城市运行驾驶舱</h1>
+                    <div class="time-info">
+                        <span id="currentTime">2024年6月10日 09:00</span>
+                        <span class="weather">☀️ 晴 24°C</span>
+                    </div>
+                </div>
+                
+                <!-- AI语音助手界面 -->
+                <div class="voice-assistant" id="voiceAssistant">
+                    <div class="assistant-avatar">
+                        <div class="avatar-circle">
+                            <span class="assistant-icon">🤖</span>
+                        </div>
+                        <div class="voice-waves" id="voiceWaves" style="display: none;">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                        </div>
+                    </div>
+                    <div class="assistant-info">
+                        <h3>AI语音助手 - 小慧</h3>
+                        <p class="assistant-status" id="assistantStatus">等待指令中...</p>
+                    </div>
+                    <button class="voice-btn" id="voiceBtn">🎙️ 语音指令</button>
+                </div>
+
+                <!-- 城市服务日报 -->
+                <div class="daily-report" id="dailyReport" style="display: none;">
+                    <div class="report-header">
+                        <h2>📊 城市服务日报（摘要版）</h2>
+                        <span class="report-date">2024年6月9日</span>
+                    </div>
+                    <div class="report-content">
+                        <div class="metric-card">
+                            <div class="metric-icon">📞</div>
+                            <div class="metric-info">
+                                <h4>12345热线</h4>
+                                <p class="metric-value">运行平稳</p>
+                                <p class="metric-detail">综合满意度: 92.8%</p>
+                            </div>
+                        </div>
+                        <div class="metric-card highlight">
+                            <div class="metric-icon">🚗</div>
+                            <div class="metric-info">
+                                <h4>热点问题</h4>
+                                <p class="metric-value highlight-text">道路停车收费</p>
+                                <p class="metric-detail">投诉增长: ↑45%</p>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">🏛️</div>
+                            <div class="metric-info">
+                                <h4>政务服务</h4>
+                                <p class="metric-value">稳定运行</p>
+                                <p class="metric-detail">办事效率: 95.2%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="next-action">
+                        <button class="action-btn" id="analyzeParking">🔍 深入分析"停车难"问题</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步骤2: 深度洞察分析 -->
+        <div class="step-container" id="step2" style="display: none;">
+            <div class="analysis-dashboard">
+                <div class="dashboard-header">
+                    <h2>🔍 停车难问题专题驾驶舱</h2>
+                    <button class="back-btn" id="backToStep1">← 返回概览</button>
+                </div>
+                
+                <div class="analysis-content">
+                    <!-- 地图区域 -->
+                    <div class="map-section">
+                        <div class="map-container">
+                            <div class="map-header">
+                                <h3>📍 投诉热力分布图</h3>
+                                <div class="map-legend">
+                                    <span class="legend-item high">高</span>
+                                    <span class="legend-item medium">中</span>
+                                    <span class="legend-item low">低</span>
+                                </div>
+                            </div>
+                            <div class="city-map" id="cityMap">
+                                <div class="hotspot high" data-area="A街道" style="top: 30%; left: 25%;">
+                                    <div class="hotspot-marker">🔥</div>
+                                    <div class="hotspot-label">A街道</div>
+                                </div>
+                                <div class="hotspot high" data-area="B广场" style="top: 60%; left: 70%;">
+                                    <div class="hotspot-marker">🔥</div>
+                                    <div class="hotspot-label">B广场</div>
+                                </div>
+                                <div class="hotspot medium" style="top: 20%; left: 60%;">
+                                    <div class="hotspot-marker">⚠️</div>
+                                </div>
+                                <div class="hotspot low" style="top: 80%; left: 40%;">
+                                    <div class="hotspot-marker">📌</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据分析区域 -->
+                    <div class="data-section">
+                        <div class="chart-container">
+                            <h3>📈 问题类型分布</h3>
+                            <div class="chart" id="problemChart">
+                                <div class="chart-item" style="width: 40%;">
+                                    <span class="chart-label">乱停车投诉</span>
+                                    <span class="chart-value">40%</span>
+                                </div>
+                                <div class="chart-item" style="width: 30%;">
+                                    <span class="chart-label">收费标准咨询</span>
+                                    <span class="chart-value">30%</span>
+                                </div>
+                                <div class="chart-item" style="width: 20%;">
+                                    <span class="chart-label">车位不足建议</span>
+                                    <span class="chart-value">20%</span>
+                                </div>
+                                <div class="chart-item" style="width: 10%;">
+                                    <span class="chart-label">其他</span>
+                                    <span class="chart-value">10%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="trend-container">
+                            <h3>⏰ 时间趋势分析</h3>
+                            <div class="trend-chart">
+                                <div class="trend-item peak">
+                                    <span class="time-label">工作日晚间</span>
+                                    <div class="trend-bar high"></div>
+                                </div>
+                                <div class="trend-item peak">
+                                    <span class="time-label">周末全天</span>
+                                    <div class="trend-bar high"></div>
+                                </div>
+                                <div class="trend-item normal">
+                                    <span class="time-label">工作日日间</span>
+                                    <div class="trend-bar medium"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 区域分析结果 -->
+                <div class="area-analysis" id="areaAnalysis" style="display: none;">
+                    <div class="analysis-card">
+                        <div class="analysis-header">
+                            <h3 id="analysisTitle">🔍 区域分析</h3>
+                            <button class="close-analysis" id="closeAnalysis">✕</button>
+                        </div>
+                        <div class="analysis-body" id="analysisBody">
+                            <!-- 动态内容 -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-action">
+                    <button class="action-btn" id="simulateDecision">🎯 政策模拟决策</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步骤3: 决策模拟 -->
+        <div class="step-container" id="step3" style="display: none;">
+            <div class="simulation-dashboard">
+                <div class="dashboard-header">
+                    <h2>🎯 政策模拟器</h2>
+                    <button class="back-btn" id="backToStep2">← 返回分析</button>
+                </div>
+
+                <div class="simulation-input">
+                    <div class="input-section">
+                        <h3>📝 模拟参数设置</h3>
+                        <div class="param-group">
+                            <label>目标区域:</label>
+                            <select id="targetArea">
+                                <option value="A街道">A街道</option>
+                                <option value="B广场">B广场</option>
+                            </select>
+                        </div>
+                        <div class="param-group">
+                            <label>解决方案:</label>
+                            <select id="solution">
+                                <option value="parking">新建300车位智慧停车场</option>
+                                <option value="pricing">调整收费标准</option>
+                                <option value="management">加强管理执法</option>
+                            </select>
+                        </div>
+                        <button class="simulate-btn" id="runSimulation">🚀 开始模拟</button>
+                    </div>
+                </div>
+
+                <!-- 模拟结果 -->
+                <div class="simulation-results" id="simulationResults" style="display: none;">
+                    <div class="loading-animation" id="loadingAnimation">
+                        <div class="spinner"></div>
+                        <p>AI正在模拟分析中...</p>
+                    </div>
+
+                    <div class="results-content" id="resultsContent" style="display: none;">
+                        <div class="result-section positive">
+                            <h3>✅ 正面影响预测</h3>
+                            <div class="impact-item">
+                                <span class="impact-icon">📉</span>
+                                <div class="impact-text">
+                                    <strong>乱停车投诉率下降</strong>
+                                    <p>预计半年内下降 60% - 75%</p>
+                                </div>
+                            </div>
+                            <div class="impact-item">
+                                <span class="impact-icon">😊</span>
+                                <div class="impact-text">
+                                    <strong>居民满意度提升</strong>
+                                    <p>停车便利性满意度提升约 4.5分（满分5分）</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-section negative">
+                            <h3>⚠️ 潜在风险预测</h3>
+                            <div class="risk-item">
+                                <span class="risk-icon">🚦</span>
+                                <div class="risk-text">
+                                    <strong>交通潮汐效应</strong>
+                                    <p>XX路口拥堵指数可能上升 15%</p>
+                                </div>
+                            </div>
+                            <div class="risk-item">
+                                <span class="risk-icon">🚗</span>
+                                <div class="risk-text">
+                                    <strong>跨区停车效应</strong>
+                                    <p>邻近街道车辆涌入，实际紧张情况可能加剧</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-section recommendations">
+                            <h3>💡 AI配套措施建议</h3>
+                            <div class="recommendation-item">
+                                <span class="rec-icon">🚦</span>
+                                <div class="rec-text">
+                                    <strong>交通优化</strong>
+                                    <p>同步优化XX路口的交通信号灯配时</p>
+                                </div>
+                            </div>
+                            <div class="recommendation-item">
+                                <span class="rec-icon">💰</span>
+                                <div class="rec-text">
+                                    <strong>价格杠杆</strong>
+                                    <p>A街道居民月卡优惠，外来车辆阶梯式收费</p>
+                                </div>
+                            </div>
+                            <div class="recommendation-item">
+                                <span class="rec-icon">📱</span>
+                                <div class="rec-text">
+                                    <strong>信息引导</strong>
+                                    <p>通过APP、诱导屏实时发布空余车位信息</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-actions" id="finalActions" style="display: none;">
+                    <button class="action-btn primary" id="approveDecision">✅ 批准实施方案</button>
+                    <button class="action-btn secondary" id="modifyDecision">📝 修改方案</button>
+                    <button class="action-btn secondary" id="moreSimulation">🔄 其他方案模拟</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 语音识别界面 -->
+        <div class="voice-modal" id="voiceModal" style="display: none;">
+            <div class="voice-modal-content">
+                <div class="voice-animation">
+                    <div class="voice-circle">
+                        <div class="voice-ripple"></div>
+                        <div class="voice-ripple"></div>
+                        <div class="voice-ripple"></div>
+                    </div>
+                    <span class="voice-icon">🎙️</span>
+                </div>
+                <h3>请说出您的指令</h3>
+                <p id="voiceCommand" class="voice-command">正在聆听...</p>
+                <button class="close-voice" id="closeVoice">结束</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
