@@ -57,6 +57,14 @@ let currentStep = 0;
 let isPlaying = false;
 let callTimerInterval;
 let callSeconds = 0;
+/**
+ * @type {number|null} 用于存储 nextStep 的 setTimeout ID，以便在重置时清除
+ */
+let nextStepTimeoutId = null; 
+/**
+ * @type {number|null} 用于存储短信弹窗自动隐藏的 setTimeout ID，以便在重置时清除
+ */
+let smsHideTimeoutId = null; 
 
 /**
  * 添加对话气泡到对话区域。
@@ -105,9 +113,15 @@ function hideAnalysisCard() {
 function showSmsPopup(text) {
     smsContent.textContent = text;
     smsPopup.classList.add('active');
+    // 在设置新的定时器之前，清除任何现有的短信隐藏定时器
+    if (smsHideTimeoutId) {
+        clearTimeout(smsHideTimeoutId);
+        smsHideTimeoutId = null;
+    }
     // 持续一段时间后自动隐藏
-    setTimeout(() => {
+    smsHideTimeoutId = setTimeout(() => {
         hideSmsPopup();
+        smsHideTimeoutId = null; // 定时器执行后将 ID 置空
     }, 5000);
 }
 
@@ -152,6 +166,12 @@ async function nextStep() {
         isPlaying = false;
         toggleCallTimer(false);
         startBtn.textContent = '▶️ 开始演示';
+        
+        // 确保清除任何正在等待的 nextStep 定时器
+        if (nextStepTimeoutId) {
+            clearTimeout(nextStepTimeoutId);
+            nextStepTimeoutId = null;
+        }
         return;
     }
 
@@ -179,7 +199,11 @@ async function nextStep() {
 
     if (isPlaying) {
         // 自动播放下一条
-        setTimeout(nextStep, stepData.duration + 500); // 增加一些间隔时间
+        // 在调度新的定时器之前，清除任何现有的 nextStep 定时器
+        if (nextStepTimeoutId) {
+            clearTimeout(nextStepTimeoutId);
+        }
+        nextStepTimeoutId = setTimeout(nextStep, stepData.duration + 500); // 增加一些间隔时间并存储 ID
     }
 }
 
@@ -212,13 +236,33 @@ function resetDemo() {
     toggleCallTimer(false);
     callTimeSpan.textContent = '通话中 00:00:00';
     startBtn.textContent = '▶️ 开始演示';
-    dialogueArea.innerHTML = ''; // 清空对话
-    hideAnalysisCard();
-    hideSmsPopup();
-    // 恢复初始界面或"拨打12345"的初始画面 (当前为空，可以添加初始欢迎语或图片)
+
+    dialogueArea.innerHTML = ''; // 清空对话内容
+
+    // 清除任何正在等待的 nextStep 定时器
+    if (nextStepTimeoutId) {
+        clearTimeout(nextStepTimeoutId);
+        nextStepTimeoutId = null;
+    }
+
+    // 立即隐藏AI分析卡片，并停止所有相关动画
+    gsap.killTweensOf(analysisCard); // 停止AI分析卡片上所有正在进行的GSAP动画
+    analysisCard.style.opacity = '0'; // 设置透明度为0
+    analysisCard.style.transform = 'scale(0.8)'; // 恢复初始缩放状态
+    analysisCard.style.display = 'none'; // 隐藏元素
+
+    // 立即隐藏短信弹窗，并停止所有相关动画
+    // 清除任何正在等待的短信自动隐藏定时器
+    if (smsHideTimeoutId) {
+        clearTimeout(smsHideTimeoutId);
+        smsHideTimeoutId = null;
+    }
+    smsPopup.classList.remove('active'); // 移除激活类，CSS过渡会使其隐藏
+    gsap.killTweensOf(smsPopup); // 停止短信弹窗上所有正在进行的GSAP动画（尽管可能没有）
+    smsPopup.style.transform = 'translateY(-100%)'; // 强制设置回到隐藏位置，覆盖可能存在的过渡效果
+
+    // 恢复初始界面（目前为空，可以添加初始欢迎语或图片）
 }
-
-
 
 // 事件监听器
 startBtn.addEventListener('click', togglePlay);
