@@ -54,128 +54,118 @@ body {
     min-height: 100vh;
     color: var(--text-primary);
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* ===== 控制面板样式 ===== */
 .demo-controls {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    padding: 15px 25px;
-    border-radius: 0 0 20px 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 3px solid var(--text-accent);
 }
 
 .control-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 25px;
-    max-width: 1400px;
-    margin: 0 auto;
+    gap: 20px;
 }
 
 .demo-title {
-    color: var(--text-primary);
-    font-size: var(--font-subtitle);
-    font-weight: var(--font-bold);
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
     flex-shrink: 0;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .control-buttons {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
 /* ===== 按钮样式 ===== */
 .btn-primary, .btn-secondary {
-    padding: 12px 24px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 30px;
-    font-size: var(--font-body);
-    font-weight: var(--font-medium);
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     outline: none;
-    position: relative;
-    overflow: hidden;
 }
 
 .btn-primary {
-    background: var(--primary-gradient);
+    background: linear-gradient(45deg, #667eea, #764ba2);
     color: white;
-    box-shadow: 0 6px 20px var(--shadow-glow);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px var(--shadow-glow);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .btn-secondary {
-    background: var(--bg-white);
-    color: var(--text-secondary);
-    border: 2px solid var(--bg-muted);
-    box-shadow: 0 4px 15px var(--shadow-light);
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #e9ecef;
 }
 
 .btn-secondary:hover {
-    background: var(--bg-light);
-    color: var(--text-primary);
-    transform: translateY(-2px);
+    background: #e9ecef;
+    color: #495057;
 }
 
 /* ===== 主容器样式 ===== */
 .demo-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 25px;
-    min-height: calc(100vh - 120px);
+    padding: 20px;
+    min-height: calc(100vh - 95px);
 }
 
 .step-container {
     animation: fadeIn 0.6s ease-out;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* ===== 驾驶舱主界面 ===== */
 .dashboard-main {
     background: var(--bg-white);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 15px 40px var(--shadow-light);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px var(--shadow-light);
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 3px solid var(--bg-light);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--bg-muted);
 }
 
 .dashboard-header h1 {
-    font-size: var(--font-title);
-    font-weight: var(--font-bold);
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: var(--font-large);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
 }
 
 .dashboard-header h2 {
-    font-size: var(--font-subtitle);
-    font-weight: var(--font-bold);
+    font-size: var(--font-large);
+    font-weight: var(--font-semibold);
     color: var(--text-primary);
 }
 
@@ -431,9 +421,11 @@ body {
 /* ===== 分析界面样式 ===== */
 .analysis-dashboard {
     background: var(--bg-white);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 15px 40px var(--shadow-light);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .analysis-content {
@@ -912,9 +904,11 @@ body {
 /* ===== 模拟器样式 ===== */
 .simulation-dashboard {
     background: var(--bg-white);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 15px 40px var(--shadow-light);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .simulation-input {
@@ -1217,13 +1211,13 @@ body {
 @media (max-width: 768px) {
     .control-row {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
         align-items: stretch;
     }
     
     .demo-title {
         text-align: center;
-        font-size: var(--font-large);
+        font-size: 16px;
     }
     
     .control-buttons {
@@ -1231,11 +1225,14 @@ body {
     }
     
     .demo-container {
-        padding: 0 15px;
+        padding: 15px;
+        max-width: 100%;
     }
     
     .dashboard-main, .analysis-dashboard, .simulation-dashboard {
         padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .dashboard-header {
@@ -1267,8 +1264,8 @@ body {
 
 @media (max-width: 480px) {
     .demo-controls {
-        padding: 12px 15px;
-        border-radius: 0 0 15px 15px;
+        padding: 10px 15px;
+        border-radius: 0 0 12px 12px;
     }
     
     .voice-modal-content {
