@@ -50,11 +50,12 @@ body {
 
 /* ===== 控制面板样式 ===== */
 .demo-controls {
-    background: var(--bg-transparent);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     padding: 12px 20px;
     border-radius: 0 0 15px 15px;
-    box-shadow: 0 2px 15px var(--shadow-light);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -64,48 +65,36 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.control-group {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .demo-title {
-    font-size: var(--font-title);
-    font-weight: var(--font-semibold);
-    color: var(--text-primary);
-    margin: 0;
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+    flex-shrink: 0;
 }
 
-.demo-subtitle {
-    font-size: var(--font-small);
-    color: var(--text-secondary);
-    margin: 0;
+.control-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 /* ===== 按钮样式 ===== */
 .btn-primary, .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     padding: 10px 20px;
     border: none;
     border-radius: 25px;
-    font-size: var(--font-body);
-    font-weight: var(--font-medium);
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
+    outline: none;
 }
 
 .btn-primary {
-    background: var(--button-gradient);
+    background: linear-gradient(45deg, #667eea, #764ba2);
     color: white;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
@@ -116,19 +105,14 @@ body {
 }
 
 .btn-secondary {
-    background: var(--bg-light);
-    color: var(--text-secondary);
-    border: 2px solid var(--bg-muted);
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #e9ecef;
 }
 
 .btn-secondary:hover {
-    transform: translateY(-2px);
-    background: var(--bg-white);
-    border-color: var(--text-muted);
-}
-
-.btn-icon {
-    font-size: 16px;
+    background: #e9ecef;
+    color: #495057;
 }
 
 /* ===== 主容器样式 ===== */
@@ -645,7 +629,15 @@ body {
     .control-row {
         flex-direction: column;
         gap: 15px;
+    }
+    
+    .demo-title {
         text-align: center;
+        font-size: 16px;
+    }
+    
+    .control-buttons {
+        justify-content: center;
     }
     
     .call-interface {
