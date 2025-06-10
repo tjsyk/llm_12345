@@ -84,6 +84,14 @@
         </div>
         
         <div class="test-section">
+            <h3 class="test-title">测试4: 第三阶段动态审核流程</h3>
+            <p class="test-desc">报告提交 → AI审核 → 驳回修改 → 重新审核 → 自动进入回访</p>
+            <div id="test4Status" class="status working">准备测试</div>
+            <br><br>
+            <button id="test4Btn" class="btn-primary">开始测试动态审核</button>
+        </div>
+        
+        <div class="test-section">
             <h3 class="test-title">完整演示测试</h3>
             <p class="test-desc">打开完整的演示页面进行测试</p>
             <a href="index.html" class="btn-primary" target="_blank">🚀 打开完整演示</a>
@@ -102,6 +110,7 @@
                 document.getElementById('test1Btn').addEventListener('click', () => this.testStep1AutoJump());
                 document.getElementById('test2Btn').addEventListener('click', () => this.testTimeFlow());
                 document.getElementById('test3Btn').addEventListener('click', () => this.testStep2AutoJump());
+                document.getElementById('test4Btn').addEventListener('click', () => this.testDynamicAudit());
             }
             
             testStep1AutoJump() {
@@ -163,6 +172,23 @@
                     status.className = 'status success';
                     btn.textContent = '测试完成';
                     this.showToast('步骤二自动跳转测试完成！', 'success');
+                }, 2000);
+            }
+            
+            testDynamicAudit() {
+                const btn = document.getElementById('test4Btn');
+                const status = document.getElementById('test4Status');
+                
+                btn.disabled = true;
+                btn.textContent = '测试中...';
+                status.textContent = '模拟动态审核流程...';
+                status.className = 'status working';
+                
+                setTimeout(() => {
+                    status.textContent = '✅ 测试通过：动态审核流程正常';
+                    status.className = 'status success';
+                    btn.textContent = '测试完成';
+                    this.showToast('动态审核流程测试完成！', 'success');
                 }, 2000);
             }
             

@@ -380,43 +380,40 @@
                     <p class="stage-desc">工单办理完毕后，通过AI智能审核和回访，确保问题真正解决...</p>
                 </div>
 
+                <!-- 审核流程控制 -->
+                <div class="audit-controls">
+                    <div class="control-header">
+                        <h3>📋 智能审核系统</h3>
+                        <div class="audit-status" id="auditStatus">等待开始</div>
+                    </div>
+                    <button id="startAuditBtn" class="btn-primary">🚀 开始智能审核流程</button>
+                </div>
+
+                <!-- AI审核进度指示器 -->
+                <div class="ai-audit-progress" id="aiAuditProgress" style="display: none;">
+                    <div class="progress-header">
+                        <h4>🤖 AI审核中...</h4>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">正在分析报告内容...</div>
+                    </div>
+                    <div class="scanning-animation">
+                        <div class="scan-line"></div>
+                    </div>
+                </div>
+
                 <!-- 办结报告审核 -->
                 <div class="report-review">
                     <div class="review-header">
                         <h3>📝 办结报告审核</h3>
-                        <div class="review-status">工单状态：待审核</div>
+                        <div class="review-status" id="reviewStatus">工单状态：准备审核</div>
                     </div>
                     
-                    <div class="reports-container">
-                        <div class="report-item">
-                            <div class="report-header">
-                                <span class="dept-name">🚔 公安局治安支队</span>
-                                <span class="submit-time">提交时间：今日 16:30</span>
-                            </div>
-                            <div class="report-content">
-                                "已派员前往现场，将流浪犬捕获并送走。"
-                            </div>
-                            <div class="ai-review-result passed">
-                                <span class="result-icon">✅</span>
-                                <span class="result-text">AI审核通过</span>
-                                <button class="review-detail-btn" data-type="passed">查看详情</button>
-                            </div>
-                        </div>
-                        
-                        <div class="report-item">
-                            <div class="report-header">
-                                <span class="dept-name">🏘️ XX街道办事处</span>
-                                <span class="submit-time">提交时间：今日 17:15</span>
-                            </div>
-                            <div class="report-content">
-                                "问题已处理完毕。"
-                            </div>
-                            <div class="ai-review-result rejected">
-                                <span class="result-icon">❌</span>
-                                <span class="result-text">AI审核驳回</span>
-                                <button class="review-detail-btn" data-type="rejected">查看详情</button>
-                            </div>
-                        </div>
+                    <div class="reports-container" id="reportsContainer">
+                        <!-- 报告将动态添加到这里 -->
                     </div>
                 </div>
 
@@ -442,10 +439,10 @@
                 </div>
 
                 <!-- 智能回访 -->
-                <div class="smart-callback" id="smartCallback">
+                <div class="smart-callback" id="smartCallback" style="display: none;">
                     <div class="callback-header">
                         <h3>📞 智能回访</h3>
-                        <div class="callback-status">状态：待回访</div>
+                        <div class="callback-status">状态：准备回访</div>
                     </div>
                     
                     <div class="callback-script">

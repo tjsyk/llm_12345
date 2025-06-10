@@ -46,6 +46,7 @@ class WorkOrderDemo {
             btn.addEventListener('click', (e) => this.showReviewDetail(e.target.dataset.type));
         });
         document.getElementById('startCallbackBtn')?.addEventListener('click', () => this.startCallback());
+        document.getElementById('startAuditBtn')?.addEventListener('click', () => this.startAuditProcess());
     }
 
     /**
@@ -194,10 +195,37 @@ class WorkOrderDemo {
         const reviewOpinion = document.getElementById('reviewOpinion');
         const callbackResult = document.getElementById('callbackResult');
         const knowledgeDeposit = document.getElementById('knowledgeDeposit');
+        const smartCallback = document.getElementById('smartCallback');
+        const reportsContainer = document.getElementById('reportsContainer');
+        const aiAuditProgress = document.getElementById('aiAuditProgress');
+        const startAuditBtn = document.getElementById('startAuditBtn');
+        const auditStatus = document.getElementById('auditStatus');
+        const reviewStatus = document.getElementById('reviewStatus');
         
+        // 隐藏所有子组件
         if (reviewOpinion) reviewOpinion.style.display = 'none';
         if (callbackResult) callbackResult.style.display = 'none';
         if (knowledgeDeposit) knowledgeDeposit.style.display = 'none';
+        if (smartCallback) smartCallback.style.display = 'none';
+        if (aiAuditProgress) aiAuditProgress.style.display = 'none';
+        
+        // 清空报告容器
+        if (reportsContainer) reportsContainer.innerHTML = '';
+        
+        // 重置审核控制状态
+        if (startAuditBtn) {
+            startAuditBtn.disabled = false;
+            startAuditBtn.innerHTML = '🚀 开始智能审核流程';
+        }
+        
+        if (auditStatus) {
+            auditStatus.textContent = '等待开始';
+            auditStatus.className = 'audit-status';
+        }
+        
+        if (reviewStatus) {
+            reviewStatus.textContent = '工单状态：准备审核';
+        }
     }
 
     /**
@@ -408,12 +436,32 @@ class WorkOrderDemo {
                 // 时间流转完成，移除更新样式
                 timeDisplay.classList.remove('updating');
                 
-                // 显示完成提示并自动跳转到步骤三
+                // 显示完成提示并自动跳转到步骤三（监控预警）
                 setTimeout(() => {
-                    this.showToast('时间流转完成，检测到协同瓶颈，切换到监控预警...', 'warning');
+                    this.showToast('时间流转完成，进入监控预警阶段...', 'warning');
                     
                     setTimeout(() => {
                         this.showStep(3);
+                        this.showToast('检测到协同瓶颈，AI系统正在分析...', 'warning');
+                        
+                        // 稍等一下后自动显示预警
+                        setTimeout(() => {
+                            this.showWarning();
+                            
+                            // 预警查看完成后，跳转到阶段三
+                            setTimeout(() => {
+                                this.showToast('预警处理完成，进入智能审核阶段...', 'warning');
+                                
+                                setTimeout(() => {
+                                    this.showStage(3);
+                                    
+                                    // 稍等一下后自动开始审核流程
+                                    setTimeout(() => {
+                                        this.startAuditProcess();
+                                    }, 2000);
+                                }, 2000);
+                            }, 3000);
+                        }, 2000);
                     }, 1500);
                 }, 1000);
             }
@@ -588,6 +636,263 @@ class WorkOrderDemo {
                 warningBtn.disabled = true;
             }
         }, 1000);
+    }
+
+    /**
+     * 开始审核流程
+     */
+    startAuditProcess() {
+        const startBtn = document.getElementById('startAuditBtn');
+        const auditStatus = document.getElementById('auditStatus');
+        const reviewStatus = document.getElementById('reviewStatus');
+        
+        if (!startBtn) return;
+        
+        // 更新状态
+        startBtn.disabled = true;
+        startBtn.innerHTML = '🔄 审核进行中...';
+        auditStatus.textContent = '审核中';
+        auditStatus.className = 'audit-status processing';
+        reviewStatus.textContent = '工单状态：AI智能审核中';
+        
+        this.showToast('开始智能审核流程...', 'success');
+        
+        // 开始审核流程
+        setTimeout(() => {
+            this.processFirstReport();
+        }, 1500);
+    }
+
+    /**
+     * 处理第一个报告（公安局）
+     */
+    processFirstReport() {
+        const reportsContainer = document.getElementById('reportsContainer');
+        
+        // 创建第一个报告
+        const report1 = this.createReportElement({
+            icon: '🚔',
+            deptName: '公安局治安支队',
+            submitTime: '今日 16:30',
+            content: '"已派员前往现场，将流浪犬捕获并送走。"',
+            type: 'first'
+        });
+        
+        // 显示报告提交
+        reportsContainer.appendChild(report1);
+        this.showToast('公安局报告已提交', 'success');
+        
+        // 开始AI审核
+        setTimeout(() => {
+            this.startAIReview(report1, 'passed', () => {
+                // 第一个报告审核完成，处理第二个报告
+                setTimeout(() => {
+                    this.processSecondReport();
+                }, 1000);
+            });
+        }, 1500);
+    }
+
+    /**
+     * 处理第二个报告（街道办）
+     */
+    processSecondReport() {
+        const reportsContainer = document.getElementById('reportsContainer');
+        
+        // 创建第二个报告
+        const report2 = this.createReportElement({
+            icon: '🏘️',
+            deptName: 'XX街道办事处',
+            submitTime: '今日 17:15',
+            content: '"问题已处理完毕。"',
+            type: 'second'
+        });
+        
+        // 显示报告提交
+        reportsContainer.appendChild(report2);
+        this.showToast('街道办报告已提交', 'success');
+        
+        // 开始AI审核
+        setTimeout(() => {
+            this.startAIReview(report2, 'rejected', () => {
+                // 显示审核意见
+                setTimeout(() => {
+                    this.showRejectionReason();
+                    
+                    // 模拟报告修改和重新提交
+                    setTimeout(() => {
+                        this.resubmitReport(report2);
+                    }, 3000);
+                }, 1000);
+            });
+        }, 1500);
+    }
+
+    /**
+     * 创建报告元素
+     */
+    createReportElement({ icon, deptName, submitTime, content, type }) {
+        const reportItem = document.createElement('div');
+        reportItem.className = 'report-item submitting';
+        reportItem.innerHTML = `
+            <div class="report-header">
+                <span class="dept-name">${icon} ${deptName}</span>
+                <span class="submit-time">提交时间：${submitTime}</span>
+            </div>
+            <div class="report-content">
+                ${content}
+            </div>
+            <div class="ai-review-result" style="display: none;">
+                <!-- 审核结果将动态添加 -->
+            </div>
+        `;
+        
+        return reportItem;
+    }
+
+    /**
+     * 开始AI审核动画
+     */
+    startAIReview(reportElement, result, callback) {
+        const progressContainer = document.getElementById('aiAuditProgress');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        
+        // 显示审核进度
+        progressContainer.style.display = 'block';
+        reportElement.className = 'report-item reviewing';
+        
+        // 审核进度文本序列
+        const progressTexts = [
+            '正在分析报告内容...',
+            '检查关键信息完整性...',
+            '验证处理措施合规性...',
+            '评估问题解决效果...',
+            '生成审核结论...'
+        ];
+        
+        let currentStep = 0;
+        let progress = 0;
+        
+        const updateProgress = () => {
+            if (currentStep < progressTexts.length) {
+                progressText.textContent = progressTexts[currentStep];
+                progress += 20;
+                progressFill.style.width = progress + '%';
+                currentStep++;
+                
+                setTimeout(updateProgress, 800);
+            } else {
+                // 审核完成，显示结果
+                progressContainer.style.display = 'none';
+                this.showReviewResult(reportElement, result);
+                
+                if (callback) callback();
+            }
+        };
+        
+        updateProgress();
+    }
+
+    /**
+     * 显示审核结果
+     */
+    showReviewResult(reportElement, result) {
+        const reviewResultDiv = reportElement.querySelector('.ai-review-result');
+        
+        if (result === 'passed') {
+            reportElement.className = 'report-item approved';
+            reviewResultDiv.innerHTML = `
+                <span class="result-icon">✅</span>
+                <span class="result-text">AI审核通过</span>
+                <button class="review-detail-btn" data-type="passed">查看详情</button>
+            `;
+            this.showToast('AI审核通过', 'success');
+        } else {
+            reportElement.className = 'report-item rejected';
+            reviewResultDiv.innerHTML = `
+                <span class="result-icon">❌</span>
+                <span class="result-text">AI审核驳回</span>
+                <button class="review-detail-btn" data-type="rejected" onclick="workOrderDemo.showReviewDetail('rejected')">查看详情</button>
+            `;
+            this.showToast('AI审核驳回', 'warning');
+        }
+        
+        reviewResultDiv.style.display = 'flex';
+    }
+
+    /**
+     * 显示驳回原因
+     */
+    showRejectionReason() {
+        const reviewOpinion = document.getElementById('reviewOpinion');
+        if (reviewOpinion) {
+            reviewOpinion.style.display = 'block';
+            reviewOpinion.style.animation = 'slideIn 0.5s ease-out';
+        }
+    }
+
+    /**
+     * 重新提交报告
+     */
+    resubmitReport(reportElement) {
+        this.showToast('街道办正在修改报告...', 'success');
+        
+        // 添加重新提交动画
+        reportElement.classList.add('resubmitting');
+        
+        setTimeout(() => {
+            // 更新报告内容
+            const reportContent = reportElement.querySelector('.report-content');
+            reportContent.classList.add('updating');
+            
+            setTimeout(() => {
+                reportContent.innerHTML = `
+                    "已组织网格员对XX花园小区进行全面巡查，向居民解释了流浪犬处理情况，消除了居民的安全担忧。同时建立了定期巡查机制，每周进行2次社区安全检查，并设置了居民反馈渠道，确保类似问题能够及时发现和处理。"
+                `;
+                reportContent.classList.remove('updating');
+                
+                // 重新审核
+                setTimeout(() => {
+                    this.startAIReview(reportElement, 'passed', () => {
+                        // 所有审核完成
+                        setTimeout(() => {
+                            this.completeAuditProcess();
+                        }, 1000);
+                    });
+                }, 1000);
+                
+            }, 1000);
+            
+        }, 1000);
+    }
+
+    /**
+     * 完成审核流程
+     */
+    completeAuditProcess() {
+        const auditStatus = document.getElementById('auditStatus');
+        const reviewStatus = document.getElementById('reviewStatus');
+        const reviewOpinion = document.getElementById('reviewOpinion');
+        const smartCallback = document.getElementById('smartCallback');
+        
+        // 更新状态
+        auditStatus.textContent = '审核完成';
+        auditStatus.className = 'audit-status completed';
+        reviewStatus.textContent = '工单状态：审核通过，准备回访';
+        
+        // 隐藏审核意见
+        if (reviewOpinion) {
+            reviewOpinion.style.display = 'none';
+        }
+        
+        // 显示回访界面
+        if (smartCallback) {
+            smartCallback.style.display = 'block';
+            smartCallback.style.animation = 'slideIn 0.5s ease-out';
+        }
+        
+        this.showToast('所有报告审核完成，进入回访阶段', 'success');
     }
 
     /**
