@@ -248,7 +248,7 @@ class WorkOrderDemo {
             orderDraft.style.animation = 'slideIn 0.5s ease-out';
 
             // 恢复按钮状态
-            generateBtn.innerHTML = '⚡ AI秒级生成工单';
+            generateBtn.innerHTML = '⚡ 生成工单';
             generateBtn.disabled = false;
 
             // 高亮显示生成时间
