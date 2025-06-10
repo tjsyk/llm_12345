@@ -52,6 +52,12 @@ const startBtn = document.getElementById('start-btn');
 const resetBtn = document.getElementById('reset-btn');
 const callTimeSpan = document.querySelector('.call-time');
 
+// 调试DOM元素获取
+console.log('DOM元素检查:');
+console.log('smsPopup:', smsPopup);
+console.log('smsContent:', smsContent);
+console.log('dialogueArea:', dialogueArea);
+
 // 新增：获取演示要点相关DOM元素
 const pointsBtn = document.getElementById('points-btn');
 const pointsPopupOverlay = document.getElementById('points-popup-overlay');
@@ -118,25 +124,63 @@ function hideAnalysisCard() {
  * @param {string} text - 短信内容。
  */
 function showSmsPopup(text) {
+    console.log('=== showSmsPopup 调试开始 ===');
+    console.log('传入文本:', text);
+    console.log('smsPopup元素:', smsPopup);
+    console.log('smsContent元素:', smsContent);
+    
+    if (!smsPopup || !smsContent) {
+        console.error('SMS弹窗元素未找到!');
+        return;
+    }
+    
+    // 清除任何可能存在的内联样式
+    console.log('清除内联样式...');
+    smsPopup.style.transform = '';
+    smsPopup.style.opacity = '';
+    smsPopup.style.visibility = '';
+    
+    // 设置文本内容
+    console.log('设置文本内容...');
     smsContent.textContent = text;
+    console.log('文本内容已设置:', smsContent.textContent);
+    
+    // 显示弹窗
+    console.log('添加active类之前的classList:', smsPopup.classList.toString());
     smsPopup.classList.add('active');
+    console.log('添加active类之后的classList:', smsPopup.classList.toString());
+    
+    // 检查元素的计算样式
+    const computedStyle = window.getComputedStyle(smsPopup);
+    console.log('元素计算样式:');
+    console.log('- opacity:', computedStyle.opacity);
+    console.log('- visibility:', computedStyle.visibility);
+    console.log('- position:', computedStyle.position);
+    console.log('- top:', computedStyle.top);
+    console.log('- z-index:', computedStyle.zIndex);
+    
     // 在设置新的定时器之前，清除任何现有的短信隐藏定时器
     if (smsHideTimeoutId) {
         clearTimeout(smsHideTimeoutId);
         smsHideTimeoutId = null;
     }
+    
     // 持续一段时间后自动隐藏
     smsHideTimeoutId = setTimeout(() => {
         hideSmsPopup();
         smsHideTimeoutId = null; // 定时器执行后将 ID 置空
-    }, 5000);
+    }, 8000); // 增加显示时间
+    
+    console.log('=== showSmsPopup 调试结束 ===');
 }
 
 /**
  * 隐藏短信弹窗。
  */
 function hideSmsPopup() {
-    smsPopup.classList.remove('active');
+    if (smsPopup) {
+        smsPopup.classList.remove('active');
+    }
 }
 
 /**
@@ -282,7 +326,10 @@ function resetDemo() {
     }
     smsPopup.classList.remove('active'); // 移除激活类，CSS过渡会使其隐藏
     gsap.killTweensOf(smsPopup); // 停止短信弹窗上所有正在进行的GSAP动画（尽管可能没有）
-    smsPopup.style.transform = 'translateY(-100%)'; // 强制设置回到隐藏位置，覆盖可能存在的过渡效果
+    // 清除所有内联样式，让CSS类完全控制样式
+    smsPopup.style.transform = '';
+    smsPopup.style.opacity = '';
+    smsPopup.style.visibility = '';
 
     // 新增：隐藏演示要点弹窗
     hidePointsPopup();
@@ -304,4 +351,13 @@ pointsPopupOverlay.addEventListener('click', (event) => {
 });
 
 // 初始状态设置
-resetDemo(); 
+resetDemo();
+
+// 添加键盘快捷键测试SMS
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'T' || event.key === 't') {
+        console.log('测试SMS弹窗 - 按T键触发');
+        const testText = '【12345热线】王先生您好，您所需的新生儿落户材料清单如下：\n1. 父母双方身份证原件\n2. 父母双方户口本原件\n3. 父母结婚证\n4. 孩子《出生医学证明》\n5. （此项需进一步咨询）';
+        showSmsPopup(testText);
+    }
+}); 
