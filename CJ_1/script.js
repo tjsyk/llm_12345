@@ -56,7 +56,6 @@ const callTimeSpan = document.querySelector('.call-time');
 const pointsBtn = document.getElementById('points-btn');
 const pointsPopupOverlay = document.getElementById('points-popup-overlay');
 const pointsCloseBtn = document.getElementById('points-close-btn');
-const pointsTextContent = document.getElementById('points-text-content');
 
 // 演示状态变量
 let currentStep = 0;
@@ -72,21 +71,7 @@ let nextStepTimeoutId = null;
  */
 let smsHideTimeoutId = null; 
 
-// 模拟数据：演示要点内容 (来自 演示要点.md)
-const demoPointsContent = `
-    <ul>
-        <li>AI识别老用户，服务有记忆。</li>
-        <li>预测后续业务，体现主动关怀。</li>
-        <li>直接播报标准答案，准确高效。</li>
-        <li>主动提问关键变量，答案更精准。</li>
-        <li>支持用户随时打断，对话更自然。</li>
-        <li>捕捉话题切换，理解深层意图。</li>
-        <li>智能决策最佳路径，精准转接。</li>
-        <li>语音+短信协同，服务方式多样。</li>
-        <li>固化关键信息，服务周到体验好。</li>
-        <li>专业结束语，提升品牌形象。</li>
-    </ul>
-`;
+
 
 /**
  * 添加对话气泡到对话区域。
@@ -159,7 +144,6 @@ function hideSmsPopup() {
  * @returns {void}
  */
 function showPointsPopup() {
-    pointsTextContent.innerHTML = demoPointsContent; // 填充内容
     pointsPopupOverlay.classList.add('active');
 }
 

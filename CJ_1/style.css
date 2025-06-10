@@ -381,7 +381,7 @@ body {
     }
 }
 
-/* 演示要点弹窗 - 全新专业设计 */
+/* 演示要点弹窗 - 全新专业卡片设计 */
 .points-popup-overlay {
     position: fixed;
     top: 0;
@@ -411,12 +411,12 @@ body {
         0 24px 48px rgba(0, 0, 0, 0.2),
         0 8px 24px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    max-width: 720px;
-    width: 92%;
+    max-width: 980px;
+    width: 95%;
     position: relative;
     transform: scale(0.7) translateY(40px) rotateX(15deg);
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    max-height: 85vh;
+    max-height: 90vh;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
@@ -443,7 +443,7 @@ body {
     opacity: 0.3;
 }
 
-.points-popup-content h3 {
+.points-popup-header h3 {
     color: #ffffff;
     margin: 0 0 8px 0;
     font-size: 28px;
@@ -455,7 +455,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-.points-popup-subtitle {
+.points-subtitle {
     color: rgba(255, 255, 255, 0.9);
     font-size: 15px;
     margin: 0;
@@ -469,7 +469,7 @@ body {
 .points-popup-body {
     padding: 40px;
     overflow-y: auto;
-    max-height: calc(85vh - 140px);
+    max-height: calc(90vh - 140px);
     background: linear-gradient(to bottom, #ffffff, #fafbfc);
 }
 
@@ -491,37 +491,30 @@ body {
     background: linear-gradient(135deg, #5a6fd8, #6a42a1);
 }
 
-.points-text-content {
-    color: #2c3e50;
-    line-height: 1.7;
-    font-size: 16px;
-}
-
-.points-text-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.points-grid {
     display: grid;
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    padding: 0;
 }
 
-.points-text-content ul li {
-    position: relative;
-    padding: 20px 24px 20px 60px;
+.point-card {
     background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
     border-radius: 16px;
-    border-left: 4px solid transparent;
-    border-image: linear-gradient(135deg, #667eea, #764ba2) 1;
+    padding: 24px;
     box-shadow: 
         0 4px 12px rgba(102, 126, 234, 0.08),
         0 2px 4px rgba(0, 0, 0, 0.04);
-    font-weight: 500;
+    border: 1px solid rgba(102, 126, 234, 0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateZ(0);
+    position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
 }
 
-.points-text-content ul li::before {
+.point-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -533,46 +526,55 @@ body {
     transition: opacity 0.3s ease;
 }
 
-.points-text-content ul li:hover {
+.point-card:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow: 
         0 8px 24px rgba(102, 126, 234, 0.15),
         0 4px 8px rgba(0, 0, 0, 0.08);
-    border-image: linear-gradient(135deg, #5a6fd8, #6a42a1) 1;
+    border-color: rgba(102, 126, 234, 0.2);
 }
 
-.points-text-content ul li:hover::before {
+.point-card:hover::before {
     opacity: 1;
 }
 
-.points-text-content ul li::after {
-    content: '💡';
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
+.point-icon {
+    font-size: 24px;
     background: linear-gradient(135deg, #667eea, #764ba2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
-.points-text-content ul li:nth-child(odd)::after {
-    content: '🎯';
+.point-content {
+    flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
-.points-text-content ul li:nth-child(3n)::after {
-    content: '⚡';
+.point-content h4 {
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    line-height: 1.4;
 }
 
-.points-text-content ul li:nth-child(4n)::after {
-    content: '🚀';
-}
-
-.points-text-content ul li:nth-child(5n)::after {
-    content: '🎭';
+.point-content p {
+    color: #5a6c7d;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
 }
 
 .close-btn {
@@ -609,16 +611,17 @@ body {
 /* 演示要点弹窗响应式设计 */
 @media (max-width: 1024px) {
     .points-popup-content {
-        max-width: 640px;
-        width: 90%;
+        max-width: 720px;
+        width: 92%;
+    }
+    
+    .points-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .points-popup-body {
-        padding: 36px 32px;
-    }
-    
-    .points-text-content ul li {
-        padding: 18px 20px 18px 56px;
+        padding: 32px;
     }
 }
 
@@ -627,158 +630,129 @@ body {
         width: 94%;
         max-height: 88vh;
         border-radius: 20px;
-        transform: scale(0.8) translateY(30px) rotateX(10deg);
     }
     
     .points-popup-header {
-        padding: 28px 32px 24px;
+        padding: 24px 32px 20px;
     }
     
-    .points-popup-content h3 {
+    .points-popup-header h3 {
         font-size: 24px;
-        letter-spacing: 0.3px;
-    }
-    
-    .points-popup-subtitle {
-        font-size: 14px;
     }
     
     .points-popup-body {
-        padding: 32px 28px;
+        padding: 24px;
         max-height: calc(88vh - 120px);
     }
     
-    .points-text-content {
-        font-size: 15px;
-        line-height: 1.6;
-    }
-    
-    .points-text-content ul {
-        gap: 14px;
-    }
-    
-    .points-text-content ul li {
-        padding: 16px 18px 16px 50px;
-        border-radius: 14px;
-    }
-    
-    .points-text-content ul li::after {
-        left: 16px;
-        font-size: 18px;
-    }
-    
-    .close-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 22px;
-        top: 18px;
-        right: 22px;
-    }
-}
-
-@media (max-width: 480px) {
-    .points-popup-overlay {
+    .point-card {
         padding: 20px;
-    }
-    
-    .points-popup-content {
-        width: 100%;
-        max-width: none;
-        border-radius: 18px;
-        max-height: 92vh;
-    }
-    
-    .points-popup-header {
-        padding: 24px 24px 20px;
-    }
-    
-    .points-popup-content h3 {
-        font-size: 22px;
-        letter-spacing: 0.2px;
-    }
-    
-    .points-popup-subtitle {
-        font-size: 13px;
-    }
-    
-    .points-popup-body {
-        padding: 28px 20px;
-        max-height: calc(92vh - 100px);
-    }
-    
-    .points-text-content {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-    
-    .points-text-content ul {
         gap: 12px;
     }
     
-    .points-text-content ul li {
-        padding: 14px 16px 14px 44px;
-        border-radius: 12px;
+    .point-icon {
+        font-size: 20px;
+        width: 28px;
+        height: 28px;
     }
     
-    .points-text-content ul li::after {
-        left: 14px;
-        font-size: 16px;
+    .point-content h4 {
+        font-size: 15px;
+    }
+    
+    .point-content p {
+        font-size: 13px;
     }
     
     .close-btn {
         width: 36px;
         height: 36px;
-        font-size: 20px;
+        font-size: 18px;
         top: 16px;
-        right: 18px;
-        border-radius: 10px;
+        right: 20px;
     }
 }
 
-@media (max-width: 360px) {
-    .points-popup-overlay {
-        padding: 16px;
-    }
-    
+@media (max-width: 480px) {
     .points-popup-content {
+        width: 96%;
         border-radius: 16px;
+        max-height: 90vh;
     }
     
     .points-popup-header {
-        padding: 20px 20px 16px;
+        padding: 20px 24px 16px;
     }
     
-    .points-popup-content h3 {
+    .points-popup-header h3 {
         font-size: 20px;
     }
     
-    .points-popup-subtitle {
-        font-size: 12px;
-    }
-    
     .points-popup-body {
-        padding: 24px 16px;
+        padding: 20px;
+        max-height: calc(90vh - 100px);
     }
     
-    .points-text-content {
-        font-size: 13px;
+    .point-card {
+        padding: 16px;
+        gap: 10px;
     }
     
-    .points-text-content ul li {
-        padding: 12px 14px 12px 40px;
-        border-radius: 10px;
-    }
-    
-    .points-text-content ul li::after {
-        left: 12px;
+    .point-content h4 {
         font-size: 14px;
+    }
+    
+    .point-content p {
+        font-size: 12px;
+        line-height: 1.5;
     }
     
     .close-btn {
         width: 32px;
         height: 32px;
-        font-size: 18px;
-        top: 14px;
+        font-size: 16px;
+        top: 12px;
         right: 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    .points-popup-content {
+        width: 98%;
+        border-radius: 12px;
+    }
+    
+    .points-popup-header {
+        padding: 16px 20px 12px;
+    }
+    
+    .points-popup-header h3 {
+        font-size: 18px;
+    }
+    
+    .points-popup-body {
+        padding: 16px;
+    }
+    
+    .point-card {
+        padding: 14px;
+        border-radius: 12px;
+    }
+    
+    .point-content h4 {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    
+    .point-content p {
+        font-size: 11px;
+    }
+    
+    .close-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        top: 10px;
+        right: 12px;
     }
 } 
