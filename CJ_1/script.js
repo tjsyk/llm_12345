@@ -52,6 +52,12 @@ const startBtn = document.getElementById('start-btn');
 const resetBtn = document.getElementById('reset-btn');
 const callTimeSpan = document.querySelector('.call-time');
 
+// 新增：获取演示要点相关DOM元素
+const pointsBtn = document.getElementById('points-btn');
+const pointsPopupOverlay = document.getElementById('points-popup-overlay');
+const pointsCloseBtn = document.getElementById('points-close-btn');
+const pointsTextContent = document.getElementById('points-text-content');
+
 // 演示状态变量
 let currentStep = 0;
 let isPlaying = false;
@@ -65,6 +71,22 @@ let nextStepTimeoutId = null;
  * @type {number|null} 用于存储短信弹窗自动隐藏的 setTimeout ID，以便在重置时清除
  */
 let smsHideTimeoutId = null; 
+
+// 模拟数据：演示要点内容 (来自 演示要点.md)
+const demoPointsContent = `
+    <ul>
+        <li>AI识别老用户，服务有记忆。</li>
+        <li>预测后续业务，体现主动关怀。</li>
+        <li>直接播报标准答案，准确高效。</li>
+        <li>主动提问关键变量，答案更精准。</li>
+        <li>支持用户随时打断，对话更自然。</li>
+        <li>捕捉话题切换，理解深层意图。</li>
+        <li>智能决策最佳路径，精准转接。</li>
+        <li>语音+短信协同，服务方式多样。</li>
+        <li>固化关键信息，服务周到体验好。</li>
+        <li>专业结束语，提升品牌形象。</li>
+    </ul>
+`;
 
 /**
  * 添加对话气泡到对话区域。
@@ -130,6 +152,23 @@ function showSmsPopup(text) {
  */
 function hideSmsPopup() {
     smsPopup.classList.remove('active');
+}
+
+/**
+ * 显示演示要点弹窗。
+ * @returns {void}
+ */
+function showPointsPopup() {
+    pointsTextContent.innerHTML = demoPointsContent; // 填充内容
+    pointsPopupOverlay.classList.add('active');
+}
+
+/**
+ * 隐藏演示要点弹窗。
+ * @returns {void}
+ */
+function hidePointsPopup() {
+    pointsPopupOverlay.classList.remove('active');
 }
 
 /**
@@ -261,12 +300,24 @@ function resetDemo() {
     gsap.killTweensOf(smsPopup); // 停止短信弹窗上所有正在进行的GSAP动画（尽管可能没有）
     smsPopup.style.transform = 'translateY(-100%)'; // 强制设置回到隐藏位置，覆盖可能存在的过渡效果
 
+    // 新增：隐藏演示要点弹窗
+    hidePointsPopup();
+
     // 恢复初始界面（目前为空，可以添加初始欢迎语或图片）
 }
 
 // 事件监听器
 startBtn.addEventListener('click', togglePlay);
 resetBtn.addEventListener('click', resetDemo);
+// 新增：演示要点按钮事件监听
+pointsBtn.addEventListener('click', showPointsPopup);
+pointsCloseBtn.addEventListener('click', hidePointsPopup);
+// 点击弹窗外部区域也可以关闭弹窗
+pointsPopupOverlay.addEventListener('click', (event) => {
+    if (event.target === pointsPopupOverlay) {
+        hidePointsPopup();
+    }
+});
 
 // 初始状态设置
 resetDemo(); 
