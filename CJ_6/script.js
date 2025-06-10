@@ -460,26 +460,98 @@ class SmartCityDashboard {
      * 图表动画
      */
     animateCharts() {
-        // 柱状图动画
-        const chartItems = document.querySelectorAll('.chart-item');
+        // 问题类型分布卡片动画
+        const chartItems = document.querySelectorAll('#problemChart .chart-item');
         chartItems.forEach((item, index) => {
-            const value = item.querySelector('.chart-value').textContent;
-            const width = value.replace('%', '');
+            const progressBar = item.querySelector('.chart-progress-bar');
+            const value = item.getAttribute('data-value');
+            const icon = item.querySelector('.chart-icon');
+            const valueElement = item.querySelector('.chart-value');
+            
+            // 初始状态
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(30px) scale(0.8)';
+            progressBar.style.width = '0%';
+            icon.style.transform = 'scale(0) rotate(180deg)';
+            valueElement.style.transform = 'scale(0)';
             
             setTimeout(() => {
-                item.style.setProperty('--chart-width', width + '%');
-                item.querySelector('::before') && (item.querySelector('::before').style.width = width + '%');
+                item.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0) scale(1)';
+                
+                // 图标动画
+                setTimeout(() => {
+                    icon.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                }, 100);
+                
+                // 数值动画
+                setTimeout(() => {
+                    valueElement.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    valueElement.style.transform = 'scale(1)';
+                    
+                    // 数字计数动画
+                    this.animateCounter(valueElement, 0, parseInt(value), 800);
+                }, 200);
+                
+                // 进度条动画
+                setTimeout(() => {
+                    progressBar.style.transition = 'width 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                    progressBar.style.width = value + '%';
+                }, 400);
+                
             }, index * 200);
         });
 
         // 趋势图动画
-        const trendBars = document.querySelectorAll('.trend-bar');
-        trendBars.forEach((bar, index) => {
+        const trendItems = document.querySelectorAll('.trend-item');
+        trendItems.forEach((item, index) => {
+            const bar = item.querySelector('.trend-bar');
+            
+            // 初始状态
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            bar.style.width = '0';
+            
             setTimeout(() => {
-                bar.style.opacity = '1';
-                bar.style.transform = 'scaleX(1)';
-            }, index * 300);
+                item.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+                
+                // 延迟启动进度条动画
+                setTimeout(() => {
+                    bar.style.transition = 'width 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                    if (bar.classList.contains('high')) {
+                        bar.style.width = '85%';
+                    } else if (bar.classList.contains('medium')) {
+                        bar.style.width = '60%';
+                    }
+                }, 200);
+            }, index * 200 + 1000); // 在卡片动画完成后开始
         });
+    }
+
+    /**
+     * 数字计数动画
+     * @param {HTMLElement} element - 目标元素
+     * @param {number} start - 起始值
+     * @param {number} end - 结束值
+     * @param {number} duration - 动画时长
+     */
+    animateCounter(element, start, end, duration) {
+        const range = end - start;
+        const increment = range / (duration / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= end) {
+                current = end;
+                clearInterval(timer);
+            }
+            element.textContent = Math.round(current) + '%';
+        }, 16);
     }
 
     /**
@@ -742,17 +814,88 @@ style.textContent = `
         width: var(--chart-width, 0%);
     }
     
-    .trend-bar {
-        opacity: 0;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: all 0.6s ease;
-    }
-    
     .message-toast {
         font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
         font-weight: 500;
         font-size: 14px;
+    }
+    
+    /* 图表悬停效果增强 */
+    .chart-item:hover .chart-value {
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .trend-item:hover .trend-bar::after {
+        animation-duration: 1s;
+    }
+    
+    /* 响应式优化 */
+    @media (max-width: 768px) {
+        .chart {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        
+        .chart-item {
+            padding: 16px 12px;
+            min-height: 120px;
+        }
+        
+        .chart-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .chart-value {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+        
+        .chart-label {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .trend-item {
+            padding: 12px 16px;
+        }
+        
+        .time-label {
+            font-size: 13px;
+        }
+        
+        .trend-level {
+            padding: 2px 8px;
+            font-size: 11px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .chart {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .chart-item {
+            padding: 12px 8px;
+            min-height: 100px;
+        }
+        
+        .chart-icon {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+        
+        .chart-value {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        
+        .chart-label {
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
     }
 `;
 document.head.appendChild(style);
