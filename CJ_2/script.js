@@ -30,7 +30,13 @@ class DemoController {
             confirmOrderBtn: document.getElementById('confirmOrderBtn'),
             cancelOrderBtn: document.getElementById('cancelOrderBtn'),
             closeOrderModal: document.getElementById('closeOrderModal'),
-            dataFlowContainer: document.getElementById('dataFlowContainer')
+            dataFlowContainer: document.getElementById('dataFlowContainer'),
+
+            // 演示要点相关元素
+            pointsBtn: document.getElementById('points-btn'),
+            pointsPopupOverlay: document.getElementById('points-popup-overlay'),
+            pointsCloseBtn: document.getElementById('points-close-btn'),
+            pointsTextContent: document.getElementById('points-text-content')
         };
         
         // 演示数据
@@ -308,10 +314,21 @@ class DemoController {
         this.elements.cancelOrderBtn.addEventListener('click', () => this.hideOrderModal());
         this.elements.closeOrderModal.addEventListener('click', () => this.hideOrderModal());
         
+        // 演示要点相关事件
+        this.elements.pointsBtn.addEventListener('click', () => this.showPointsPopup());
+        this.elements.pointsCloseBtn.addEventListener('click', () => this.hidePointsPopup());
+        
         // 模态框外部点击关闭
         this.elements.orderModal.addEventListener('click', (e) => {
             if (e.target === this.elements.orderModal) {
                 this.hideOrderModal();
+            }
+        });
+        
+        // 演示要点弹窗外部点击关闭
+        this.elements.pointsPopupOverlay.addEventListener('click', (e) => {
+            if (e.target === this.elements.pointsPopupOverlay) {
+                this.hidePointsPopup();
             }
         });
     }
@@ -372,8 +389,40 @@ class DemoController {
         }
         
         this.hideOrderModal();
+        this.hidePointsPopup();
         
         console.log('🔄 演示已重置');
+    }
+
+    /**
+     * 显示演示要点弹窗
+     */
+    showPointsPopup() {
+        // 演示要点内容数据
+        const demoPointsContent = `
+            <ul>
+                <li>实时语音转文字，解放坐席双手。</li>
+                <li>动态生成摘要，时刻把握核心。</li>
+                <li>秒懂转接原因，无需重复提问。</li>
+                <li>提升市民体验，沟通无缝衔接。</li>
+                <li>实时感知市民情绪，动态预警。</li>
+                <li>一键获取专业话术，稳定局面。</li>
+                <li>毫秒级知识推送，坐席变专家。</li>
+                <li>引导式提问，确保流程不遗漏。</li>
+                <li>AI辅助回答，回复专业条理清晰。</li>
+                <li>通话中完成信息采集，高效无误。</li>
+            </ul>
+        `;
+        
+        this.elements.pointsTextContent.innerHTML = demoPointsContent;
+        this.elements.pointsPopupOverlay.classList.add('active');
+    }
+
+    /**
+     * 隐藏演示要点弹窗
+     */
+    hidePointsPopup() {
+        this.elements.pointsPopupOverlay.classList.remove('active');
     }
     
     /**
