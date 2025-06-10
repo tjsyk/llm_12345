@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智慧城市驾驶舱 - 领导决策助手</title>
     <link rel="stylesheet" href="style.css">
+    <!-- 高德地图API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=17b881f8d6393bf88b67b06bc8718b54&plugin=AMap.HeatMap"></script>
 </head>
 <body>
     <!-- 演示控制面板 -->
@@ -104,27 +106,17 @@
                         <div class="map-container">
                             <div class="map-header">
                                 <h3>📍 投诉热力分布图</h3>
-                                <div class="map-legend">
-                                    <span class="legend-item high">高</span>
-                                    <span class="legend-item medium">中</span>
-                                    <span class="legend-item low">低</span>
+                                <div class="map-controls">
+                                    <button id="refreshMapBtn" class="refresh-map-btn" title="刷新地图">🔄</button>
+                                    <div class="map-legend">
+                                        <span class="legend-item high">高</span>
+                                        <span class="legend-item medium">中</span>
+                                        <span class="legend-item low">低</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="city-map" id="cityMap">
-                                <div class="hotspot high" data-area="A街道" style="top: 30%; left: 25%;">
-                                    <div class="hotspot-marker">🔥</div>
-                                    <div class="hotspot-label">A街道</div>
-                                </div>
-                                <div class="hotspot high" data-area="B广场" style="top: 60%; left: 70%;">
-                                    <div class="hotspot-marker">🔥</div>
-                                    <div class="hotspot-label">B广场</div>
-                                </div>
-                                <div class="hotspot medium" style="top: 20%; left: 60%;">
-                                    <div class="hotspot-marker">⚠️</div>
-                                </div>
-                                <div class="hotspot low" style="top: 80%; left: 40%;">
-                                    <div class="hotspot-marker">📌</div>
-                                </div>
+                                <!-- 高德地图容器 -->
                             </div>
                         </div>
                     </div>

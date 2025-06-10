@@ -462,6 +462,30 @@ body {
     color: var(--text-primary);
 }
 
+.map-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.refresh-map-btn {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow-glow);
+}
+
+.refresh-map-btn:hover {
+    transform: rotate(180deg) scale(1.1);
+    box-shadow: 0 4px 12px var(--shadow-glow);
+}
+
 .map-legend {
     display: flex;
     gap: 10px;
@@ -475,56 +499,61 @@ body {
 }
 
 .legend-item.high {
-    background: #ff6b6b;
+    background: #F44336;
     color: white;
 }
 
 .legend-item.medium {
-    background: #ffa726;
+    background: #FF9800;
     color: white;
 }
 
 .legend-item.low {
-    background: #66bb6a;
+    background: #4CAF50;
     color: white;
 }
 
 .city-map {
     position: relative;
-    height: 300px;
-    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+    height: 350px;
     border-radius: 12px;
     border: 2px solid var(--bg-muted);
+    overflow: hidden;
+    width: 100%;
+    min-height: 350px;
 }
 
-.hotspot {
-    position: absolute;
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* 高德地图容器样式 */
+#cityMap {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 10px;
+    min-height: 350px;
 }
 
-.hotspot:hover {
-    transform: scale(1.1);
+.map-container {
+    width: 100%;
+    height: auto;
 }
 
-.hotspot-marker {
-    font-size: 20px;
-    animation: pulse 2s infinite;
+/* 高德地图信息窗体样式 */
+.amap-info-content {
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif !important;
 }
 
-.hotspot-label {
-    position: absolute;
-    top: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-white);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: var(--font-small);
-    font-weight: var(--font-medium);
-    box-shadow: 0 2px 8px var(--shadow-light);
-    white-space: nowrap;
+.amap-info h4 {
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    font-size: 14px;
 }
+
+.amap-info p {
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin: 2px 0;
+}
+
+/* 热点样式已移除，使用高德地图标记 */
 
 .chart-container, .trend-container {
     margin-bottom: 25px;

@@ -15,6 +15,8 @@ class SmartCityDashboard {
             "针对A街道的车位不足问题，如果我们在附近的废弃C地块，新建一个有300个车位的智慧停车场，进行'What-If'模拟"
         ];
         this.currentCommandIndex = 0;
+        this.map = null;
+        this.heatmap = null;
         
         this.init();
     }
@@ -47,10 +49,7 @@ class SmartCityDashboard {
         document.getElementById('simulateDecision')?.addEventListener('click', () => this.goToStep(3));
         document.getElementById('backToStep2')?.addEventListener('click', () => this.goToStep(2));
 
-        // 地图热点点击
-        document.querySelectorAll('.hotspot').forEach(hotspot => {
-            hotspot.addEventListener('click', (e) => this.showAreaAnalysis(e.target.closest('.hotspot').dataset.area));
-        });
+        // 地图点击事件将在地图初始化后绑定
 
         // 关闭分析弹窗
         document.getElementById('closeAnalysis')?.addEventListener('click', () => this.closeAreaAnalysis());
@@ -61,6 +60,9 @@ class SmartCityDashboard {
         document.getElementById('modifyDecision')?.addEventListener('click', () => this.modifyDecision());
         document.getElementById('moreSimulation')?.addEventListener('click', () => this.moreSimulation());
 
+        // 地图刷新按钮
+        document.getElementById('refreshMapBtn')?.addEventListener('click', () => this.refreshMap());
+
         // 点击弹窗外部关闭
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('area-analysis') || e.target.classList.contains('voice-modal')) {
@@ -68,6 +70,16 @@ class SmartCityDashboard {
                 this.closeVoiceModal();
             }
         });
+
+        // 窗口大小变化时重新调整地图
+        window.addEventListener('resize', debounce(() => {
+            if (this.map) {
+                setTimeout(() => {
+                    this.map.getSize();
+                    this.map.setFitView();
+                }, 100);
+            }
+        }, 300));
     }
 
     /**
@@ -109,7 +121,10 @@ class SmartCityDashboard {
         document.getElementById(`step${step}`).style.display = 'block';
         
         if (step === 2) {
-            setTimeout(() => this.animateCharts(), 300);
+            setTimeout(() => {
+                this.animateCharts();
+                this.initMap();
+            }, 500);
         }
     }
 
@@ -465,6 +480,202 @@ class SmartCityDashboard {
                 bar.style.transform = 'scaleX(1)';
             }, index * 300);
         });
+    }
+
+    /**
+     * 初始化高德地图
+     */
+    initMap() {
+        if (this.map) {
+            return; // 地图已初始化
+        }
+
+        const mapContainer = document.getElementById('cityMap');
+        if (!mapContainer) {
+            console.error('地图容器未找到');
+            return;
+        }
+
+        // 显示加载状态
+        mapContainer.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #667eea; font-size: 14px;"><div class="spinner" style="width: 20px; height: 20px; margin-right: 10px;"></div>正在加载地图...</div>';
+
+        // 确保容器有正确的尺寸
+        setTimeout(() => {
+            // 创建地图实例
+            this.map = new AMap.Map('cityMap', {
+                zoom: 12,
+                center: [116.397428, 39.90923], // 北京市中心
+                mapStyle: 'amap://styles/light',
+                resizeEnable: true,
+                rotateEnable: false,
+                pitchEnable: false,
+                zoomEnable: true,
+                dragEnable: true
+            });
+
+            // 地图加载完成后的回调
+            this.map.on('complete', () => {
+                console.log('高德地图加载完成');
+                // 地图加载完成后重新调整大小
+                setTimeout(() => {
+                    this.map.getSize();
+                    this.map.setFitView();
+                }, 100);
+            });
+
+            // 地图错误处理
+            this.map.on('hotspotclick', (e) => {
+                console.log('地图热点点击:', e);
+            });
+
+            // 监听地图移动完成
+            this.map.on('moveend', () => {
+                console.log('地图移动完成');
+            });
+
+            // 监听地图缩放完成
+            this.map.on('zoomend', () => {
+                console.log('地图缩放完成，当前级别:', this.map.getZoom());
+            });
+
+            // 投诉热力数据点
+            const heatmapData = [
+                // A街道区域 (高密度)
+                { lng: 116.38, lat: 39.92, count: 85 },
+                { lng: 116.381, lat: 39.921, count: 78 },
+                { lng: 116.382, lat: 39.919, count: 92 },
+                { lng: 116.379, lat: 39.918, count: 88 },
+                { lng: 116.383, lat: 39.922, count: 95 },
+
+                // B广场区域 (高密度)
+                { lng: 116.42, lat: 39.89, count: 89 },
+                { lng: 116.421, lat: 39.891, count: 83 },
+                { lng: 116.419, lat: 39.888, count: 91 },
+                { lng: 116.422, lat: 39.892, count: 87 },
+
+                // 其他中等密度区域
+                { lng: 116.405, lat: 39.915, count: 45 },
+                { lng: 116.395, lat: 39.905, count: 52 },
+                { lng: 116.41, lat: 39.895, count: 48 },
+                { lng: 116.385, lat: 39.885, count: 41 },
+
+                // 低密度区域
+                { lng: 116.43, lat: 39.92, count: 25 },
+                { lng: 116.37, lat: 39.88, count: 28 },
+                { lng: 116.44, lat: 39.88, count: 22 },
+                { lng: 116.36, lat: 39.93, count: 31 }
+            ];
+
+            // 创建热力图
+            this.heatmap = new AMap.HeatMap(this.map, {
+                radius: 35,
+                opacity: [0, 0.85],
+                gradient: {
+                    0.2: '#4CAF50',   // 绿色 - 低密度
+                    0.4: '#FFC107',   // 黄色 - 中低密度
+                    0.6: '#FF9800',   // 橙色 - 中等密度
+                    0.8: '#F44336',   // 红色 - 高密度
+                    1.0: '#9C27B0'    // 紫色 - 极高密度
+                },
+                blur: 0.85,
+                zooms: [3, 18]
+            });
+
+            // 设置热力图数据
+            this.heatmap.setDataSet({
+                data: heatmapData.map(point => ({
+                    lng: point.lng,
+                    lat: point.lat,
+                    count: point.count
+                })),
+                max: 100
+            });
+
+            // 添加标记点
+            this.addMapMarkers();
+
+            // 添加地图控件
+            this.map.addControl(new AMap.Scale());
+            this.map.addControl(new AMap.ToolBar());
+
+            // 强制重新渲染地图，解决显示不完整问题
+            setTimeout(() => {
+                this.map.getSize();
+                this.map.setFitView();
+                window.dispatchEvent(new Event('resize'));
+            }, 300);
+        }, 100);
+    }
+
+    /**
+     * 添加地图标记点
+     */
+    addMapMarkers() {
+        // A街道标记
+        const markerA = new AMap.Marker({
+            position: [116.38, 39.92],
+            title: 'A街道',
+            icon: new AMap.Icon({
+                size: new AMap.Size(30, 30),
+                image: 'data:image/svg+xml;base64,' + btoa(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                        <circle cx="15" cy="15" r="12" fill="#ff4757" stroke="#fff" stroke-width="2"/>
+                        <text x="15" y="19" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A</text>
+                    </svg>
+                `)
+            })
+        });
+
+        // B广场标记
+        const markerB = new AMap.Marker({
+            position: [116.42, 39.89],
+            title: 'B广场',
+            icon: new AMap.Icon({
+                size: new AMap.Size(30, 30),
+                image: 'data:image/svg+xml;base64,' + btoa(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                        <circle cx="15" cy="15" r="12" fill="#ff4757" stroke="#fff" stroke-width="2"/>
+                        <text x="15" y="19" text-anchor="middle" fill="white" font-size="12" font-weight="bold">B</text>
+                    </svg>
+                `)
+            })
+        });
+
+        // 添加标记到地图
+        this.map.add([markerA, markerB]);
+
+        // 添加点击事件
+        markerA.on('click', () => this.showAreaAnalysis('A街道'));
+        markerB.on('click', () => this.showAreaAnalysis('B广场'));
+
+        // 添加信息窗体
+        const infoWindowA = new AMap.InfoWindow({
+            content: '<div style="padding:10px;"><h4>A街道</h4><p>停车投诉热点区域</p><p>点击查看详细分析</p></div>',
+            offset: new AMap.Pixel(0, -30)
+        });
+
+        const infoWindowB = new AMap.InfoWindow({
+            content: '<div style="padding:10px;"><h4>B广场</h4><p>停车投诉热点区域</p><p>点击查看详细分析</p></div>',
+            offset: new AMap.Pixel(0, -30)
+        });
+
+        markerA.on('mouseover', () => infoWindowA.open(this.map, markerA.getPosition()));
+        markerA.on('mouseout', () => infoWindowA.close());
+        markerB.on('mouseover', () => infoWindowB.open(this.map, markerB.getPosition()));
+        markerB.on('mouseout', () => infoWindowB.close());
+    }
+
+    /**
+     * 手动刷新地图
+     */
+    refreshMap() {
+        if (this.map) {
+            setTimeout(() => {
+                this.map.getSize();
+                this.map.setFitView();
+                console.log('地图已手动刷新');
+            }, 100);
+        }
     }
 }
 
