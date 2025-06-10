@@ -1065,6 +1065,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 16px;
+    height: 80px;
 }
 
 .point-card::before {
@@ -1119,7 +1120,7 @@ body {
     font-size: 16px;
     font-weight: 600;
     margin: 0 0 8px 0;
-    line-height: 1.4;
+    line-height: 2.3;
 }
 
 .point-content p {
