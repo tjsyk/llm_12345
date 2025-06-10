@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12345热线 - 对话式数据分析</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 演示控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <span class="demo-title">📊 12345热线 - 对话式数据分析</span>
+            <div class="control-buttons">
+                <button id="startBtn" class="btn-primary">🎯 开始演示</button>
+                <button id="resetBtn" class="btn-secondary">🔄 重置</button>
+                <button id="pointsBtn" class="btn-secondary">💡 演示要点</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <div class="container">
+            <!-- 平台界面 -->
+            <div class="analysis-platform" id="analysisPlatform">
+                <div class="platform-header">
+                    <h2>🧠 12345热线智能数据分析平台</h2>
+                    <p>像与真人分析师对话一样简单、直观和高效的数据洞察体验</p>
+                </div>
+
+                <!-- 对话框 -->
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="system-message">
+                            <div class="ai-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>您好！我是小慧，您的智能数据分析助手。您可以用自然语言向我询问任何关于12345热线运营数据的问题。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-area" id="inputArea">
+                        <input type="text" id="questionInput" placeholder="请输入您想了解的问题，比如：上周热线整体情况怎么样？" disabled>
+                        <button id="sendBtn" class="send-btn" disabled>发送</button>
+                    </div>
+                </div>
+
+                <!-- 推荐问题卡片 -->
+                <div class="suggested-questions" id="suggestedQuestions">
+                    <h3>💡 推荐问题</h3>
+                    <div class="question-cards">
+                        <div class="question-card" data-question="上周热线整体情况怎么样？">
+                            <span class="question-icon">📈</span>
+                            <span class="question-text">上周热线整体情况怎么样？</span>
+                        </div>
+                        <div class="question-card" data-question="哪个部门的满意度最高？">
+                            <span class="question-icon">🏆</span>
+                            <span class="question-text">哪个部门的满意度最高？</span>
+                        </div>
+                        <div class="question-card" data-question="最近有什么热点问题？">
+                            <span class="question-icon">🔥</span>
+                            <span class="question-text">最近有什么热点问题？</span>
+                        </div>
+                        <div class="question-card" data-question="处理时效最长的部门排名">
+                            <span class="question-icon">⏱️</span>
+                            <span class="question-text">处理时效最长的部门排名</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据展示区域 -->
+            <div class="data-display" id="dataDisplay" style="display: none;">
+                <!-- 数据图表将在这里动态生成 -->
+            </div>
+
+            <!-- 报告生成区域 -->
+            <div class="report-section" id="reportSection" style="display: none;">
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📄 智能报告生成</h3>
+                        <div class="report-status">
+                            <span class="status-text" id="reportStatus">准备生成...</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-preview" id="reportPreview">
+                        <!-- 报告预览内容 -->
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn-primary" id="downloadBtn" disabled>📥 下载PPT报告</button>
+                        <button class="btn-secondary" id="shareBtn" disabled>📤 分享报告</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- 演示要点弹窗 -->
+    <div class="points-popup-overlay" id="pointsPopupOverlay">
+        <div class="points-popup" id="pointsPopup">
+            <div class="points-popup-header">
+                <span class="close-btn" id="pointsCloseBtn">&times;</span>
+                <h3>💡 演示要点</h3>
+            </div>
+            <div class="points-popup-body">
+                <div class="points-grid">
+                    <div class="point-card">
+                        <div class="point-icon">🗣️</div>
+                        <div class="point-content">
+                            <h4>自然语言交互</h4>
+                            <p>无需学习复杂的查询语法，用日常对话方式获取数据洞察</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎯</div>
+                        <div class="point-content">
+                            <h4>智能问题理解</h4>
+                            <p>AI准确理解用户意图，自动选择最合适的分析维度和方法</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">📊</div>
+                        <div class="point-content">
+                            <h4>多维数据融合</h4>
+                            <p>整合不同系统数据，提供全面、立体的分析视角</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🔍</div>
+                        <div class="point-content">
+                            <h4>深度原因分析</h4>
+                            <p>不仅呈现"是什么"，更深入探究"为什么"，发现问题根源</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">💬</div>
+                        <div class="point-content">
+                            <h4>连续对话能力</h4>
+                            <p>支持多轮追问，在上下文基础上逐步深入分析</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">📋</div>
+                        <div class="point-content">
+                            <h4>一键报告生成</h4>
+                            <p>将对话分析过程自动转化为结构化的专业报告</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">💡</div>
+                        <div class="point-content">
+                            <h4>智能建议输出</h4>
+                            <p>基于数据分析结果，提供可行的改进建议和行动方案</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">⚡</div>
+                        <div class="point-content">
+                            <h4>即时洞察获取</h4>
+                            <p>秒级响应，将复杂数据分析简化为简单问答体验</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
