@@ -703,3 +703,16 @@ body {
     grid-column: 2 !important;
 }
 
+.btn-primary:disabled,
+.btn-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-primary:disabled:hover,
+.btn-secondary:disabled:hover {
+    transform: none !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+}

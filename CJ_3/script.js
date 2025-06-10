@@ -204,6 +204,12 @@ class AICallbackDemo {
         
         this.isCallActive = true;
         this.currentStep = 0;
+
+        const startBtn = document.getElementById('startCallBtn');
+        if (startBtn) {
+            startBtn.textContent = '演示中...';
+            startBtn.disabled = true;
+        }
         
         // 隐藏工单卡片，显示通话界面
         this.hideElement('workOrderCard');
@@ -447,6 +453,12 @@ class AICallbackDemo {
         const actionPanel = document.getElementById('actionPanel');
         if (actionPanel) {
             actionPanel.style.display = 'none';
+        }
+
+        const startBtn = document.getElementById('startCallBtn');
+        if (startBtn) {
+            startBtn.textContent = '📞 开始演示';
+            startBtn.disabled = false;
         }
     }
 
