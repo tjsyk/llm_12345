@@ -48,7 +48,7 @@ body {
     font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
-    background: var(--chat-gradient);
+    background: var(--primary-gradient);
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -70,8 +70,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+    gap: 20px;
 }
 
 .demo-title {
@@ -79,6 +78,7 @@ body {
     font-weight: var(--font-semibold);
     color: var(--text-primary);
     text-shadow: 0 1px 2px var(--shadow-light);
+    flex-shrink: 0;
 }
 
 .control-buttons {
@@ -178,7 +178,7 @@ body {
 }
 
 .chat-messages {
-    min-height: 600px;
+    min-height: 410px;
     max-height: 700px;
     overflow-y: auto;
     margin-bottom: 20px;
