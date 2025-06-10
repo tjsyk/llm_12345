@@ -248,7 +248,7 @@ class WorkOrderDemo {
             orderDraft.style.animation = 'slideIn 0.5s ease-out';
 
             // 恢复按钮状态
-            generateBtn.innerHTML = '⚡ 生成工单';
+            generateBtn.innerHTML = '⚡ 已生成';
             generateBtn.disabled = false;
 
             // 高亮显示生成时间
@@ -282,7 +282,7 @@ class WorkOrderDemo {
             this.animateSubTasks();
 
             // 恢复按钮状态
-            assignBtn.innerHTML = '🚀 一键派单';
+            assignBtn.innerHTML = '🚀 已派单';
             assignBtn.disabled = false;
 
         }, 1500);

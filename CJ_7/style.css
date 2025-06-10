@@ -36,6 +36,7 @@
     --font-large: 16px;
     --font-normal: 400;
     --font-medium: 500;
+    --font-semibold: 600;
 }
 
 * {
@@ -46,7 +47,7 @@
 
 body {
     font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: var(--primary-gradient);
     min-height: 100vh;
     color: var(--text-primary);
     line-height: 1.6;
@@ -62,25 +63,30 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
 }
 
 .control-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1400px;
-    margin: 0 auto;
+    gap: 20px;
+    width: 100%;
 }
 
 .demo-title {
     font-size: var(--font-title);
-    font-weight: 600;
+    font-weight: var(--font-semibold);
     color: var(--text-primary);
+    flex-shrink: 0;
+    text-align: left;
 }
 
 .control-buttons {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 /* ===== 按钮系统 ===== */
@@ -118,6 +124,7 @@ body {
 
 .btn-secondary:hover {
     background: var(--bg-muted);
+    color: #495057;
     transform: translateY(-1px);
 }
 
@@ -156,13 +163,16 @@ body {
 
 .stage-header h2 {
     font-size: 24px;
-    color: var(--text-primary);
+    color: rgba(255, 255, 255, 0.95);
     margin-bottom: 10px;
+    font-weight: var(--font-semibold);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .stage-desc {
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.9);
     font-size: var(--font-large);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* ===== 通话记录卡片 ===== */
@@ -1372,16 +1382,37 @@ body {
 }
 
 /* ===== 响应式设计 ===== */
+@media (max-width: 1024px) {
+    .control-row {
+        gap: 15px;
+    }
+    
+    .demo-title {
+        font-size: var(--font-large);
+    }
+}
+
 @media (max-width: 768px) {
     .control-row {
         flex-direction: column;
         gap: 15px;
     }
     
+    .demo-title {
+        font-size: var(--font-large);
+        text-align: center;
+    }
+    
     .control-buttons {
         flex-wrap: wrap;
         justify-content: center;
+        width: 100%;
     }
+    
+    .demo-controls {
+        padding: 15px 20px;
+    }
+}
     
     .phone-mockup {
         width: 100%;
@@ -1408,7 +1439,15 @@ body {
     .points-grid {
         grid-template-columns: 1fr;
     }
-}
+    
+    .points-popup {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .points-popup-body {
+        padding: 20px;
+    }
 
 @media (max-width: 480px) {
     .demo-container {
@@ -1423,13 +1462,15 @@ body {
         padding: 15px;
     }
     
-    .points-popup {
-        width: 95%;
-        margin: 20px;
+    .demo-title {
+        font-size: var(--font-body);
     }
     
-    .points-popup-body {
-        padding: 20px;
+    .control-buttons .btn-primary,
+    .control-buttons .btn-secondary,
+    .control-buttons .btn-warning {
+        font-size: var(--font-small);
+        padding: 8px 16px;
     }
 }
 
