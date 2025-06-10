@@ -119,7 +119,7 @@ class SentimentAnalysisDemo {
         
         // 禁用开始按钮，启用重置按钮
         this.startBtn.disabled = true;
-        this.startBtn.textContent = '🔄 演示进行中...';
+        this.startBtn.textContent = '🔄 演示中...';
         
         console.log('🚀 开始舆情分析演示');
         
