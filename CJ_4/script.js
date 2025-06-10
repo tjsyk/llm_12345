@@ -33,10 +33,6 @@ class QualityCoachDemo {
             console.log('开始演示按钮被点击');
             this.startDemo();
         });
-        document.getElementById('pauseDemo').addEventListener('click', () => {
-            console.log('暂停演示按钮被点击');
-            this.pauseDemo();
-        });
         document.getElementById('resetDemo').addEventListener('click', () => {
             console.log('重置按钮被点击');
             this.resetDemo();
@@ -87,32 +83,23 @@ class QualityCoachDemo {
         this.currentStep = 0;
         
         // 更新控制按钮状态
-        document.getElementById('startDemo').style.display = 'none';
-        document.getElementById('pauseDemo').style.display = 'inline-block';
-        const resetBtn = document.getElementById('resetDemo');
-        if (resetBtn) {
-            resetBtn.disabled = true;
+        const startBtn = document.getElementById('startDemo');
+        if (startBtn) {
+            startBtn.textContent = '🎬 演示中...';
+            startBtn.disabled = true;
         }
         
         // 开始演示流程
         await this.runDemoSequence();
         
-        // 演示完成后重新启用重置按钮
-        if (resetBtn) {
-            resetBtn.disabled = false;
+        // 演示完成后更新按钮状态
+        if (startBtn) {
+            startBtn.textContent = '✅ 演示完成';
+            startBtn.disabled = true;
         }
     }
 
-    /**
-     * 暂停演示
-     */
-    pauseDemo() {
-        console.log('暂停演示');
-        this.isRunning = false;
-        document.getElementById('startDemo').style.display = 'inline-block';
-        document.getElementById('pauseDemo').style.display = 'none';
-        document.getElementById('resetDemo').disabled = false;
-    }
+
 
     /**
      * 重置演示
@@ -120,14 +107,17 @@ class QualityCoachDemo {
     resetDemo() {
         console.log('重置演示开始...'); // 调试信息
         
+        // 强制停止演示
         this.isRunning = false;
         this.currentStep = 0;
         
         // 重置控制按钮
-        document.getElementById('startDemo').style.display = 'inline-block';
-        document.getElementById('pauseDemo').style.display = 'none';
+        const startBtn = document.getElementById('startDemo');
+        if (startBtn) {
+            startBtn.textContent = '▶️ 开始演示';
+            startBtn.disabled = false;
+        }
         document.getElementById('generateReport').style.display = 'none';
-        document.getElementById('resetDemo').disabled = false;
         
         // 停止通话计时器
         if (this.callTimer) {
@@ -208,11 +198,15 @@ class QualityCoachDemo {
      * 步骤1: 准备接听电话
      */
     async step1_PrepareCall() {
+        if (!this.isRunning) return;
+        
         this.updateAgentStatus('有来电');
         this.updateHints('有市民来电，准备接听...');
         
         // 模拟来电铃声效果
         await this.delay(1000);
+        
+        if (!this.isRunning) return;
         
         // 自动点击接听
         this.answerCall();
@@ -222,6 +216,8 @@ class QualityCoachDemo {
      * 步骤2: 开始通话
      */
     async step2_StartCall() {
+        if (!this.isRunning) return;
+        
         this.updateAgentStatus('通话中');
         this.updateQualityStatus('监控中');
         this.updateHints('开始质检监控，注意开场白规范...');
@@ -240,10 +236,13 @@ class QualityCoachDemo {
      * 步骤3: 开场白违规提醒
      */
     async step3_OpeningViolation() {
+        if (!this.isRunning) return;
+        
         // 坐席说了不规范的开场白
         this.addMessage('agent', '喂，您好。');
         
         await this.delay(500);
+        if (!this.isRunning) return;
         
         // AI实时提醒
         this.showQualityAlert('warning', '💡 提醒：缺少标准开场白（问候+报号）。');
@@ -254,6 +253,7 @@ class QualityCoachDemo {
         this.showSupervisorAlert('小王(008)', 'warning', '开场白不规范提醒');
         
         await this.delay(1500);
+        if (!this.isRunning) return;
         
         // 坐席立即纠正
         this.addMessage('agent', '哦，不好意思。您好，这里是12345热线，工号008号小王为您服务。请问有什么可以帮您？');
@@ -261,6 +261,8 @@ class QualityCoachDemo {
         
         // 清除警告状态
         await this.delay(1000);
+        if (!this.isRunning) return;
+        
         this.setQualityIndicator('normal', '✅', '服务正常');
         this.updateHints('开场白已纠正，继续监控...');
     }
@@ -269,16 +271,20 @@ class QualityCoachDemo {
      * 步骤4: 不当用语监测
      */
     async step4_ImproperLanguage() {
+        if (!this.isRunning) return;
+        
         // 市民问题
         this.addMessage('citizen', '我的医保卡好像出问题了，上周去药店买药，怎么刷都刷不了！');
         
         await this.delay(1500);
+        if (!this.isRunning) return;
         
         // 坐席使用不当用语
         const agentMessage = '医保卡刷不了啊… <span class="highlight">你必须</span>带上身份证和医保卡，去最近的社保中心查一下。';
         this.addMessage('agent', agentMessage, true);
         
         await this.delay(800);
+        if (!this.isRunning) return;
         
         // AI提醒不当用语
         this.showQualityAlert('warning', '⚠️ 不当用语："你必须…"。建议替换为："我们建议您…"或"您需要…"。');
@@ -290,6 +296,8 @@ class QualityCoachDemo {
         this.showSupervisorAlert('小王(008)', 'warning', '不当用语："你必须"');
         
         await this.delay(1000);
+        if (!this.isRunning) return;
+        
         this.updateHints('检测到不当用语，建议使用更温和的表达...');
     }
 
@@ -297,10 +305,13 @@ class QualityCoachDemo {
      * 步骤5: 语音特征分析
      */
     async step5_SpeechAnalysis() {
+        if (!this.isRunning) return;
+        
         // 市民回复
         this.addMessage('citizen', '社保中心？我不知道在哪啊，我这附近有吗？我年纪大了，跑一趟不方便。');
         
         await this.delay(1500);
+        if (!this.isRunning) return;
         
         // 坐席语速过快
         this.addMessage('agent', '您在哪个区我帮您查一下最近的地址和上班时间很快的。');
@@ -316,6 +327,7 @@ class QualityCoachDemo {
         this.updateEmotion('citizen', '😕 困惑');
         
         await this.delay(800);
+        if (!this.isRunning) return;
         
         // AI提醒语速问题
         this.showQualityAlert('warning', '💨 语速稍快，建议放慢，并耐心解释。');
@@ -326,6 +338,8 @@ class QualityCoachDemo {
         this.showSupervisorAlert('小王(008)', 'warning', '语速过快提醒');
         
         await this.delay(1000);
+        if (!this.isRunning) return;
+        
         this.updateHints('语速分析：当前180字/分钟，建议控制在120-150字/分钟...');
     }
 
@@ -333,6 +347,8 @@ class QualityCoachDemo {
      * 步骤6: 优秀服务行为
      */
     async step6_PositiveBehavior() {
+        if (!this.isRunning) return;
+        
         // 坐席调整服务态度
         this.addMessage('agent', '好的阿姨，您别着急。我放慢点说。您只要告诉我您大概在哪个街道，我就能帮您找到最近、最方便的社保中心，还会告诉您他们的工作时间，确保您不用白跑一趟。');
         
@@ -347,6 +363,7 @@ class QualityCoachDemo {
         this.updateEmotion('citizen', '😌 安心');
         
         await this.delay(1000);
+        if (!this.isRunning) return;
         
         // AI标记优秀行为
         this.showQualityAlert('success', '👍 优秀行为：主动安抚，并提供了清晰、增值的服务承诺。');
@@ -359,6 +376,8 @@ class QualityCoachDemo {
         this.updateSupervisorStats(); // 更新班长面板统计
         
         await this.delay(1500);
+        if (!this.isRunning) return;
+        
         this.updateHints('检测到优秀服务行为，已标记为培训案例...');
     }
 
@@ -366,21 +385,27 @@ class QualityCoachDemo {
      * 步骤7: 结束通话
      */
     async step7_EndCall() {
+        if (!this.isRunning) return;
+        
         // 继续对话模拟
         this.addMessage('citizen', '好的，谢谢您！我在朝阳区建国门附近。');
         await this.delay(1000);
+        if (!this.isRunning) return;
         
         this.addMessage('agent', '好的阿姨，建国门这边最近的是朝阳区社保中心，地址是建国门外大街。工作时间是周一到周五上午9点到下午5点。您可以坐地铁1号线到建国门站，A口出来就是。');
         await this.delay(1500);
+        if (!this.isRunning) return;
         
         this.addMessage('citizen', '太好了，谢谢小王！你们服务真好。');
         await this.delay(1000);
+        if (!this.isRunning) return;
         
         this.addMessage('agent', '不客气阿姨，这是我应该做的。还有其他问题可以随时联系我们12345热线。祝您生活愉快！');
         
         this.updateComplianceItem('问题解答完整', 'completed');
         
         await this.delay(2000);
+        if (!this.isRunning) return;
         
         // 自动挂断
         this.hangupCall();
