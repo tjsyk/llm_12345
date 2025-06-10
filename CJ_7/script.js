@@ -957,7 +957,11 @@ class WorkOrderDemo {
     showPointsPopup() {
         const overlay = document.getElementById('pointsPopupOverlay');
         if (overlay) {
-            overlay.style.display = 'block';
+            overlay.style.display = 'flex';
+            // 添加active类来触发动画
+            setTimeout(() => {
+                overlay.classList.add('active');
+            }, 10);
             // 防止body滚动
             document.body.style.overflow = 'hidden';
         }
@@ -969,7 +973,11 @@ class WorkOrderDemo {
     hidePointsPopup() {
         const overlay = document.getElementById('pointsPopupOverlay');
         if (overlay) {
-            overlay.style.display = 'none';
+            overlay.classList.remove('active');
+            // 等待动画完成后隐藏
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
             // 恢复body滚动
             document.body.style.overflow = 'auto';
         }
