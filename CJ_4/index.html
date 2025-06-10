@@ -15,6 +15,7 @@
                 <button id="startDemo" class="btn-primary">▶️ 开始演示</button>
                 <button id="resetDemo" class="btn-secondary">🔄 重置</button>
                 <button id="generateReport" class="btn-primary" style="display: none;">📊 生成质检报告</button>
+                <button id="pointsBtn" class="btn-secondary">💡 演示要点</button>
             </div>
         </div>
     </div>
@@ -265,5 +266,89 @@
     <div class="data-flow-container" id="dataFlowContainer"></div>
 
     <script src="script.js"></script>
+    
+    <!-- 演示要点弹窗 -->
+    <div class="points-popup-overlay" id="pointsPopupOverlay">
+        <div class="points-popup" id="pointsPopup">
+            <div class="points-popup-header">
+                <span class="close-btn" id="pointsCloseBtn">&times;</span>
+                <h3>演示要点</h3>
+            </div>
+            <div class="points-popup-body">
+                <div class="points-grid">
+                    <div class="point-card">
+                        <div class="point-icon">💡</div>
+                        <div class="point-content">
+                            <h4>通话中即时提醒违规点，事中纠偏</h4>
+                            <p>AI实时识别服务违规行为，通话中即时提醒坐席，实现事中纠偏</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎯</div>
+                        <div class="point-content">
+                            <h4>动态标记不当用语，实时辅导</h4>
+                            <p>智能识别不当用语和话术问题，实时标记并提供改进建议</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">⚡</div>
+                        <div class="point-content">
+                            <h4>通话中动态评分，即时反馈表现</h4>
+                            <p>基于多维度指标实时计算质检分数，为坐席提供即时表现反馈</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🚀</div>
+                        <div class="point-content">
+                            <h4>分析语速语调，提供沟通优化建议</h4>
+                            <p>智能分析坐席语速、语调等沟通特征，提供个性化优化建议</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎭</div>
+                        <div class="point-content">
+                            <h4>追踪双方情绪变化，预警服务风险</h4>
+                            <p>实时监测坐席和市民情绪变化，提前预警潜在服务风险</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">💎</div>
+                        <div class="point-content">
+                            <h4>定位情绪拐点，精准复盘沟通</h4>
+                            <p>精确定位通话中的情绪转折点，为复盘和培训提供精准依据</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">📊</div>
+                        <div class="point-content">
+                            <h4>实时发现"金牌话术"，沉淀案例</h4>
+                            <p>自动识别优秀沟通话术和服务案例，沉淀最佳实践</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🔬</div>
+                        <div class="point-content">
+                            <h4>实时告警高风险通话，及时干预</h4>
+                            <p>智能识别高风险通话场景，及时告警班长进行人工干预</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">⭐</div>
+                        <div class="point-content">
+                            <h4>通话结束秒出报告，高效复盘</h4>
+                            <p>通话结束立即生成详细质检报告，支持高效复盘和持续改进</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎯</div>
+                        <div class="point-content">
+                            <h4>关联个人能力画像，动态更新培训</h4>
+                            <p>结合个人能力画像，动态调整培训内容和重点，实现精准培训</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

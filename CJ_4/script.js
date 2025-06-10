@@ -42,6 +42,19 @@ class QualityCoachDemo {
             this.generateQualityReport();
         });
         
+        // 演示要点功能
+        const pointsBtn = document.getElementById('pointsBtn');
+        const pointsCloseBtn = document.getElementById('pointsCloseBtn');
+        const pointsPopupOverlay = document.getElementById('pointsPopupOverlay');
+        
+        pointsBtn?.addEventListener('click', () => this.showPointsPopup());
+        pointsCloseBtn?.addEventListener('click', () => this.hidePointsPopup());
+        pointsPopupOverlay?.addEventListener('click', (e) => {
+            if (e.target === pointsPopupOverlay) {
+                this.hidePointsPopup();
+            }
+        });
+        
         // 通话控制事件
         document.getElementById('answerBtn').addEventListener('click', () => this.answerCall());
         document.getElementById('hangupBtn').addEventListener('click', () => this.hangupCall());
@@ -98,8 +111,6 @@ class QualityCoachDemo {
             startBtn.disabled = true;
         }
     }
-
-
 
     /**
      * 重置演示
@@ -1009,6 +1020,26 @@ class QualityCoachDemo {
      */
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * 显示演示要点弹窗
+     */
+    showPointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.add('active');
+        }
+    }
+
+    /**
+     * 隐藏演示要点弹窗
+     */
+    hidePointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
     }
 }
 

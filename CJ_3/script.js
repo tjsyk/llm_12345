@@ -190,10 +190,22 @@ class AICallbackDemo {
         const startCallBtn = document.getElementById('startCallBtn');
         const resetBtn = document.getElementById('resetBtn');
         const endCallBtn = document.getElementById('endCallBtn');
+        const pointsBtn = document.getElementById('pointsBtn');
+        const pointsCloseBtn = document.getElementById('pointsCloseBtn');
+        const pointsPopupOverlay = document.getElementById('pointsPopupOverlay');
 
         startCallBtn?.addEventListener('click', () => this.startCall());
         resetBtn?.addEventListener('click', () => this.resetDemo());
         endCallBtn?.addEventListener('click', () => this.endCall());
+        
+        // 演示要点功能
+        pointsBtn?.addEventListener('click', () => this.showPointsPopup());
+        pointsCloseBtn?.addEventListener('click', () => this.hidePointsPopup());
+        pointsPopupOverlay?.addEventListener('click', (e) => {
+            if (e.target === pointsPopupOverlay) {
+                this.hidePointsPopup();
+            }
+        });
     }
 
     /**
@@ -517,6 +529,26 @@ class AICallbackDemo {
      */
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * 显示演示要点弹窗
+     */
+    showPointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.add('active');
+        }
+    }
+
+    /**
+     * 隐藏演示要点弹窗
+     */
+    hidePointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
     }
 }
 

@@ -92,6 +92,19 @@ class SentimentAnalysisDemo {
         this.downloadReportBtn?.addEventListener('click', () => this.downloadReport());
         this.shareReportBtn?.addEventListener('click', () => this.shareReport());
         this.restartDemoBtn?.addEventListener('click', () => this.restartDemo());
+        
+        // 演示要点功能
+        const pointsBtn = document.getElementById('pointsBtn');
+        const pointsCloseBtn = document.getElementById('pointsCloseBtn');
+        const pointsPopupOverlay = document.getElementById('pointsPopupOverlay');
+        
+        pointsBtn?.addEventListener('click', () => this.showPointsPopup());
+        pointsCloseBtn?.addEventListener('click', () => this.hidePointsPopup());
+        pointsPopupOverlay?.addEventListener('click', (e) => {
+            if (e.target === pointsPopupOverlay) {
+                this.hidePointsPopup();
+            }
+        });
     }
 
     /**
@@ -536,6 +549,26 @@ class SentimentAnalysisDemo {
      */
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * 显示演示要点弹窗
+     */
+    showPointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.add('active');
+        }
+    }
+
+    /**
+     * 隐藏演示要点弹窗
+     */
+    hidePointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
     }
 }
 

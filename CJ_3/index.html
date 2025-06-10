@@ -14,6 +14,7 @@
             <div class="control-buttons">
                 <button id="startCallBtn" class="btn-primary">📞 开始演示</button>
                 <button id="resetBtn" class="btn-secondary">🔄 重置</button>
+                <button id="pointsBtn" class="btn-secondary">💡 演示要点</button>
             </div>
         </div>
     </div>
@@ -160,6 +161,76 @@
     </div>
 
     <script src="script.js"></script>
+    
+    <!-- 演示要点弹窗 -->
+    <div class="points-popup-overlay" id="pointsPopupOverlay">
+        <div class="points-popup" id="pointsPopup">
+            <div class="points-popup-header">
+                <span class="close-btn" id="pointsCloseBtn">&times;</span>
+                <h3>演示要点</h3>
+            </div>
+            <div class="points-popup-body">
+                <div class="points-grid">
+                    <div class="point-card">
+                        <div class="point-icon">💡</div>
+                        <div class="point-content">
+                            <h4>AI生成专属脚本，回访有温度</h4>
+                            <p>基于工单内容和处理结果，AI自动生成个性化回访话术，让回访更有温度</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎯</div>
+                        <div class="point-content">
+                            <h4>验证问题根源，确保服务闭环</h4>
+                            <p>通过深度回访确认问题是否真正解决，保证服务闭环管理</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">⚡</div>
+                        <div class="point-content">
+                            <h4>不止记录满意度，更挖掘背后原因</h4>
+                            <p>AI深入分析市民反馈，挖掘满意度背后的深层原因</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🚀</div>
+                        <div class="point-content">
+                            <h4>捕捉新诉求，创造延伸服务机会</h4>
+                            <p>在回访过程中主动发现新的服务需求，创造延伸服务机会</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎭</div>
+                        <div class="point-content">
+                            <h4>理解衍生问题，避免市民二次投诉</h4>
+                            <p>智能识别原问题衍生的新问题，主动处理避免二次投诉</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">💎</div>
+                        <div class="point-content">
+                            <h4>智能激活/创建工单，处理更灵活</h4>
+                            <p>根据回访结果智能决策是否需要重新激活或创建新工单</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">📊</div>
+                        <div class="point-content">
+                            <h4>转化回访对话为结构化数据</h4>
+                            <p>将自然语言回访内容转化为结构化数据，便于分析利用</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🔬</div>
+                        <div class="point-content">
+                            <h4>为管理优化提供数据决策依据</h4>
+                            <p>基于回访数据分析，为服务流程优化和管理决策提供依据</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

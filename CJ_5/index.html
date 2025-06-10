@@ -15,6 +15,7 @@
                 <button id="startDemoBtn" class="btn-primary">🚀 开始演示</button>
                 <button id="resetBtn" class="btn-secondary">🔄 重置</button>
                 <button id="skipToAlert" class="btn-secondary" style="display: none;">⏩ 跳到预警</button>
+                <button id="pointsBtn" class="btn-secondary">💡 演示要点</button>
             </div>
         </div>
     </div>
@@ -336,5 +337,89 @@
     </div>
 
     <script src="script.js"></script>
+    
+    <!-- 演示要点弹窗 -->
+    <div class="points-popup-overlay" id="pointsPopupOverlay">
+        <div class="points-popup" id="pointsPopup">
+            <div class="points-popup-header">
+                <span class="close-btn" id="pointsCloseBtn">&times;</span>
+                <h3>演示要点</h3>
+            </div>
+            <div class="points-popup-body">
+                <div class="points-grid">
+                    <div class="point-card">
+                        <div class="point-icon">💡</div>
+                        <div class="point-content">
+                            <h4>自动发现热度异常话题，抢占先机</h4>
+                            <p>AI算法实时监测话题热度变化，自动识别异常增长的话题</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎯</div>
+                        <div class="point-content">
+                            <h4>动态刷新热点排行，把握民生脉搏</h4>
+                            <p>实时更新热点话题排行榜，动态把握市民关注焦点和民生需求</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">⚡</div>
+                        <div class="point-content">
+                            <h4>地图可视化预警，快速定位事发地</h4>
+                            <p>将舆情事件在地图上可视化展示，快速精准定位问题发生区域</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🚀</div>
+                        <div class="point-content">
+                            <h4>展示事件扩散趋势，辅助应急指挥</h4>
+                            <p>分析事件影响范围和扩散趋势，为应急指挥决策提供科学依据</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎭</div>
+                        <div class="point-content">
+                            <h4>监测群体情绪，预警潜在风险</h4>
+                            <p>实时分析群体情绪变化，及时预警可能引发的社会风险</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">💎</div>
+                        <div class="point-content">
+                            <h4>在舆情发酵初期介入，避免事态扩大</h4>
+                            <p>在舆情萌芽阶段即时预警，为提前介入处置赢得宝贵时间</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">📊</div>
+                        <div class="point-content">
+                            <h4>关联全网信息，验证舆情热度</h4>
+                            <p>整合多渠道信息源，交叉验证舆情热度和事件真实性</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🔬</div>
+                        <div class="point-content">
+                            <h4>跨部门实时告警，实现联动响应</h4>
+                            <p>向相关部门实时推送舆情告警，实现跨部门快速联动响应</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">⭐</div>
+                        <div class="point-content">
+                            <h4>秒级生成"首报"，为决策提速</h4>
+                            <p>基于AI分析秒级生成舆情首报，为领导决策提供及时信息支撑</p>
+                        </div>
+                    </div>
+                    <div class="point-card">
+                        <div class="point-icon">🎯</div>
+                        <div class="point-content">
+                            <h4>智能建议，让应对有据可循</h4>
+                            <p>基于历史案例和最佳实践，AI生成应对建议，让舆情处置有据可循</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -39,6 +39,19 @@ class SmartCityDashboard {
         document.getElementById('voiceControlBtn')?.addEventListener('click', () => this.toggleVoiceModal());
         document.getElementById('resetBtn')?.addEventListener('click', () => this.resetDemo());
 
+        // 演示要点功能
+        const pointsBtn = document.getElementById('pointsBtn');
+        const pointsCloseBtn = document.getElementById('pointsCloseBtn');
+        const pointsPopupOverlay = document.getElementById('pointsPopupOverlay');
+        
+        pointsBtn?.addEventListener('click', () => this.showPointsPopup());
+        pointsCloseBtn?.addEventListener('click', () => this.hidePointsPopup());
+        pointsPopupOverlay?.addEventListener('click', (e) => {
+            if (e.target === pointsPopupOverlay) {
+                this.hidePointsPopup();
+            }
+        });
+
         // 语音相关按钮
         document.getElementById('voiceBtn')?.addEventListener('click', () => this.toggleVoiceModal());
         document.getElementById('closeVoice')?.addEventListener('click', () => this.closeVoiceModal());
@@ -747,6 +760,26 @@ class SmartCityDashboard {
                 this.map.setFitView();
                 console.log('地图已手动刷新');
             }, 100);
+        }
+    }
+
+    /**
+     * 显示演示要点弹窗
+     */
+    showPointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.add('active');
+        }
+    }
+
+    /**
+     * 隐藏演示要点弹窗
+     */
+    hidePointsPopup() {
+        const overlay = document.getElementById('pointsPopupOverlay');
+        if (overlay) {
+            overlay.classList.remove('active');
         }
     }
 }
