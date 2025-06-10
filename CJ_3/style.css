@@ -117,8 +117,8 @@ body {
 
 /* ===== 主容器样式 ===== */
 .demo-container {
-    height: calc(100vh - 80px);
-    overflow-y: auto;
+    height: calc(100vh - 95px);
+    overflow: hidden;
     padding: 20px;
 }
 
