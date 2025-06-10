@@ -139,15 +139,19 @@ class DataAnalysisDemo {
                 </div>
                 <div class="chart-container">
                     <h5>📈 通话量和满意度趋势</h5>
-                    <div class="chart-placeholder">
-                        📊 这里显示了一周内通话量和满意度的变化趋势图
-                    </div>
+                    <div id="trendChart" class="echarts-container"></div>
                 </div>
                 <p><strong>热点问题：</strong>主要集中在"中考招生政策咨询"和"夏季市容环境投诉"</p>
             </div>
         `;
         
         await this.addAIMessage(response);
+        
+        // 渲染趋势图表
+        setTimeout(() => {
+            this.renderTrendChart();
+        }, 500);
+        
         this.reportData.push({
             question: question,
             response: "上周数据概览",
@@ -187,14 +191,18 @@ class DataAnalysisDemo {
                 </div>
                 <div class="chart-container">
                     <h5>🥧 问题原因分布饼图</h5>
-                    <div class="chart-placeholder">
-                        📊 这里显示了各类问题原因的占比分布图
-                    </div>
+                    <div id="pieChart" class="pie-chart-container"></div>
                 </div>
             </div>
         `;
         
         await this.addAIMessage(response);
+        
+        // 渲染饼图
+        setTimeout(() => {
+            this.renderPieChart();
+        }, 500);
+        
         this.reportData.push({
             question: question,
             response: "满意度下降原因分析",
@@ -533,6 +541,9 @@ class DataAnalysisDemo {
         document.getElementById('shareBtn').disabled = true;
         
         document.getElementById('questionInput').value = '';
+        
+        // 清理图表
+        this.disposeCharts();
     }
 
     /**
@@ -656,6 +667,240 @@ class DataAnalysisDemo {
      */
     hidePoints() {
         document.getElementById('pointsPopupOverlay').classList.remove('active');
+    }
+
+    /**
+     * 清理图表
+     */
+    disposeCharts() {
+        const trendChart = echarts.getInstanceByDom(document.getElementById('trendChart'));
+        const pieChart = echarts.getInstanceByDom(document.getElementById('pieChart'));
+        
+        if (trendChart) {
+            trendChart.dispose();
+        }
+        if (pieChart) {
+            pieChart.dispose();
+        }
+    }
+
+    /**
+     * 渲染趋势图表
+     */
+    renderTrendChart() {
+        const chartDom = document.getElementById('trendChart');
+        if (!chartDom) return;
+        
+        const myChart = echarts.init(chartDom);
+        
+        const option = {
+            title: {
+                text: '',
+                left: 'center',
+                textStyle: {
+                    fontSize: 14,
+                    color: '#2c3e50'
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data: ['通话量', '满意度'],
+                top: 20
+            },
+            xAxis: {
+                type: 'category',
+                data: ['6月3日', '6月4日', '6月5日', '6月6日', '6月7日', '6月8日', '6月9日'],
+                axisLabel: {
+                    color: '#6c757d',
+                    fontSize: 12
+                }
+            },
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '通话量',
+                    position: 'left',
+                    axisLabel: {
+                        formatter: '{value}',
+                        color: '#6c757d'
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '满意度(%)',
+                    position: 'right',
+                    axisLabel: {
+                        formatter: '{value}%',
+                        color: '#6c757d'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '通话量',
+                    type: 'bar',
+                    yAxisIndex: 0,
+                    data: [12800, 13200, 12500, 13800, 12100, 11900, 13030],
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#667eea' },
+                            { offset: 1, color: '#764ba2' }
+                        ])
+                    }
+                },
+                {
+                    name: '满意度',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [92.1, 91.8, 92.3, 91.2, 90.8, 91.0, 91.5],
+                    lineStyle: {
+                        color: '#27ae60',
+                        width: 3
+                    },
+                    itemStyle: {
+                        color: '#27ae60'
+                    },
+                    symbol: 'circle',
+                    symbolSize: 6
+                }
+            ],
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            }
+        };
+        
+        myChart.setOption(option);
+        
+        // 响应式处理
+        window.addEventListener('resize', () => {
+            myChart.resize();
+        });
+    }
+
+    /**
+     * 渲染饼图
+     */
+    renderPieChart() {
+        const chartDom = document.getElementById('pieChart');
+        if (!chartDom) return;
+        
+        const myChart = echarts.init(chartDom);
+        
+        const option = {
+            title: {
+                text: '',
+                left: 'center',
+                textStyle: {
+                    fontSize: 14,
+                    color: '#2c3e50'
+                }
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c}% ({d}%)'
+            },
+            legend: {
+                orient: 'horizontal',
+                bottom: '5%',
+                left: 'center',
+                textStyle: {
+                    color: '#6c757d'
+                }
+            },
+            series: [
+                {
+                    name: '问题原因',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    center: ['50%', '45%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 8,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: true,
+                        position: 'outside',
+                        formatter: '{b}\n{c}%',
+                        fontSize: 12,
+                        color: '#2c3e50'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: 14,
+                            fontWeight: 'bold'
+                        },
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: [
+                        {
+                            value: 45,
+                            name: '处理时效过长',
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+                                    { offset: 0, color: '#ff6b6b' },
+                                    { offset: 1, color: '#ffa726' }
+                                ])
+                            }
+                        },
+                        {
+                            value: 30,
+                            name: '解决方案无效',
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+                                    { offset: 0, color: '#667eea' },
+                                    { offset: 1, color: '#764ba2' }
+                                ])
+                            }
+                        },
+                        {
+                            value: 15,
+                            name: '服务态度问题',
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+                                    { offset: 0, color: '#f093fb' },
+                                    { offset: 1, color: '#f5576c' }
+                                ])
+                            }
+                        },
+                        {
+                            value: 10,
+                            name: '其他原因',
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+                                    { offset: 0, color: '#4facfe' },
+                                    { offset: 1, color: '#00f2fe' }
+                                ])
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+        
+        myChart.setOption(option);
+        
+        // 响应式处理
+        window.addEventListener('resize', () => {
+            myChart.resize();
+        });
     }
 
     /**

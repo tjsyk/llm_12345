@@ -178,8 +178,8 @@ body {
 }
 
 .chat-messages {
-    min-height: 150px;
-    max-height: 400px;
+    min-height: 600px;
+    max-height: 700px;
     overflow-y: auto;
     margin-bottom: 20px;
     padding-right: 10px;
@@ -449,6 +449,21 @@ body {
     color: var(--text-secondary);
     font-size: var(--font-large);
     margin: 20px 0;
+}
+
+/* ECharts图表容器 */
+.echarts-container {
+    height: 300px;
+    margin: 20px 0;
+    border-radius: 10px;
+    background: var(--bg-white);
+}
+
+.pie-chart-container {
+    height: 350px;
+    margin: 20px 0;
+    border-radius: 10px;
+    background: var(--bg-white);
 }
 
 /* ===== 排行榜样式 ===== */
@@ -837,6 +852,11 @@ body {
     
     .chat-container {
         padding: 15px;
+    }
+    
+    .chat-messages {
+        min-height: 180px;
+        max-height: 500px;
     }
     
     .message-content {
