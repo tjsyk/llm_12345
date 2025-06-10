@@ -291,6 +291,12 @@ class AICallbackDemo {
             aiDecision: document.getElementById('aiDecision')
         };
 
+        // 激活面板头部动画
+        const panelHeader = document.querySelector('.panel-header');
+        if (panelHeader) {
+            panelHeader.classList.add('active');
+        }
+
         Object.keys(analysis).forEach(key => {
             const element = elements[key];
             if (element) {
@@ -300,7 +306,7 @@ class AICallbackDemo {
                 setTimeout(() => {
                     element.textContent = analysis[key];
                     element.className = 'analysis-value completed';
-                }, 500);
+                }, 800);
             }
         });
     }
@@ -444,6 +450,12 @@ class AICallbackDemo {
                 element.className = 'analysis-value';
             }
         });
+
+        // 重置面板头部状态
+        const panelHeader = document.querySelector('.panel-header');
+        if (panelHeader) {
+            panelHeader.classList.remove('active');
+        }
     }
 
     /**

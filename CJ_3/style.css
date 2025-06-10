@@ -139,11 +139,13 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 100%;
+    padding: 0 20px;
 }
 
 /* ===== 工单卡片样式 ===== */
@@ -207,13 +209,15 @@ body {
 
 /* ===== 通话界面样式 ===== */
 .call-interface {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr !important;
+    gap: 30px !important;
     animation: slideIn 0.6s ease-out;
+    align-items: start !important;
+    width: 100% !important;
 }
 
-.phone-mockup {
+.call-interface .phone-mockup {
     background: var(--dark-gradient);
     border-radius: 25px;
     padding: 20px;
@@ -221,6 +225,10 @@ body {
     color: var(--text-light);
     position: relative;
     overflow: hidden;
+    height: fit-content;
+    min-height: 600px;
+    width: 100%;
+    grid-column: 1;
 }
 
 .phone-mockup::before {
@@ -275,8 +283,8 @@ body {
 }
 
 .conversation-area {
-    min-height: 300px;
-    max-height: 400px;
+    min-height: 350px;
+    max-height: 450px;
     overflow-y: auto;
     margin-bottom: 20px;
     padding: 15px;
@@ -349,24 +357,49 @@ body {
 }
 
 /* ===== AI分析面板样式 ===== */
-.ai-analysis-panel {
+.call-interface .ai-analysis-panel {
     background: var(--bg-white);
     border-radius: 15px;
     padding: 25px;
     box-shadow: 0 10px 30px var(--shadow-light);
     height: fit-content;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    width: 100%;
+    grid-column: 2;
 }
 
 .panel-header {
     margin-bottom: 20px;
     padding-bottom: 15px;
     border-bottom: 2px solid var(--bg-muted);
+    position: relative;
 }
 
 .panel-header h4 {
     font-size: var(--font-large);
     font-weight: var(--font-semibold);
     color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--primary-gradient);
+    transition: width 0.3s ease;
+}
+
+.panel-header.active::after {
+    width: 100%;
 }
 
 .analysis-content {
@@ -376,12 +409,19 @@ body {
 .analysis-item {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     margin-bottom: 15px;
-    padding: 12px;
+    padding: 15px;
     background: var(--bg-light);
-    border-radius: 8px;
-    border-left: 4px solid var(--primary-gradient);
+    border-radius: 10px;
+    border-left: 4px solid transparent;
+    border-image: var(--primary-gradient) 1;
+    transition: all 0.3s ease;
+}
+
+.analysis-item:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px var(--shadow-light);
 }
 
 .analysis-label {
@@ -399,10 +439,24 @@ body {
 .analysis-value.updating {
     color: #f39c12;
     animation: pulse 1.5s infinite;
+    position: relative;
+}
+
+.analysis-value.updating::after {
+    content: '●●●';
+    animation: dots 1.5s infinite;
+    margin-left: 5px;
 }
 
 .analysis-value.completed {
     color: #27ae60;
+    font-weight: var(--font-semibold);
+}
+
+@keyframes dots {
+    0%, 20% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 .action-panel {
@@ -557,7 +611,33 @@ body {
     }
 }
 
+/* ===== 调试样式（可选） ===== */
+.call-interface .phone-mockup {
+    border: 1px solid rgba(255, 255, 255, 0.1); /* 调试用边框 */
+}
+
+.call-interface .ai-analysis-panel {
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 调试用边框 */
+}
+
 /* ===== 响应式设计 ===== */
+@media (max-width: 1024px) {
+    .call-interface {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+    
+    .call-interface .ai-analysis-panel {
+        position: static;
+        max-height: none;
+        grid-column: 1;
+    }
+    
+    .call-interface .phone-mockup {
+        grid-column: 1;
+    }
+}
+
 @media (max-width: 768px) {
     .control-row {
         flex-direction: column;
@@ -566,7 +646,7 @@ body {
     }
     
     .call-interface {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
         gap: 20px;
     }
     
@@ -577,6 +657,20 @@ body {
     
     .order-info {
         grid-template-columns: 1fr;
+    }
+    
+    .call-interface .phone-mockup {
+        min-height: 500px;
+        grid-column: 1;
+    }
+    
+    .call-interface .ai-analysis-panel {
+        grid-column: 1;
+    }
+    
+    .conversation-area {
+        min-height: 250px;
+        max-height: 350px;
     }
 }
 
@@ -591,10 +685,26 @@ body {
     }
     
     .work-order-card,
-    .phone-mockup,
-    .ai-analysis-panel,
+    .call-interface .phone-mockup,
+    .call-interface .ai-analysis-panel,
     .result-card {
         padding: 20px;
     }
+}
+
+/* ===== 强制布局样式 ===== */
+.call-interface {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr !important;
+    gap: 30px !important;
+    align-items: start !important;
+}
+
+.call-interface > .phone-mockup {
+    grid-column: 1 !important;
+}
+
+.call-interface > .ai-analysis-panel {
+    grid-column: 2 !important;
 }
 
