@@ -209,6 +209,12 @@ class AICallbackDemo {
         this.hideElement('workOrderCard');
         this.showElement('callInterface');
         
+        // 添加active类以激活左右布局
+        const callInterface = document.getElementById('callInterface');
+        if (callInterface) {
+            callInterface.classList.add('active');
+        }
+        
         // 更新工单状态
         this.updateWorkOrderStatus('进行中');
         
@@ -389,6 +395,12 @@ class AICallbackDemo {
         this.hideElement('callInterface');
         this.showElement('resultPanel');
         
+        // 移除active类
+        const callInterface = document.getElementById('callInterface');
+        if (callInterface) {
+            callInterface.classList.remove('active');
+        }
+        
         // 更新工单状态
         this.updateWorkOrderStatus('已完成');
     }
@@ -412,6 +424,12 @@ class AICallbackDemo {
         this.showElement('workOrderCard');
         this.hideElement('callInterface');
         this.hideElement('resultPanel');
+        
+        // 移除active类
+        const callInterface = document.getElementById('callInterface');
+        if (callInterface) {
+            callInterface.classList.remove('active');
+        }
         
         // 重置工单状态
         this.updateWorkOrderStatus('待回访');
