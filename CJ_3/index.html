@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CJ_3 - AI智能回访演示</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部控制面板 -->
+    <div class="demo-controls">
+        <div class="control-row">
+            <div class="control-group">
+                <h2 class="demo-title">🤖 AI智能回访演示</h2>
+                <p class="demo-subtitle">超越简单满意度调查的深度智能回访</p>
+            </div>
+            <div class="control-group">
+                <button class="btn-primary" id="startCallBtn">
+                    <span class="btn-icon">📞</span>
+                    开始自动回访
+                </button>
+                <button class="btn-secondary" id="resetBtn">
+                    <span class="btn-icon">🔄</span>
+                    重置演示
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主演示区域 -->
+    <div class="demo-container">
+        <div class="container">
+            <!-- 工单信息卡片 -->
+            <div class="work-order-card" id="workOrderCard">
+                <div class="card-header">
+                    <h3>工单 #20240609001</h3>
+                    <span class="status-badge pending">待回访</span>
+                </div>
+                <div class="card-content">
+                    <div class="order-info">
+                        <div class="info-item">
+                            <span class="label">问题类型：</span>
+                            <span class="value">房屋漏水纠纷</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">市民姓名：</span>
+                            <span class="value">李女士</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">联系电话：</span>
+                            <span class="value">139****1234</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">处理状态：</span>
+                            <span class="value">处理完毕，待回访</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">处理方式：</span>
+                            <span class="value">社区调解委员会调解</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 通话界面 -->
+            <div class="call-interface" id="callInterface" style="display: none;">
+                <div class="phone-mockup">
+                    <div class="phone-header">
+                        <div class="call-status" id="callStatus">正在呼叫...</div>
+                        <div class="call-timer" id="callTimer">00:00</div>
+                    </div>
+                    
+                    <div class="caller-info">
+                        <div class="avatar">👩</div>
+                        <div class="caller-name">李女士</div>
+                        <div class="caller-number">139****1234</div>
+                    </div>
+
+                    <div class="conversation-area" id="conversationArea">
+                        <!-- 对话内容将动态添加 -->
+                    </div>
+
+                    <div class="call-controls">
+                        <button class="control-btn mute-btn">🔇</button>
+                        <button class="control-btn end-call-btn" id="endCallBtn">📞</button>
+                        <button class="control-btn speaker-btn">🔊</button>
+                    </div>
+                </div>
+
+                <!-- AI分析面板 -->
+                <div class="ai-analysis-panel" id="analysisPanel">
+                    <div class="panel-header">
+                        <h4>🧠 AI实时分析</h4>
+                    </div>
+                    <div class="analysis-content">
+                        <div class="analysis-item">
+                            <span class="analysis-label">原始问题状态：</span>
+                            <span class="analysis-value" id="originalStatus">分析中...</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">衍生问题识别：</span>
+                            <span class="analysis-value" id="derivedIssue">分析中...</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">市民情绪：</span>
+                            <span class="analysis-value" id="emotionStatus">分析中...</span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">AI决策建议：</span>
+                            <span class="analysis-value" id="aiDecision">分析中...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-panel" id="actionPanel" style="display: none;">
+                        <h5>🎯 智能处理方案</h5>
+                        <div class="action-item">
+                            <span class="action-icon">✅</span>
+                            <span class="action-text">重新激活原工单</span>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-icon">🔧</span>
+                            <span class="action-text">创建墙面维修任务</span>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-icon">📋</span>
+                            <span class="action-text">派发至维修部门</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 结果展示 -->
+            <div class="result-panel" id="resultPanel" style="display: none;">
+                <div class="result-card success">
+                    <div class="result-header">
+                        <span class="result-icon">🎉</span>
+                        <h3>回访完成</h3>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-summary">
+                            <h4>📊 回访结果摘要</h4>
+                            <ul>
+                                <li><strong>原始问题：</strong>房屋漏水 - 已解决</li>
+                                <li><strong>衍生问题：</strong>墙面维修 - 已派单</li>
+                                <li><strong>市民满意度：</strong>由"不太满意"提升至"满意"</li>
+                                <li><strong>处理方式：</strong>智能工单再激活</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="value-highlight">
+                            <h4>💡 价值体现</h4>
+                            <div class="value-item">
+                                <span class="value-icon">🎯</span>
+                                <span>精准识别衍生问题，避免二次投诉</span>
+                            </div>
+                            <div class="value-item">
+                                <span class="value-icon">⚡</span>
+                                <span>即时处理，无需市民再次来电</span>
+                            </div>
+                            <div class="value-item">
+                                <span class="value-icon">📈</span>
+                                <span>将负面反馈转化为服务提升机会</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
