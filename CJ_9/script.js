@@ -83,7 +83,7 @@ class DataAnalysisDemo {
      */
     async executeDemo() {
         const steps = [
-            () => this.showWelcomeMessage(),
+            // () => this.showWelcomeMessage(),
             () => this.simulateFirstQuestion(),
             () => this.simulateSecondQuestion(),
             () => this.simulateThirdQuestion(),

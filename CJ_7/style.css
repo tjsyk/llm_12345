@@ -1372,7 +1372,6 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    height: 80px;
 }
 
 .point-card::before {
