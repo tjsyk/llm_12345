@@ -23,7 +23,7 @@ class WorkOrderDemo {
         document.getElementById('resetBtn').addEventListener('click', () => this.resetDemo());
 
         // 演示要点弹窗
-        // document.getElementById('pointsBtn').addEventListener('click', () => this.showPointsPopup());
+        document.getElementById('pointsBtn').addEventListener('click', () => this.showPointsPopup());
         document.getElementById('pointsCloseBtn').addEventListener('click', () => this.hidePointsPopup());
         document.getElementById('pointsPopupOverlay').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) this.hidePointsPopup();
